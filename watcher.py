@@ -63,11 +63,14 @@ LINKEDIN_LOCATIONS = [            # (name LinkedIn understands, LinkedIn geoId)
 # 90 minutes and never more than 24 hours. So a late or skipped run never leaves a gap.
 LINKEDIN_MIN_LOOKBACK_MIN = 90
 LINKEDIN_BUFFER_MIN = 30
-# LinkedIn is skipped from 1:00 to 5:59 Vancouver time to save Apify credit. The 6am run
-# looks back over the whole night, so nothing posted overnight is missed.
-LINKEDIN_QUIET_HOURS = range(1, 6)
-LINKEDIN_LIMIT_PER_SEARCH = 30    # max jobs per search per run
-LINKEDIN_MAX_ITEMS_PER_RUN = 180  # hard cap on billed results per run (cost guard)
+LINKEDIN_LIMIT_PER_SEARCH = 30    # max jobs per search for a normal hourly run (~90 min window).
+                                  # Longer windows (the 7am catch-up) scale this up, to at most 150.
+
+# --- Night pause ---------------------------------------------------------------------
+# Nothing runs from 11pm to 6:59am Vancouver time: no LinkedIn calls (saves Apify credit) and no
+# pushes. The 7am run looks back over the whole night on LinkedIn, and the repos keep everything
+# they added overnight, so nothing posted at night is missed; you just hear about it at 7am.
+QUIET_HOURS = {23, 0, 1, 2, 3, 4, 5, 6}
 
 APIFY_ACTOR = "curious_coder~linkedin-jobs-scraper"
 APIFY_RUN_TIMEOUT_SEC = 600
@@ -83,19 +86,27 @@ REPOS = {
 
 # --- Filters -------------------------------------------------------------------------
 INTERN_WORDS = r"\b(intern|interns|internship|internships|co-?op|coop|student|placement)\b"
+# SWE first: software / full-stack / backend / frontend / mobile / cloud / devops, ML & AI
+# engineering, data engineering and data science. Analyst, QA/test, IT support, research-only
+# and architect/consultant titles are dropped.
 ROLE_WORDS = (
     r"\b(software|developer|swe|sde|programmer|back[- ]?end|front[- ]?end|full[- ]?stack|web|"
     r"mobile|ios|android|cloud|devops|platform|site reliability|sre|infrastructure|"
-    r"data|analytics|analyst|machine learning|ml|ai|artificial intelligence|computer science|"
-    r"application|applications|automation|qa|test|tools)\b"
+    r"machine learning|ml|ai|artificial intelligence|computer science|"
+    r"data engineer\w*|data science|data scientist|data platform|data infrastructure)\b"
 )
 EXCLUDE_WORDS = (
     r"\b(senior|sr\.?|staff|principal|lead|manager|director|phd|ph\.d|doctoral|postdoc|mba|"
     r"master'?s|masters|graduate student|high school|new grad|new graduate|"
     r"hardware|firmware|embedded|asic|fpga|rtl|verification|electrical|mechanical|civil|"
     r"chemical|manufacturing|supplier|sales|marketing|recruit\w*|human resources|accounting|"
-    r"legal|nurs\w*|clinical|french|bilingual)\b"
+    r"legal|nurs\w*|clinical|french|bilingual|"
+    r"analyst|business intelligence|qa|quality assurance|test|tester|testing|sdet|"
+    r"it support|help ?desk|technical support|desktop support|support engineer|information technology|"
+    r"architect|consultant|consulting|solutions engineer)\b"
 )
+# "research" drops a title unless it is clearly an engineering role ("Software Engineer Intern, Research Platform")
+RESEARCH_OK = r"\b(software engineer\w*|software developer|developer|swe|sde)\b"
 US_STATES = ("AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV "
              "NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY DC").split()
 CA_PROVINCES = "ON BC QC AB MB SK NS NB NL PE YT NT NU".split()
@@ -122,6 +133,39 @@ NON_NA = (
     r"romania|portugal|lisbon|italy|milan|czech|prague|vietnam|indonesia|malaysia|uae|dubai|"
     r"egypt|nigeria|kenya|south africa|argentina|chile|colombia|costa rica|emea|apac|europe)\b"
 )
+
+# --- US work eligibility -------------------------------------------------------------
+# You need sponsorship for the US, so US roles (not Canadian ones) are dropped when:
+#   - the repo marks them: Simplify 🛂 (no sponsorship) / 🇺🇸 (US citizenship required), or
+#   - the job description asks for US citizenship, a security clearance, ITAR "U.S. person"
+#     status, or says it won't sponsor / needs work authorization without sponsorship.
+# A US role with no description to check is kept and flagged "visa: check".
+VISA_BLOCK_PATTERNS = [
+    r"u\.?\s?s\.? citizen(ship)?\s+(is\s+|are\s+)?(required|only|mandatory)",
+    r"(must|required to|need to|needs to) be (a |an )?(u\.?\s?s\.?|united states) citizen",
+    r"(require[sd]?|requiring) (u\.?\s?s\.?|united states) citizenship",
+    r"citizenship (is |are )?(required|mandatory)",
+    r"(must|required to) be (a |an )?u\.?\s?s\.? person",
+    r"\bitar\b",
+    r"(security|secret|top secret|government|dod|ts/sci|public trust) clearance",
+    r"(obtain|maintain|hold|possess|eligible (for|to obtain)) (an? |the )?(active |current )?(\w+ ){0,2}clearance",
+    r"\bts/sci\b",
+    r"(will not|won't|cannot|can't|can not|unable to|not able to|do not|does not|don't|doesn't|are not able to|is not able to) (offer |provide |support )?(visa |immigration |employment )?sponsor",
+    r"(not|no longer) (be )?(eligible|available) for (visa |immigration )?sponsorship",
+    r"\bno (visa |immigration )?sponsorship",
+    r"sponsorship (is |will )?not (be )?(available|offered|provided|possible)",
+    r"without (the )?(need for |requiring )?(current or future |future |current )?(visa |employer |immigration |company )?sponsorship",
+    r"authorized to work in the (u\.?\s?s\.?|united states) (on a permanent basis|without)",
+    r"(cpt|opt|f-?1|h-?1b|j-?1)[^.]{0,40}(not|ineligible|cannot|unable)",
+]
+VISA_BLOCK = re.compile("|".join(f"(?:{p})" for p in VISA_BLOCK_PATTERNS), re.I)
+CANADA_LOC = (
+    r"\b(canada|ontario|british columbia|quebec|qu[eé]bec|alberta|manitoba|saskatchewan|nova scotia|"
+    r"new brunswick|newfoundland|toronto|vancouver|montr[eé]al|ottawa|waterloo|kitchener|calgary|"
+    r"edmonton|burnaby|richmond hill|mississauga|markham|halifax|winnipeg|victoria, bc|saint john|"
+    r"oakville|gatineau|regina|saskatoon|surrey, bc|guelph|london, on|hamilton, on)\b"
+)
+CANADA_CODES = r",\s*(ON|BC|QC|AB|MB|SK|NS|NB|NL|PE|YT|NT|NU)\b"
 
 KEY_MEMORY_DAYS = 30              # same company + role is treated as a duplicate for 30 days
 NEW_FILE_KEEP_DAYS = 21           # data/new files older than this are deleted (sync has had them)
@@ -234,6 +278,8 @@ def is_relevant(role, location):
     r = role.lower()
     if not re.search(INTERN_WORDS, r) or not re.search(ROLE_WORDS, r) or re.search(EXCLUDE_WORDS, r):
         return False
+    if re.search(r"\bresearch", r) and not re.search(RESEARCH_OK, r):
+        return False
     # The chosen repos are US/Canada lists and LinkedIn is searched by region, so a location is
     # kept unless it clearly names somewhere outside North America with no US/Canada mention.
     # (Repo locations are often shorthand like "SF", "MN" or "AZ-TUCSON", so requiring a known
@@ -242,6 +288,31 @@ def is_relevant(role, location):
     if re.search(NON_NA, low) and not (re.search(NA_WORDS, low) or re.search(NA_CODES, location or "")):
         return False  # "Remote in UK" drops; "London, UK; Remote in USA" keeps
     return True
+
+
+def in_canada(location):
+    loc = location or ""
+    return bool(re.search(CANADA_LOC, loc.lower()) or re.search(CANADA_CODES, loc))
+
+
+def visa_label(job):
+    """'' for Canadian roles; for US roles a short note shown in the push and in Excel."""
+    if in_canada(job["location"]):
+        return ""
+    if job.get("visa") == "sponsors":
+        return "sponsors ✅"
+    if len(job.get("jd") or "") >= JD_MIN_CHARS:
+        return "no restriction found"
+    return "check sponsorship"
+
+
+def us_role_blocked(job):
+    """True when a US role clearly isn't open to someone who needs sponsorship."""
+    if in_canada(job["location"]):
+        return False
+    if job.get("visa") == "no":
+        return True
+    return bool(VISA_BLOCK.search(job.get("jd") or ""))
 
 
 def load_json(path, default):
@@ -306,6 +377,13 @@ def linkedin_urls(lookback_sec):
     return urls
 
 
+def linkedin_limits(lookback_sec):
+    """Per-search limit and per-run billed cap, scaled to the length of the look-back window."""
+    per_search = min(150, max(LINKEDIN_LIMIT_PER_SEARCH,
+                              math.ceil(LINKEDIN_LIMIT_PER_SEARCH * lookback_sec / 5400)))
+    return per_search, per_search * len(LINKEDIN_KEYWORDS) * len(LINKEDIN_LOCATIONS)
+
+
 def from_apify(lookback_sec):
     if not APIFY_TOKEN:
         raise RuntimeError("APIFY_TOKEN secret is not set")
@@ -314,11 +392,11 @@ def from_apify(lookback_sec):
     run_input = {
         "urls": linkedin_urls(lookback_sec),
         "scrapeCompany": False,
-        "limitPerSource": LINKEDIN_LIMIT_PER_SEARCH,
+        "limitPerSource": linkedin_limits(lookback_sec)[0],
         "autoConvertToAiSearch": True,
     }
     r = requests.post(f"{api}/acts/{APIFY_ACTOR}/runs", headers=auth, json=run_input,
-                      params={"maxItems": LINKEDIN_MAX_ITEMS_PER_RUN}, timeout=60)
+                      params={"maxItems": linkedin_limits(lookback_sec)[1]}, timeout=60)
     if r.status_code >= 400:
         raise RuntimeError(f"Apify start failed: HTTP {r.status_code} {r.text[:300]}")
     run = r.json()["data"]
@@ -415,6 +493,8 @@ def parse_markdown_tables(text, name):
                     header["location"] = i
                 elif h in ("apply", "posting", "link", "application", "apply link"):
                     header["link"] = i
+                elif h in ("visa", "sponsorship"):
+                    header["visa"] = i
             continue
         if header is None or set("".join(cells)) <= set("-: "):
             continue
@@ -431,8 +511,12 @@ def parse_markdown_tables(text, name):
         links = links_in(cells[header["link"]]) if "link" in header else links_in(line)
         if not links:
             continue
+        visa = ""
+        if "visa" in header:
+            v = strip_cell(cells[header["visa"]]).lower()
+            visa = "sponsors" if "sponsor" in v and not re.search(r"\bno\b|❌", v) else ("no" if re.search(r"\bno\b|❌", v) else "")
         jobs.append({"company": company, "role": role, "location": location, "link": links[0],
-                     "source": name, "jd": "", "posted": ""})
+                     "source": name, "jd": "", "posted": "", "visa": visa})
     return jobs
 
 
@@ -450,9 +534,11 @@ def parse_html_tables(text, name):
             links = [u for u in links_in(tds[4]) if "simplify.jobs/p/" not in u] or links_in(tds[4])
             if not links:
                 continue
-            jobs.append({"company": company, "role": strip_cell(tds[1]).replace("🎓", "").strip(),
-                         "location": strip_cell(tds[2]), "link": links[0], "source": name,
-                         "jd": "", "posted": ""})
+            role_raw = strip_cell(tds[1])
+            visa = "no" if ("🛂" in role_raw or "🇺🇸" in role_raw) else ""
+            role = re.sub(r"[🎓🛂🇺🇸]", "", role_raw).strip()
+            jobs.append({"company": company, "role": role, "location": strip_cell(tds[2]),
+                         "link": links[0], "source": name, "jd": "", "posted": "", "visa": visa})
     return jobs
 
 
@@ -575,7 +661,7 @@ def new_day(health):
     today = LOCAL.strftime("%Y-%m-%d")
     if health.get("today", {}).get("date") != today:
         health["today"] = {"date": today, "runs": 0, "new_jobs": 0, "linkedin_results": 0,
-                           "linkedin_runs": 0, "problems": []}
+                           "linkedin_runs": 0, "visa_dropped": 0, "problems": []}
 
 
 def run():
@@ -586,23 +672,27 @@ def run():
     seen = seen or {"links": {}, "keys": {}}
     health = load_json(HEALTH_FILE, {})
     new_day(health)
-    health["today"]["runs"] += 1
 
     # gap check (GitHub sometimes delays or skips scheduled runs)
     last_run = health.get("last_run")
-    if last_run and NOW - datetime.fromisoformat(last_run) > timedelta(hours=GAP_ALERT_HOURS):
+    if (last_run and LOCAL.hour not in QUIET_HOURS
+            and NOW - datetime.fromisoformat(last_run) > timedelta(hours=GAP_ALERT_HOURS)):
         gap_from = datetime.fromisoformat(last_run).astimezone(TZ)
         alert(health, "gap", "⚠️ Job watcher had a gap",
               f"No runs between {gap_from:%a %H:%M} and {LOCAL:%a %H:%M}. LinkedIn is caught up automatically "
               f"(this run looked back over the gap). Repos are caught up too.", 1)
     health["last_run"] = NOW.isoformat()
 
+    if LOCAL.hour in QUIET_HOURS and not first_run:
+        log("Night pause (11pm-7am): nothing checked. The 7am run catches up.")
+        save_json(HEALTH_FILE, health)
+        return
+    health["today"]["runs"] += 1
+
     all_jobs = []
 
     # --- LinkedIn
-    if LOCAL.hour in LINKEDIN_QUIET_HOURS:
-        log("LinkedIn: quiet hours, skipped (the 6am run covers the night)")
-    else:
+    if True:
         lookback = linkedin_lookback(health)
         log(f"LinkedIn: looking back {lookback / 60:.0f} min")
         li_jobs, used = None, None
@@ -626,9 +716,10 @@ def run():
             health["last_linkedin_ok"] = NOW.isoformat()
             health["today"]["linkedin_runs"] += 1
             health["today"]["linkedin_results"] += len(li_jobs)
-            if used == "Apify" and len(li_jobs) >= LINKEDIN_MAX_ITEMS_PER_RUN:
+            cap = linkedin_limits(lookback)[1]
+            if used == "Apify" and len(li_jobs) >= cap:
                 alert(health, "li_cap", "⚠️ LinkedIn hit the per-run cap",
-                      f"{len(li_jobs)} results in one run (cap {LINKEDIN_MAX_ITEMS_PER_RUN}). Some jobs may be cut off "
+                      f"{len(li_jobs)} results in one run (cap {cap}). Some jobs may be cut off "
                       f"and Apify cost will run high. Ask Claude to adjust the LinkedIn limits.", 12)
             if len(li_jobs) == 0 and LOCAL.hour in DAYTIME_HOURS:
                 health["linkedin_zero_streak"] = health.get("linkedin_zero_streak", 0) + 1
@@ -662,6 +753,8 @@ def run():
         j["link"] = clean_link(j["link"])
         if not j["role"] or not j["link"] or not is_relevant(j["role"], j["location"]):
             continue
+        if j.get("visa") == "no" and not in_canada(j["location"]):
+            continue  # repo says no sponsorship / US citizens only
         relevant += 1
         k = job_key(j["company"], j["role"])
         if j["link"] in seen["links"] or k in seen["keys"] or k in batch or j["link"] in batch:
@@ -693,6 +786,16 @@ def run():
             j["id"] = job_id(j["link"])
             j["found_at"] = LOCAL.isoformat(timespec="minutes")
             seen["links"][j["link"]] = NOW.isoformat()[:10]
+        blocked = [j for j in new if us_role_blocked(j)]
+        if blocked:
+            log(f"Dropped {len(blocked)} US role(s) that need citizenship / clearance / no sponsorship:")
+            for j in blocked:
+                log(f"   x {j['company']} — {j['role']}")
+            health["today"]["visa_dropped"] = health["today"].get("visa_dropped", 0) + len(blocked)
+        new = [j for j in new if not us_role_blocked(j)]
+        for j in new:
+            j["visa"] = visa_label(j)
+    if not first_run and new:
         out = NEW_DIR / f"{NOW:%Y-%m-%dT%H-%M-%SZ}.json"
         out.write_text(json.dumps(new, indent=1, ensure_ascii=False))
         health["today"]["new_jobs"] += len(new)
@@ -701,7 +804,8 @@ def run():
         new.sort(key=lambda j: j["source"] != "LinkedIn")
         for j in new[:MAX_INDIVIDUAL_PUSHES]:
             jd_note = "JD ✓" if len(j["jd"]) >= JD_MIN_CHARS else "needs JD"
-            push(f"{j['company']}", f"{j['role']}\n{j['location'] or '—'} · {j['source']} · {jd_note}",
+            visa_note = f" · visa: {j['visa']}" if j["visa"] else ""
+            push(f"{j['company']}", f"{j['role']}\n{j['location'] or '—'} · {j['source']} · {jd_note}{visa_note}",
                  click=j["link"], priority=4 if j["source"] == "LinkedIn" else 3, tags=["briefcase"])
         if len(new) > MAX_INDIVIDUAL_PUSHES:
             rest = new[MAX_INDIVIDUAL_PUSHES:]
@@ -722,7 +826,8 @@ def run():
     if LOCAL.hour >= HEARTBEAT_HOUR and health.get("heartbeat_sent") != t["date"]:
         problems = sorted(set(t["problems"]))
         push("📋 Job watcher daily check",
-             f"{t['runs']} runs today · {t['new_jobs']} new jobs\n"
+             f"{t['runs']} runs today · {t['new_jobs']} new jobs"
+             f" ({t.get('visa_dropped', 0)} US roles skipped for citizenship/no sponsorship)\n"
              f"LinkedIn: {t['linkedin_runs']} checks, {t['linkedin_results']} results billed\n"
              + ("Problems today: " + "; ".join(problems) if problems else "All sources OK"),
              tags=["white_check_mark"] if not problems else ["warning"])
