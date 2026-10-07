@@ -63,6 +63,10 @@ LINKEDIN_LOCATIONS = [            # (name LinkedIn understands, LinkedIn geoId)
 # 90 minutes and never more than 24 hours. So a late or skipped run never leaves a gap.
 LINKEDIN_MIN_LOOKBACK_MIN = 90
 LINKEDIN_BUFFER_MIN = 30
+# Two schedules start this script (cron-job.org at :05 and GitHub at :35 as a backup). LinkedIn
+# is only queried if the last successful check was at least this long ago, so you never pay twice
+# in one hour. The repos are free and get checked on every run.
+LINKEDIN_MIN_INTERVAL_MIN = 45
 LINKEDIN_LIMIT_PER_SEARCH = 30    # max jobs per search for a normal hourly run (~90 min window).
                                   # Longer windows (the 7am catch-up) scale this up, to at most 150.
 
@@ -692,7 +696,10 @@ def run():
     all_jobs = []
 
     # --- LinkedIn
-    if True:
+    last_li = health.get("last_linkedin_ok")
+    if last_li and NOW - datetime.fromisoformat(last_li) < timedelta(minutes=LINKEDIN_MIN_INTERVAL_MIN):
+        log(f"LinkedIn: checked {(NOW - datetime.fromisoformat(last_li)).seconds // 60} min ago, skipped this run")
+    else:
         lookback = linkedin_lookback(health)
         log(f"LinkedIn: looking back {lookback / 60:.0f} min")
         li_jobs, used = None, None
