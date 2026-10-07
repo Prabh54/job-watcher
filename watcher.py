@@ -107,7 +107,8 @@ EXCLUDE_WORDS = (
     r"legal|nurs\w*|clinical|french|bilingual|"
     r"analyst|business intelligence|qa|quality assurance|test|tester|testing|sdet|"
     r"it support|help ?desk|technical support|desktop support|support engineer|information technology|"
-    r"architect|consultant|consulting|solutions engineer)\b"
+    r"architect|consultant|consulting|solutions engineer|product manag\w*|program manag\w*|"
+    r"project manag\w*)\b"
 )
 # "research" drops a title unless it is clearly an engineering role ("Software Engineer Intern, Research Platform")
 RESEARCH_OK = r"\b(software engineer\w*|software developer|developer|swe|sde)\b"
@@ -162,6 +163,14 @@ VISA_BLOCK_PATTERNS = [
     r"authorized to work in the (u\.?\s?s\.?|united states) (on a permanent basis|without)",
     r"(cpt|opt|f-?1|h-?1b|j-?1)[^.]{0,40}(not|ineligible|cannot|unable)",
 ]
+# US defense / government contractors usually require US citizenship or clearance; dropped for
+# US roles even when there's no description to check.
+US_DEFENSE_COMPANIES = (
+    r"\b(defen[cs]e|lockheed|northrop|raytheon|rtx|general dynamics|bae systems|l3harris|leidos|"
+    r"saic|booz allen|mitre|anduril|huntington ingalls|textron|parsons|caci|peraton|"
+    r"sierra nevada|draper|aerospace corporation|johns hopkins apl|sandia|lawrence livermore|"
+    r"los alamos|oak ridge|national laborator\w*)\b"
+)
 VISA_BLOCK = re.compile("|".join(f"(?:{p})" for p in VISA_BLOCK_PATTERNS), re.I)
 CANADA_LOC = (
     r"\b(canada|ontario|british columbia|quebec|qu[eé]bec|alberta|manitoba|saskatchewan|nova scotia|"
@@ -315,6 +324,8 @@ def us_role_blocked(job):
     if in_canada(job["location"]):
         return False
     if job.get("visa") == "no":
+        return True
+    if re.search(US_DEFENSE_COMPANIES, (job.get("company") or "").lower()):
         return True
     return bool(VISA_BLOCK.search(job.get("jd") or ""))
 
@@ -571,6 +582,10 @@ def resolve_link(url):
             return html.unescape(m.group(1))
     except Exception:
         pass
+    # Fallback: Zapply slugs name the ATS, e.g. /l/d/greenhouse-epicgames-6138140004
+    m = re.search(r"zapply\.jobs/l/d/greenhouse-([\w]+)-(\d{6,})", url)
+    if m:
+        return f"https://job-boards.greenhouse.io/{m.group(1)}/jobs/{m.group(2)}"
     return url
 
 
@@ -609,6 +624,16 @@ def jd_jsonld(url):
                 stack.extend(v for v in node.values() if isinstance(v, (dict, list)))
             elif isinstance(node, list):
                 stack.extend(node)
+    return ""
+
+
+def jd_page_text(url):
+    """Last resort: the page's visible text, if it looks like a job posting."""
+    page = HTTP.get(url, timeout=TIMEOUT).text
+    page = re.sub(r"(?is)<(nav|header|footer)[^>]*>.*?</\1>", " ", page)
+    text = html_to_text(page)
+    if len(text) > 800 and re.search(r"\b(qualifications|requirements|responsibilities|what you.ll do|about the role)\b", text, re.I):
+        return text[:12000]
     return ""
 
 
@@ -653,7 +678,10 @@ def fetch_jd(url):
             return "\n\n".join(html_to_text(d.get(k, "")) for k in ("description", "requirements", "benefits") if d.get(k))
         if "linkedin.com" in url:
             return ""
-        return jd_jsonld(url)
+        if "icims.com" in url:  # iCIMS shows the posting inside an iframe page
+            url = url + ("&" if "?" in url else "?") + "in_iframe=1"
+        url = re.sub(r"(amazon\.jobs/(?:\w+/)?jobs/\d+)/apply", r"\1", url)
+        return jd_jsonld(url) or jd_page_text(url)
     except Exception as e:
         log(f"  JD fetch failed for {url[:80]}: {e.__class__.__name__}")
         return ""
