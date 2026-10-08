@@ -3,7 +3,7 @@
   "gap": "2026-10-07T22:25:23.898731+00:00"
  },
  "last_linkedin_ok": "2026-10-08T03:05:27.602875+00:00",
- "last_run": "2026-10-08T06:34:19.479437+00:00",
+ "last_run": "2026-10-08T13:58:29.699937+00:00",
  "linkedin_zero_streak": 0,
  "repo_fail_streak": {
   "Simplify off-season": 0,
@@ -13,14 +13,12 @@
   "speedyapply USA": 0
  },
  "today": {
-  "date": "2026-10-07",
-  "linkedin_results": 255,
-  "linkedin_runs": 6,
-  "new_jobs": 37,
-  "problems": [
-   "⚠️ Job watcher had a gap"
-  ],
-  "runs": 7,
-  "visa_dropped": 12
+  "date": "2026-10-08",
+  "linkedin_results": 0,
+  "linkedin_runs": 0,
+  "new_jobs": 0,
+  "problems": [],
+  "runs": 0,
+  "visa_dropped": 0
  }
 }
