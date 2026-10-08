@@ -2,8 +2,8 @@
  "alerts": {
   "gap": "2026-10-07T22:25:23.898731+00:00"
  },
- "last_linkedin_ok": "2026-10-07T22:25:23.898731+00:00",
- "last_run": "2026-10-07T22:25:23.898731+00:00",
+ "last_linkedin_ok": "2026-10-08T00:05:27.716181+00:00",
+ "last_run": "2026-10-08T00:05:27.716181+00:00",
  "linkedin_zero_streak": 0,
  "repo_fail_streak": {
   "Simplify off-season": 0,
@@ -14,13 +14,13 @@
  },
  "today": {
   "date": "2026-10-07",
-  "linkedin_results": 157,
-  "linkedin_runs": 2,
-  "new_jobs": 24,
+  "linkedin_results": 198,
+  "linkedin_runs": 3,
+  "new_jobs": 30,
   "problems": [
    "⚠️ Job watcher had a gap"
   ],
-  "runs": 2,
-  "visa_dropped": 9
+  "runs": 3,
+  "visa_dropped": 10
  }
 }
