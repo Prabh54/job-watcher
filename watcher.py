@@ -191,7 +191,8 @@ LINKEDIN_ZERO_STREAK_ALERT = 3    # daytime runs in a row with 0 LinkedIn result
 REPO_FAIL_STREAK_ALERT = 3
 DAYTIME_HOURS = range(7, 23)
 HEARTBEAT_HOUR = 21               # daily summary at/after 9pm Vancouver
-GAP_ALERT_HOURS = 3
+GAP_ALERT_HOURS = 3               # (kept for reference; the gap check now counts missed runs)
+GAP_MISSED_RUNS = 2               # alert when 2+ daytime hourly runs were skipped
 
 # =====================================================================================
 
@@ -692,8 +693,65 @@ def fetch_jd(url):
 def new_day(health):
     today = LOCAL.strftime("%Y-%m-%d")
     if health.get("today", {}).get("date") != today:
+        if health.get("today", {}).get("date"):
+            health["yesterday"] = health["today"]
         health["today"] = {"date": today, "runs": 0, "new_jobs": 0, "linkedin_results": 0,
                            "linkedin_runs": 0, "visa_dropped": 0, "problems": []}
+
+
+def summary_text(t):
+    problems = sorted(set(t.get("problems", [])))
+    text = (f"{t.get('runs', 0)} runs · {t.get('new_jobs', 0)} new jobs"
+            f" ({t.get('visa_dropped', 0)} US roles skipped for citizenship/no sponsorship)\n"
+            f"LinkedIn: {t.get('linkedin_runs', 0)} checks, {t.get('linkedin_results', 0)} results billed\n"
+            + ("Problems: " + "; ".join(problems) if problems else "All sources OK"))
+    return text, problems
+
+
+def daily_summary(health):
+    """9pm summary. Runs on every trigger after 9pm, including night-pause runs, so one late run is enough."""
+    t = health["today"]
+    if LOCAL.hour >= HEARTBEAT_HOUR and health.get("heartbeat_sent") != t["date"]:
+        text, problems = summary_text(t)
+        push("📋 Job watcher daily check", text,
+             tags=["white_check_mark"] if not problems else ["warning"])
+        health["heartbeat_sent"] = t["date"]
+
+
+def missed_summary_check(health):
+    """First daytime run of the day: if last night's summary never went out, say so."""
+    y = health.get("yesterday")
+    if not y or health.get("heartbeat_sent") == y["date"] or health.get("missed_summary_reported") == y["date"]:
+        return
+    text, _ = summary_text(y)
+    push("⚠️ Last night's 9pm summary was missed",
+         f"No run happened between 9pm and midnight on {y['date']}, so the summary never sent. "
+         f"Check cron-job.org's history and the Actions tab.\nYesterday: {text}",
+         priority=4, tags=["warning"])
+    health["missed_summary_reported"] = y["date"]
+
+
+def missed_active_hours(since, until):
+    """Hourly slots outside the night pause between two runs that had no run."""
+    a = since.astimezone(TZ).replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
+    end = until.astimezone(TZ).replace(minute=0, second=0, microsecond=0)
+    missed = []
+    while a < end:
+        if a.hour not in QUIET_HOURS:
+            missed.append(a)
+        a += timedelta(hours=1)
+    return missed
+
+
+def ping_deadman(ok=True):
+    """Tells healthchecks.io the watcher ran. If pings stop, it alerts you even when nothing runs at all."""
+    url = os.environ.get("HC_PING_URL", "").strip()
+    if not url or DRY_RUN:
+        return
+    try:
+        requests.get(url if ok else url.rstrip("/") + "/fail", timeout=10)
+    except Exception as e:
+        log(f"  dead-man ping failed ({e})")
 
 
 def run():
@@ -705,20 +763,26 @@ def run():
     health = load_json(HEALTH_FILE, {})
     new_day(health)
 
-    # gap check (GitHub sometimes delays or skips scheduled runs)
-    last_run = health.get("last_run")
-    if (last_run and LOCAL.hour not in QUIET_HOURS
-            and NOW - datetime.fromisoformat(last_run) > timedelta(hours=GAP_ALERT_HOURS)):
-        gap_from = datetime.fromisoformat(last_run).astimezone(TZ)
-        alert(health, "gap", "⚠️ Job watcher had a gap",
-              f"No runs between {gap_from:%a %H:%M} and {LOCAL:%a %H:%M}. LinkedIn is caught up automatically "
-              f"(this run looked back over the gap). Repos are caught up too.", 1)
+    # gap check (cron-job.org or GitHub sometimes skip runs). Counted from the last DAYTIME run,
+    # so a run during the night pause can't hide hours that were missed in the evening.
     health["last_run"] = NOW.isoformat()
+    last_active = health.get("last_active_run") or health.get("last_run")
+    if LOCAL.hour not in QUIET_HOURS and last_active:
+        missed = missed_active_hours(datetime.fromisoformat(last_active), NOW)
+        if len(missed) >= GAP_MISSED_RUNS:
+            hours = ", ".join(f"{m:%a %-I%p}" for m in missed[:8]) + (" …" if len(missed) > 8 else "")
+            alert(health, "gap", f"⚠️ Job watcher missed {len(missed)} hourly runs",
+                  f"No run at: {hours}. LinkedIn and the repos were caught up by this run, so no jobs "
+                  f"were lost. If this repeats, check cron-job.org's history.", 1)
+        missed_summary_check(health)
 
     if LOCAL.hour in QUIET_HOURS and not first_run:
         log("Night pause (11pm-7am): nothing checked. The 7am run catches up.")
+        daily_summary(health)
         save_json(HEALTH_FILE, health)
+        ping_deadman()
         return
+    health["last_active_run"] = NOW.isoformat()
     health["today"]["runs"] += 1
 
     all_jobs = []
@@ -856,20 +920,11 @@ def run():
         except ValueError:
             pass
 
-    # daily heartbeat
-    t = health["today"]
-    if LOCAL.hour >= HEARTBEAT_HOUR and health.get("heartbeat_sent") != t["date"]:
-        problems = sorted(set(t["problems"]))
-        push("📋 Job watcher daily check",
-             f"{t['runs']} runs today · {t['new_jobs']} new jobs"
-             f" ({t.get('visa_dropped', 0)} US roles skipped for citizenship/no sponsorship)\n"
-             f"LinkedIn: {t['linkedin_runs']} checks, {t['linkedin_results']} results billed\n"
-             + ("Problems today: " + "; ".join(problems) if problems else "All sources OK"),
-             tags=["white_check_mark"] if not problems else ["warning"])
-        health["heartbeat_sent"] = t["date"]
+    daily_summary(health)
 
     save_json(SEEN_FILE, seen)
     save_json(HEALTH_FILE, health)
+    ping_deadman()
 
 
 if __name__ == "__main__":
@@ -878,4 +933,5 @@ if __name__ == "__main__":
     except Exception:
         traceback.print_exc()
         push("🚨 Job watcher crashed", traceback.format_exc()[-1500:], priority=5, tags=["rotating_light"])
+        ping_deadman(ok=False)
         sys.exit(1)
