@@ -3,7 +3,7 @@
   "gap": "2026-10-07T22:25:23.898731+00:00"
  },
  "last_linkedin_ok": "2026-10-08T00:05:27.716181+00:00",
- "last_run": "2026-10-08T00:05:27.716181+00:00",
+ "last_run": "2026-10-08T00:22:28.333900+00:00",
  "linkedin_zero_streak": 0,
  "repo_fail_streak": {
   "Simplify off-season": 0,
@@ -20,7 +20,7 @@
   "problems": [
    "⚠️ Job watcher had a gap"
   ],
-  "runs": 3,
+  "runs": 4,
   "visa_dropped": 10
  }
 }
