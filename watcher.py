@@ -193,6 +193,8 @@ JD_MIN_CHARS = 200
 FIT_MODEL = "claude-haiku-5-5"
 FIT_MIN_JD_CHARS = 400            # too short to judge → no score rather than a bad one
 FIT_MAX_JD_CHARS = 9000           # trim very long JDs; the signal is near the top
+FIT_MAX_TOKENS = 64               # the reply is one short line
+FIT_MAX_TOKENS_WITH_THINKING = 600  # only used if the API refuses to disable thinking
 FIT_WORKERS = 4                   # scored in parallel so a big run stays fast
 FIT_TIMEOUT = 45
 EXCEL_CELL_LIMIT = 32000
@@ -709,7 +711,15 @@ volume of internship postings so the candidate can spend his limited time on the
 Reply with EXACTLY one line, nothing else:
 SCORE|REASON
 
-SCORE is an integer 1-10. REASON is at most 8 words, naming the single most decisive factor.
+SCORE is an integer 1-10. REASON is at most 10 words, naming the single most decisive factor
+about the WORK itself (the stack, the specialty, the level).
+Start the line with the digits. Never write anything before the number.
+
+IGNORE ENTIRELY, as if it were not in the posting: work authorization, visa sponsorship, the
+right to work, citizenship, security clearance, relocation, city, country, and whether it is
+remote, hybrid or onsite. A separate filter already handles all of that. These must never change
+the score and must never appear in REASON. Judge only how well his skills, stack and level match
+the actual work. If the only problem with a posting is one of the ignored items, it scores high.
 
 Calibrate strictly. Most postings are average; do not cluster everything at 7-8.
  9-10  Core software/full-stack intern or co-op. His main stack. Nothing disqualifying.
@@ -729,7 +739,10 @@ def score_one_fit(job):
     jd = (job.get("jd") or "")[:FIT_MAX_JD_CHARS]
     body = {
         "model": FIT_MODEL,
-        "max_tokens": 40,
+        "max_tokens": FIT_MAX_TOKENS,
+        # Without this the model spends the whole token budget on a thinking block and returns no
+        # text at all. The rating needs no deliberation, so thinking is turned off.
+        "thinking": {"type": "disabled"},
         "system": FIT_SYSTEM,
         "messages": [{"role": "user", "content":
                       f"CANDIDATE:\n{CANDIDATE_PROFILE}\n\n"
@@ -740,13 +753,42 @@ def score_one_fit(job):
                       headers={"x-api-key": ANTHROPIC_API_KEY,
                                "anthropic-version": "2023-06-01",
                                "content-type": "application/json"})
+    if r.status_code == 400 and "thinking" in r.text.lower():
+        # Older API versions reject an explicit "disabled"; fall back to leaving room for thinking.
+        body.pop("thinking", None)
+        body["max_tokens"] = FIT_MAX_TOKENS_WITH_THINKING
+        r = requests.post("https://api.anthropic.com/v1/messages", json=body, timeout=FIT_TIMEOUT,
+                          headers={"x-api-key": ANTHROPIC_API_KEY,
+                                   "anthropic-version": "2023-06-01",
+                                   "content-type": "application/json"})
     r.raise_for_status()
     text = "".join(b.get("text", "") for b in r.json().get("content", []) if b.get("type") == "text")
-    m = re.match(r"\s*(\d{1,2})\s*\|\s*(.*)", text.strip())
-    if not m:
+    return parse_fit(text)
+
+
+def clip_words(text, limit=105):
+    """Trim to `limit` characters on a word boundary, so a reason never ends mid-word."""
+    text = text.strip()
+    if len(text) <= limit:
+        return text
+    cut = text[:limit].rsplit(" ", 1)[0].rstrip(" ,;:-")
+    return (cut or text[:limit]) + "\u2026"
+
+
+def parse_fit(text):
+    """Pull a score out of the reply. Tolerant: the ideal reply is '8|reason', but a stray
+    preamble, 'Score: 8', or a bare number still yields a usable score rather than a blank."""
+    text = (text or "").strip()
+    if not text:
         return None, ""
-    score = max(1, min(10, int(m.group(1))))
-    return score, re.sub(r"\s+", " ", m.group(2)).strip()[:80]
+    m = re.search(r"\b(\d{1,2})\s*\|\s*(.+)", text)
+    if m:
+        return max(1, min(10, int(m.group(1)))), clip_words(re.sub(r"\s+", " ", m.group(2)))
+    m = re.search(r"\b(?:10|[1-9])\b", text)
+    if m:
+        rest = text[m.end():].lstrip(" :|-\u2013\u2014.")
+        return int(m.group(0)), clip_words(re.sub(r"\s+", " ", rest))
+    return None, ""
 
 
 def add_fit_scores(jobs):
