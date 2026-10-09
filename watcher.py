@@ -184,6 +184,17 @@ KEY_MEMORY_DAYS = 30              # same company + role is treated as a duplicat
 NEW_FILE_KEEP_DAYS = 21           # data/new files older than this are deleted (sync has had them)
 MAX_INDIVIDUAL_PUSHES = 25        # more new jobs than this in one run → the rest in one summary push
 JD_MIN_CHARS = 200
+
+# --- Fit score (Haiku) ---------------------------------------------------------------
+# Each new job with a real description is scored 1-10 against your profile, so you can sort the
+# sheet and work the best ones first. Costs about $0.0002 per job (a fiftieth of a cent).
+# Needs two repo secrets: ANTHROPIC_API_KEY, and CANDIDATE_PROFILE (your resume summary — it lives
+# in a secret, NOT in this file, because this repo is public). Missing either one just skips scoring.
+FIT_MODEL = "claude-haiku-5-5"
+FIT_MIN_JD_CHARS = 400            # too short to judge → no score rather than a bad one
+FIT_MAX_JD_CHARS = 9000           # trim very long JDs; the signal is near the top
+FIT_WORKERS = 4                   # scored in parallel so a big run stays fast
+FIT_TIMEOUT = 45
 EXCEL_CELL_LIMIT = 32000
 
 # Alerts
@@ -203,6 +214,8 @@ SEEN_FILE = DATA / "seen.json"
 HEALTH_FILE = DATA / "health.json"
 BACKLOG_FILE = DATA / "backlog.csv"
 
+ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "").strip()
+CANDIDATE_PROFILE = os.environ.get("CANDIDATE_PROFILE", "").strip()
 APIFY_TOKEN = os.environ.get("APIFY_TOKEN", "").strip()
 NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "").strip()
 DRY_RUN = os.environ.get("DRY_RUN") == "1"          # local testing: no pushes
@@ -688,6 +701,86 @@ def fetch_jd(url):
         return ""
 
 
+# ----------------------------------------------------------------------------- fit score
+
+FIT_SYSTEM = """You rate how well ONE job posting fits ONE candidate. You are screening a high
+volume of internship postings so the candidate can spend his limited time on the best ones.
+
+Reply with EXACTLY one line, nothing else:
+SCORE|REASON
+
+SCORE is an integer 1-10. REASON is at most 8 words, naming the single most decisive factor.
+
+Calibrate strictly. Most postings are average; do not cluster everything at 7-8.
+ 9-10  Core software/full-stack intern or co-op. His main stack. Nothing disqualifying.
+ 7-8   Clearly suitable. Good overlap, small gaps he could cover.
+ 5-6   Plausible but partial: adjacent domain, or a stack he only touches lightly.
+ 3-4   Weak: different specialty, or asks for skills/experience he does not have.
+ 1-2   Wrong: senior-level, requires a degree he lacks, or unrelated field.
+
+Mark down hard for: years of experience beyond a student, graduate degree required, a specialty
+he has no exposure to (embedded, firmware, hardware, game engines, security research, mobile
+native). Mark up for: web/full-stack, his named languages and frameworks, data/ML with Python,
+co-op or internship framing, and an explicit term that suits a Fall 2026 start."""
+
+
+def score_one_fit(job):
+    """Ask Haiku for a 1-10 fit score. Returns (score, reason) or (None, '')."""
+    jd = (job.get("jd") or "")[:FIT_MAX_JD_CHARS]
+    body = {
+        "model": FIT_MODEL,
+        "max_tokens": 40,
+        "system": FIT_SYSTEM,
+        "messages": [{"role": "user", "content":
+                      f"CANDIDATE:\n{CANDIDATE_PROFILE}\n\n"
+                      f"JOB: {job.get('role','')} at {job.get('company','')} "
+                      f"({job.get('location','')})\n\nDESCRIPTION:\n{jd}"}],
+    }
+    r = requests.post("https://api.anthropic.com/v1/messages", json=body, timeout=FIT_TIMEOUT,
+                      headers={"x-api-key": ANTHROPIC_API_KEY,
+                               "anthropic-version": "2023-06-01",
+                               "content-type": "application/json"})
+    r.raise_for_status()
+    text = "".join(b.get("text", "") for b in r.json().get("content", []) if b.get("type") == "text")
+    m = re.match(r"\s*(\d{1,2})\s*\|\s*(.*)", text.strip())
+    if not m:
+        return None, ""
+    score = max(1, min(10, int(m.group(1))))
+    return score, re.sub(r"\s+", " ", m.group(2)).strip()[:80]
+
+
+def add_fit_scores(jobs):
+    """Score every job that has a usable description. Never raises; a failure just means no score."""
+    for j in jobs:
+        j.setdefault("fit", "")
+        j.setdefault("fit_why", "")
+    if not (ANTHROPIC_API_KEY and CANDIDATE_PROFILE):
+        log("Fit scoring skipped (ANTHROPIC_API_KEY or CANDIDATE_PROFILE secret not set)")
+        return
+    todo = [j for j in jobs if len(j.get("jd") or "") >= FIT_MIN_JD_CHARS]
+    if not todo:
+        return
+    from concurrent.futures import ThreadPoolExecutor
+    done = failed = 0
+
+    def work(j):
+        nonlocal done, failed
+        try:
+            score, why = score_one_fit(j)
+            if score is not None:
+                j["fit"], j["fit_why"] = score, why
+                done += 1
+        except Exception as e:
+            failed += 1
+            if failed == 1:
+                log(f"  fit scoring error: {e.__class__.__name__}: {str(e)[:150]}")
+
+    with ThreadPoolExecutor(max_workers=FIT_WORKERS) as pool:
+        list(pool.map(work, todo))
+    log(f"Fit: scored {done}/{len(todo)}" + (f", {failed} failed" if failed else "")
+        + f" ({len(jobs) - len(todo)} had no usable description)")
+
+
 # ----------------------------------------------------------------------------- main
 
 def new_day(health):
@@ -894,6 +987,7 @@ def run():
         new = [j for j in new if not us_role_blocked(j)]
         for j in new:
             j["visa"] = visa_label(j)
+        add_fit_scores(new)
     if not first_run and new:
         out = NEW_DIR / f"{NOW:%Y-%m-%dT%H-%M-%SZ}.json"
         out.write_text(json.dumps(new, indent=1, ensure_ascii=False))
@@ -903,8 +997,9 @@ def run():
         new.sort(key=lambda j: j["source"] != "LinkedIn")
         for j in new[:MAX_INDIVIDUAL_PUSHES]:
             jd_note = "JD ✓" if len(j["jd"]) >= JD_MIN_CHARS else "needs JD"
+            fit_note = f"fit {j['fit']}/10 · " if j.get("fit") else ""
             visa_note = f" · visa: {j['visa']}" if j["visa"] else ""
-            push(f"{j['company']}", f"{j['role']}\n{j['location'] or '—'} · {j['source']} · {jd_note}{visa_note}",
+            push(f"{j['company']}", f"{j['role']}\n{fit_note}{j['location'] or '—'} · {j['source']} · {jd_note}{visa_note}",
                  click=j["link"], priority=4 if j["source"] == "LinkedIn" else 3, tags=["briefcase"])
         if len(new) > MAX_INDIVIDUAL_PUSHES:
             rest = new[MAX_INDIVIDUAL_PUSHES:]

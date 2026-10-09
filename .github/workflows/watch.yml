@@ -32,6 +32,8 @@ jobs:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           HC_PING_URL: ${{ secrets.HC_PING_URL }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CANDIDATE_PROFILE: ${{ secrets.CANDIDATE_PROFILE }}
         run: python watcher.py
 
       - name: Save state
