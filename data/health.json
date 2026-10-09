@@ -2,9 +2,9 @@
  "alerts": {
   "gap": "2026-10-09T15:05:28.887593+00:00"
  },
- "last_active_run": "2026-10-09T17:05:20.900893+00:00",
- "last_linkedin_ok": "2026-10-09T17:05:20.900893+00:00",
- "last_run": "2026-10-09T17:05:20.900893+00:00",
+ "last_active_run": "2026-10-09T18:05:27.736112+00:00",
+ "last_linkedin_ok": "2026-10-09T18:05:27.736112+00:00",
+ "last_run": "2026-10-09T18:05:27.736112+00:00",
  "linkedin_zero_streak": 0,
  "missed_summary_reported": "2026-10-08",
  "repo_fail_streak": {
@@ -16,14 +16,14 @@
  },
  "today": {
   "date": "2026-10-09",
-  "linkedin_results": 217,
-  "linkedin_runs": 3,
-  "new_jobs": 30,
+  "linkedin_results": 241,
+  "linkedin_runs": 4,
+  "new_jobs": 33,
   "problems": [
    "⚠️ Job watcher missed 3 hourly runs"
   ],
-  "runs": 4,
-  "visa_dropped": 10
+  "runs": 5,
+  "visa_dropped": 11
  },
  "yesterday": {
   "date": "2026-10-08",
