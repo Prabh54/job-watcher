@@ -1,0 +1,30 @@
+[
+ {
+  "company": "Visual Impact",
+  "role": "Full-Stack Developer Intern",
+  "location": "Longueuil, Quebec, Canada",
+  "link": "https://www.linkedin.com/jobs/view/4475988088/",
+  "source": "LinkedIn",
+  "jd": "\nAbout us\nVisual Impact runs a digital signage advertising network in malls and local venues across the Montreal area. Local businesses use our screens to get their brand in front of shoppers every day.\nWe are now building Envision-Ad, a self-serve platform where businesses can book screens, upload their ads and track their campaigns in a few clicks, with no back-and-forth emails.\nThe role\nAs a Full-Stack Developer Intern, you will help build Envision-Ad, working on both the Spring Boot back end and the Next.js front end of a product used by real advertisers.\n\n- Position: Full-Stack Developer Intern\n- Term: Winter 2027 (March 2027- May 2027)\n- Location: Fully Remote\n- Stack: Java, Spring Boot, Next.js, React, TypeScript, PostgreSQL\n- Compensation: unpaid\nWhat you’ll do\n\n- Build and maintain REST APIs in Java / Spring Boot (bookings, campaigns, screens, accounts)\n- Develop user-facing pages and components in Next.js and TypeScript\n- Design and query the PostgreSQL database behind the platform\n- Work with Git and GitHub: branches, pull requests and code reviews\n- Help connect the platform to our screen network and its content management system\n- Test, debug and ship features that go to production\nMust-have skills\n\n- Object-oriented programming (OOP)\n- Java and Spring Boot\n- REST APIs: designing, building and consuming them\n- Git and GitHub\nNice-to-have skills\n\n- React and Next.js\n- TypeScript / JavaScript\n- SQL and PostgreSQL\n- Docker\nDon’t check every box? Apply anyway\nWho can apply\nDEC (cégep) university students are all welcome. We’re looking for students in Computer Science, Software Engineering or a related program who are curious, love building things and want real hands-on experience.\nEnglish and French are both welcome.\nWhat you’ll get\n\n- Production experience: your code ships to a live product with real users\n- Direct mentorship in a small team, with real ownership of features\n- A strong portfolio project on a modern, in-demand stack\n- A front-row seat to building a startup from the ground up\nHow to apply\n Fill out our application form: https://forms.gle/JFksjtz8qMDMHJ4g7\n\n- Include your resume and, if you have one, a link to your GitHub or a project you’re proud of. Shortlisted candidates will be contacted for an interview during the winter break.",
+  "posted": "2026-10-10",
+  "id": "54ce6d57e0",
+  "found_at": "2026-10-10T14:05-07:00",
+  "visa": "",
+  "fit": 6,
+  "fit_why": "Java/Spring Boot must-have absent; strong full-stack overlap otherwise"
+ },
+ {
+  "company": "ByteDance",
+  "role": "Agent Evaluation & Evolution Machine Learning Engineer Intern (AML-Ark-US) - 2027 Summer",
+  "location": "Seattle, Washington",
+  "link": "https://zapply.jobs/l/d/bytedance-7672391300141877557?s=gh-internships-2027",
+  "source": "Zapply 2027",
+  "jd": "",
+  "posted": "",
+  "visa": "sponsors ✅",
+  "id": "2b801d33bd",
+  "found_at": "2026-10-10T14:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ }
+]
