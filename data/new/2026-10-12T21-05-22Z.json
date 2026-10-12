@@ -1,0 +1,72 @@
+[
+ {
+  "company": "Todd",
+  "role": "Frontend Software Engineer Intern (Winter 26)",
+  "location": "San Francisco Bay Area",
+  "link": "https://www.linkedin.com/jobs/view/4477927241/",
+  "source": "LinkedIn",
+  "jd": "\nTodd is the first AI-powered agriculture company designed for sustainable farming, blending agronomy research with technology. We focus on balancing and remineralizing soil, improving surrounding environments and improving health through mineral rich vegetables and fruit. We explore any territory in pursuit of an idea, taking unconventional approaches and making big, bold decisions in unexpected ways. Our internships offer the chance to make a direct impact at Todd and contribute to Todd’s growth journey.\n\n\nWe will win for two reasons:\n\n\n\n- There is no other company doing this (yet)\n- You can tell the CEO he’s wrong\n\n\nAbout the role:\n\n\nInternships are available remotely in the US within a range of teams from marketing to technology, finance or talent to name a few. You’ll generally be with Todd for 12 weeks and be fully embedded within the team. Our teams are a mix of staff-level college students and tuff 19 yr olds.\n\n\nMentorship plays a big role for our interns too — you’ll be paired with one of our senior leaders, providing coaching and support one-to-one throughout the program.\n\n\nYou might be a good fit if you are:\n\n\n\n- One of the best [fill in the blank] in the world\n- Crazy cracked\n- You like what you do\n- Down to work for the coolest startup&nbsp;ever\n\n\nThis program does not provide monetary compensation (i.e. no pay) standard. Depending on skill, compensation is an option.\n\n\nThis position does not support work authorization/visa sponsorship.",
+  "posted": "2026-10-12",
+  "id": "bb682de803",
+  "found_at": "2026-10-12T14:05-07:00",
+  "visa": "no restriction found",
+  "fit": 3,
+  "fit_why": "Unpaid, vague role; frontend fit good but poorly defined"
+ },
+ {
+  "company": "Spin Hobby",
+  "role": "Software Engineer Intern",
+  "location": "Canada",
+  "link": "https://www.linkedin.com/jobs/view/4477915896/",
+  "source": "LinkedIn",
+  "jd": "\nAbout Spin Hobby\n\n\nSpin Hobby is a hobby shop in Western Canada for anime figures, collectibles and pre-orders. We are a small team that builds its own software instead of renting someone else’s: our storefront, our inventory systems and our pre-order tracking are written in-house, and we are building an automated product-photography pipeline that turns phone photos into clean, consistent, honest listing photos.\n\n\nWe treat retail as an engineering problem. Collectors need accurate listings, true stock levels and pre-orders they can follow from reservation to delivery. Getting that right takes careful data, testing and a lot of small, practical decisions, and that is the work.\n\n\nAbout the role\n\n\nWe are looking for a Software Engineer Intern to work directly with the people who run the shop and write the code. This is a small team, so you will not be a ticket-taker in a queue: you will own real pieces of a live system and see customers use what you build.\n\n\nWhat you will work on\n\n\nBack-end services and APIs that power the storefront, inventory and pre-order tracking.\nKeeping inventory and orders correct across the systems a retailer depends on, including the data that moves between them.\nAdmin and staff tools that save the shop hours: bulk edits, reporting, cleaner data entry.\nReliability and performance: writing tests, finding why something is slow or wrong, and fixing it properly.\nThe image-processing tools behind our product photography: how photos are cleaned up, checked and published.\nThe technology\nWe work mainly in TypeScript, with NestJS on the back end, React on the front end and PostgreSQL for data. You do not need to know all of it. You do need to be comfortable learning a real codebase, reading code that other people wrote, and asking good questions.\n\n\nWhat you will learn\n\n\nHow a production system behaves when real customers, real inventory and real deadlines are involved.\nWriting code that is tested, reviewed and safe to change.\nWorking from a business problem to a design, not just from a specification to code.\nHow a small team ships, deploys and looks after software.\nWhat we are looking for\n\n\nRequired\n\n\nStudying, or recently completed, a degree or diploma in Computer Science, Software Engineering or a related field, or equivalent practical experience.\nA solid grounding in the fundamentals: data structures, algorithms, and how programs and networks behave.\nHands-on experience building a back-end or web project: APIs, a database, and the glue between them. Coursework and personal projects count.\nComfort with at least one modern language; experience with TypeScript or JavaScript is a plus.\nYou debug methodically and you care whether the data is right.\nClear written and spoken communication; you can explain a technical problem to someone who is not an engineer.\n\n\nNice to have\n\n\nExperience with SQL, REST APIs, automated testing or Git workflows beyond the basics.\nA project you built and can walk us through, even a small one.\nAn interest in collectibles, anime, hobby retail or small-business operations.\n\n\nWhat we offer\n\n\nReal production work with mentoring from the people who built the system.\nA short feedback loop: your code ships, and you see the result in the shop.\n[Duration and start date, for example “4 months, starting [date]; flexible for co-op terms.”]\n\n\nPractical details\n\n\nLocation: remote across Canada\nHours: 60 hours.\nEligibility: Currently enrolled as full-time student at accredited post-secondary school in Canada.\nTo apply: send your resume and a link to a project, repository or short write-up of something you built or debugged. Tell us, in a few sentences, about a problem you solved and what you learned from it. We read every application.\n\n\nSpin Hobby is an equal opportunity employer. We welcome applicants of all backgrounds and will work with you on any accommodation you need during the hiring process.",
+  "posted": "2026-10-12",
+  "id": "9aeb0c21a0",
+  "found_at": "2026-10-12T14:05-07:00",
+  "visa": "",
+  "fit": 9,
+  "fit_why": "TypeScript/NestJS/React/PostgreSQL internship matches his full-stack experience well"
+ },
+ {
+  "company": "Symbotic",
+  "role": "Intern- Data Engineer",
+  "location": "USA Wilmington, MA -",
+  "link": "https://zapply.jobs/l/d/workday-symbotic-symbotic-R7967?s=gh-internships-2027",
+  "source": "Zapply 2027",
+  "jd": "",
+  "posted": "",
+  "visa": "sponsors ✅",
+  "id": "7804767d92",
+  "found_at": "2026-10-12T14:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ },
+ {
+  "company": "Nissan",
+  "role": "Data Science Intern - Summer 2027 - Smyrna, TN",
+  "location": "Smyrna, Tennessee - United...",
+  "link": "https://zapply.jobs/l/d/workday-alliance-nissanjobs-R00215331?s=gh-internships-2027",
+  "source": "Zapply 2027",
+  "jd": "",
+  "posted": "",
+  "visa": "check sponsorship",
+  "id": "763cfa92d7",
+  "found_at": "2026-10-12T14:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ },
+ {
+  "company": "Stantec",
+  "role": "Bridge Design Intern - Infrastructure (Summer 2027)",
+  "location": "Columbia, SC, United States",
+  "link": "https://zapply.jobs/l/d/oracle-hdhl-1008240?s=gh-internships-2027",
+  "source": "Zapply 2027",
+  "jd": "",
+  "posted": "",
+  "visa": "check sponsorship",
+  "id": "89a8878fd8",
+  "found_at": "2026-10-12T14:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ }
+]
