@@ -4,9 +4,9 @@
   "li_zero": "2026-10-11T23:54:05.385359+00:00"
  },
  "heartbeat_sent": "2026-10-10",
- "last_active_run": "2026-10-11T23:54:05.385359+00:00",
+ "last_active_run": "2026-10-12T00:05:28.486482+00:00",
  "last_linkedin_ok": "2026-10-11T23:54:05.385359+00:00",
- "last_run": "2026-10-11T23:54:05.385359+00:00",
+ "last_run": "2026-10-12T00:05:28.486482+00:00",
  "linkedin_zero_streak": 3,
  "missed_summary_reported": "2026-10-09",
  "repo_fail_streak": {
@@ -24,7 +24,7 @@
   "problems": [
    "⚠️ LinkedIn returning 0 jobs"
   ],
-  "runs": 13,
+  "runs": 14,
   "visa_dropped": 1
  },
  "yesterday": {
