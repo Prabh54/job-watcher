@@ -1,0 +1,16 @@
+[
+ {
+  "company": "yondu",
+  "role": "Software Engineering Intern (Spring/Summer)",
+  "location": "Gardena, CA",
+  "link": "https://www.linkedin.com/jobs/view/4478827353/",
+  "source": "LinkedIn",
+  "jd": "We’re looking for an intern to work hands-on with our robots. We deploy these robots autonomously in warehouses so there is a lot on the stack of things to get them working flawless. If you’re interested in autonomous navigation, motion planning, or control systems, please feel free to apply.\n\nWhat You’ll Do\n\n\n\n- Contribute directly to our production codebase in C++ and Python.\n- Contribute fresh ideas and implementations.\n- Tackle projects that will directly help our team implement a new or improved feature\n- Build and test software for real robots!\n\nQualifications/Requirements\n\n\n\n- Currently pursuing a degree or recent grad in Computer Science, Robotics, Electrical Engineering, or a related field.\n- Strong grasp of C++ and Python.\n- Linux experience, comfortable working in a command-line environment (you know your way around Ubuntu).\n- You have an interest in how software interacts with physical hardware (sensors, motors, or embedded boards like Raspberry Pi/Jetson).\n- Experience with Git contributions and Git best practices in a team environment\n\nNice To Haves\n\n\n\n- Experience with ROS2\n- Experience using Docker\n- Past projects in computer vision, autonomous navigation, motion planning, or other robotics-related domains\n\nWhat Makes You An Ideal Fit\n\n\n\n- Contribute ideas and work with autonomy when on projects\n- Tenacity and desire to tackle problems others may see as ‘too difficult’\n- Creative problem solving\n- Passion for engineering\n\nAbout The Interview\n\nThere’ll be 2-3 interviews discussing your skills and past projects. The final interview will consist of administrative and logistics details around hiring.",
+  "posted": "2026-10-15",
+  "id": "8fb731d293",
+  "found_at": "2026-10-14T19:05-07:00",
+  "visa": "no restriction found",
+  "fit": 4,
+  "fit_why": "Robotics/embedded hardware focus; no ROS2 or robotics experience"
+ }
+]
