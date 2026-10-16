@@ -6,7 +6,7 @@
  "heartbeat_sent": "2026-10-15",
  "last_active_run": "2026-10-16T05:05:30.983800+00:00",
  "last_linkedin_ok": "2026-10-16T05:05:30.983800+00:00",
- "last_run": "2026-10-16T06:05:26.509504+00:00",
+ "last_run": "2026-10-16T07:05:25.113111+00:00",
  "linkedin_zero_streak": 0,
  "missed_summary_reported": "2026-10-14",
  "repo_fail_streak": {
@@ -17,6 +17,15 @@
   "speedyapply USA": 0
  },
  "today": {
+  "date": "2026-10-16",
+  "linkedin_results": 0,
+  "linkedin_runs": 0,
+  "new_jobs": 0,
+  "problems": [],
+  "runs": 0,
+  "visa_dropped": 0
+ },
+ "yesterday": {
   "date": "2026-10-15",
   "linkedin_results": 485,
   "linkedin_runs": 16,
@@ -24,14 +33,5 @@
   "problems": [],
   "runs": 20,
   "visa_dropped": 18
- },
- "yesterday": {
-  "date": "2026-10-14",
-  "linkedin_results": 542,
-  "linkedin_runs": 16,
-  "new_jobs": 74,
-  "problems": [],
-  "runs": 19,
-  "visa_dropped": 19
  }
 }
