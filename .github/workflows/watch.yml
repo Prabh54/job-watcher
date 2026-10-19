@@ -2,7 +2,13 @@ name: job-watcher
 
 on:
   schedule:
-    - cron: "35 * * * *"     # backup timer at :35; the main trigger is cron-job.org at :05
+    # Backup timer only. The main trigger is cron-job.org at :05 every hour.
+    # This used to run hourly at :35, but GitHub delays scheduled runs by up to half an hour,
+    # so it kept landing on top of the :05 run. A scheduled run is pinned to whatever commit
+    # was HEAD when it was queued, so a delayed one checks out a stale tree and its push then
+    # conflicts with the run that got there first (this caused run #289 to fail). Every 6 hours
+    # still proves the workflow works if cron-job.org dies, without racing it 24 times a day.
+    - cron: "35 */6 * * *"
   workflow_dispatch:          # lets you run it by hand from the Actions tab
 
 permissions:
@@ -44,7 +50,31 @@ jobs:
           git add data
           if git diff --cached --quiet; then echo "nothing to save"; exit 0; fi
           git commit -q -m "watcher run $(date -u +%Y-%m-%dT%H:%MZ)"
-          for i in 1 2 3; do git pull -q --rebase && git push -q && exit 0; sleep 5; done
+
+          # If another run pushed first, rebase onto it and push again. data/health.json and
+          # data/seen.json are machine-written state and conflict on every overlap, so a plain
+          # `git pull --rebase` would stop mid-rebase; the old loop then retried twice against
+          # an unresolved rebase and failed with "Pulling is not possible because you have
+          # unmerged files". On conflict, take origin's copy of those two state files: this
+          # run's new data/new/*.json are additions, so they survive and still reach the Mac.
+          for i in 1 2 3; do
+            if git push -q 2>/dev/null; then
+              echo "pushed on attempt $i"; exit 0
+            fi
+            echo "push rejected on attempt $i; reconciling with origin/main"
+            git fetch -q origin main
+            if ! git rebase -q origin/main; then
+              git checkout -q origin/main -- data/health.json data/seen.json 2>/dev/null || true
+              git add data
+              if git diff --cached --quiet; then
+                GIT_EDITOR=true git rebase --skip || { git rebase --abort >/dev/null 2>&1 || true; exit 1; }
+              else
+                GIT_EDITOR=true git rebase --continue || { git rebase --abort >/dev/null 2>&1 || true; exit 1; }
+              fi
+            fi
+            sleep 3
+          done
+          echo "push still failing after 3 attempts"
           exit 1
 
       - name: Alert if the run itself broke

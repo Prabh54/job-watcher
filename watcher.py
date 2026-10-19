@@ -181,6 +181,11 @@ CANADA_LOC = (
 CANADA_CODES = r",\s*(ON|BC|QC|AB|MB|SK|NS|NB|NL|PE|YT|NT|NU)\b"
 
 KEY_MEMORY_DAYS = 30              # same company + role is treated as a duplicate for 30 days
+# Links are remembered far longer than company+role keys, because a link is an exact match and
+# re-pushing the same posting is pure noise. Without any cutoff seen.json grew forever (every run
+# rewrites and commits the whole file), so links age out after 6 months. A posting still open
+# after that re-notifies once, which is harmless.
+LINK_MEMORY_DAYS = 180
 NEW_FILE_KEEP_DAYS = 21           # data/new files older than this are deleted (sync has had them)
 MAX_INDIVIDUAL_PUSHES = 25        # more new jobs than this in one run → the rest in one summary push
 JD_MIN_CHARS = 200
@@ -716,10 +721,12 @@ about the WORK itself (the stack, the specialty, the level).
 Start the line with the digits. Never write anything before the number.
 
 IGNORE ENTIRELY, as if it were not in the posting: work authorization, visa sponsorship, the
-right to work, citizenship, security clearance, relocation, city, country, and whether it is
-remote, hybrid or onsite. A separate filter already handles all of that. These must never change
-the score and must never appear in REASON. Judge only how well his skills, stack and level match
-the actual work. If the only problem with a posting is one of the ignored items, it scores high.
+right to work, citizenship, security clearance, relocation, city, country, whether it is
+remote, hybrid or onsite, AND the start term, season or year (Winter/Summer/Fall, 2026, 2027,
+"Jan start", and so on). A separate filter handles authorization, and the candidate reads the
+term off the job title himself and decides on it. These must never change the score and must
+never appear in REASON. Judge only how well his skills, stack and level match the actual work.
+If the only problem with a posting is one of the ignored items, it scores high.
 
 Calibrate strictly. Most postings are average; do not cluster everything at 7-8.
  9-10  Core software/full-stack intern or co-op. His main stack. Nothing disqualifying.
@@ -731,7 +738,7 @@ Calibrate strictly. Most postings are average; do not cluster everything at 7-8.
 Mark down hard for: years of experience beyond a student, graduate degree required, a specialty
 he has no exposure to (embedded, firmware, hardware, game engines, security research, mobile
 native). Mark up for: web/full-stack, his named languages and frameworks, data/ML with Python,
-co-op or internship framing, and an explicit term that suits a Fall 2026 start."""
+and co-op or internship framing."""
 
 
 def score_one_fit(job):
@@ -854,9 +861,17 @@ def daily_summary(health):
 
 
 def missed_summary_check(health):
-    """First daytime run of the day: if last night's summary never went out, say so."""
+    """First daytime run of the day: if last night's summary never went out, say so.
+
+    heartbeat_sent is compared with >=, not ==. The `yesterday` block only rolls over after
+    midnight, but heartbeat_sent jumps to today's date the moment the 9pm summary sends. With
+    == the guard stopped matching for the 21:00-23:59 window right after a *successful* summary
+    and reported last night as missed every single night. >= means "already summarised on or
+    after that date", which is true both after the rollover and in that evening window.
+    """
     y = health.get("yesterday")
-    if not y or health.get("heartbeat_sent") == y["date"] or health.get("missed_summary_reported") == y["date"]:
+    if not y or (health.get("heartbeat_sent") or "") >= y["date"] \
+            or health.get("missed_summary_reported") == y["date"]:
         return
     text, _ = summary_text(y)
     push("⚠️ Last night's 9pm summary was missed",
@@ -896,11 +911,11 @@ def run():
     first_run = seen is None
     seen = seen or {"links": {}, "keys": {}}
     health = load_json(HEALTH_FILE, {})
+    health_before = json.dumps(health, sort_keys=True)   # to detect no-op night-pause runs
     new_day(health)
 
     # gap check (cron-job.org or GitHub sometimes skip runs). Counted from the last DAYTIME run,
     # so a run during the night pause can't hide hours that were missed in the evening.
-    health["last_run"] = NOW.isoformat()
     last_active = health.get("last_active_run") or health.get("last_run")
     if LOCAL.hour not in QUIET_HOURS and last_active:
         missed = missed_active_hours(datetime.fromisoformat(last_active), NOW)
@@ -914,9 +929,16 @@ def run():
     if LOCAL.hour in QUIET_HOURS and not first_run:
         log("Night pause (11pm-7am): nothing checked. The 7am run catches up.")
         daily_summary(health)
-        save_json(HEALTH_FILE, health)
+        # Only write when something actually changed (the 11pm summary, or the midnight day
+        # rollover). Otherwise a night-pause run rewrote health.json with nothing but a new
+        # timestamp, which committed to the repo every hour all night for no reason.
+        if json.dumps(health, sort_keys=True) != health_before:
+            save_json(HEALTH_FILE, health)
+        else:
+            log("  nothing changed; health.json left alone")
         ping_deadman()
         return
+    health["last_run"] = NOW.isoformat()
     health["last_active_run"] = NOW.isoformat()
     health["today"]["runs"] += 1
 
@@ -982,6 +1004,8 @@ def run():
     # --- Filter + dedupe
     cutoff = (NOW - timedelta(days=KEY_MEMORY_DAYS)).isoformat()
     seen["keys"] = {k: t for k, t in seen["keys"].items() if t >= cutoff}
+    link_cutoff = (NOW - timedelta(days=LINK_MEMORY_DAYS)).isoformat()[:10]
+    seen["links"] = {k: t for k, t in seen["links"].items() if t >= link_cutoff}
     relevant, new, batch = 0, [], set()
     for j in all_jobs:
         j["link"] = clean_link(j["link"])
