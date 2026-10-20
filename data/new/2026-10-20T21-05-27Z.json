@@ -1,0 +1,30 @@
+[
+ {
+  "company": "Tecsys Inc.",
+  "role": "Intern - DevOps (Winter 2027)",
+  "location": "Montreal, Quebec, Canada",
+  "link": "https://www.linkedin.com/jobs/view/4480730068/",
+  "source": "LinkedIn",
+  "jd": "We are looking for two (2) interns for a period of four (4) months (January 11th to April 30th, 2027) to carry out paid internships in the research and development department.\n\nYour mandate\n\nOur Research and Development department is currently in the midst of a migration to the cloud and is looking for a talented, motivated and creative software development intern to lend a hand. In this position, you will have the chance to participate in stimulating projects with tangible impacts in the healthcare sector: our logistics systems are used from the warehouse to the operating room. You will be part of a Scrum team that emphasizes continuous improvement of practices and teamwork. You will develop in an AWS ecosystem in which we optimize the potential of new cloud architectures. Finally, you will have the opportunity to learn from experienced architects and developers for whom having fun while working is not an option.\n\nYour Responsibilities\n\n\n\n- Contribute to improving the various deployment and integration tools using containers (Docker)\n- Participate in the design and maintenance of CI/CD pipelines\n- Employ test-driven development (TDD) techniques\n- Help Develop test automation strategies\n- Perform code reviews on the work of your peers\n- Participate in team scrum meetings: planning, analysis and retrospectives\n- Collaborate with the team to improve continuous integration techniques and processes\n\n\nRequirements\n\n\nWe are looking for someone who has the following qualities\n\n\n\n- Willingness to work in a DevOps team\n- Good knowledge of scripting language\n- Knowledge of Scrum/Agile methodology\n- Must be a logical, organized person with good interpersonal skills and must be able to work well under pressure\n- Must have excellent communication skills (written and spoken)\n- Studying computer science or computer engineering at university\n- Strong proficiency in both written and verbal English communication essential for effective correspondence with clients, suppliers, business partners and colleagues beyond the province of Quebec\n\n\nKnowledge of the following technologies would give you an edge\n\n\n\n- SQL, JDBC\n- Vscode\n- Java programming language\n- Build and deployment tools (Maven, Docker, Jenkins, Gitlab CI)\n- Amazon Web Services (ECS, EC2, RDS, etc)\n- Linux server platforms\n\n\nBenefits\n\n\nWhy You'll Love It Here\n\n\n\n- Remote-first flexibility and the trust to manage your own time\n- Employee events and community initiatives\n- Room to learn, stretch and take on new challenges\n- Collaboration with global teams\n\nWe foster an inclusive workplace where everyone feels valued, respected, and empowered to thrive.\n\nIf this role fits what you are looking for, apply today.\n\nApply today and discover what you could build, solve, and achieve with Tecsys!\n\n",
+  "posted": "2026-10-20",
+  "id": "f97712839d",
+  "found_at": "2026-10-20T14:05-07:00",
+  "visa": "",
+  "fit": 6,
+  "fit_why": "Docker/CI-CD/scripting fit, but DevOps focus and AWS are light for him"
+ },
+ {
+  "company": "Hitachi",
+  "role": "AI Intern, Supply Chain (Winter 2027, 12months)",
+  "location": "Toronto",
+  "link": "https://zapply.jobs/l/d/workday-hitachi-hitachi-R0145043?s=gh-canada-internships-2027",
+  "source": "Zapply Canada",
+  "jd": "",
+  "posted": "",
+  "visa": "",
+  "id": "206e698318",
+  "found_at": "2026-10-20T14:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ }
+]
