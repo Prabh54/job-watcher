@@ -1,0 +1,30 @@
+[
+ {
+  "company": "Waymo",
+  "role": "2027 Summer Intern, BS/MS, Software Engineering, Maneuvering Tech",
+  "location": "San Francisco, CA",
+  "link": "https://www.linkedin.com/jobs/view/4481153874/",
+  "source": "LinkedIn",
+  "jd": "Waymo is an autonomous driving technology company with the mission to be the world's most trusted driver. Since its start as the Google Self-Driving Car Project in 2009, Waymo has focused on building the Waymo Driver—The World's Most Experienced Driver™—to improve access to mobility while saving thousands of lives now lost to traffic crashes. The Waymo Driver powers Waymo’s fully autonomous ride-hail service and can also be applied to a range of vehicle platforms and product use cases. The Waymo Driver has provided over ten million rider-only trips, enabled by its experience autonomously driving over 100 million miles on public roads and tens of billions in simulation across 15+ U.S. states.\n\nSoftware Engineering builds the brains of Waymo's fully autonomous driving technology. Our software allows the Waymo Driver to perceive the world around it, make the right decision for every situation, and deliver people safely to their destinations. We think deeply and solve complex technical challenges in areas like robotics, perception, decision-making and deep learning, while collaborating with hardware and systems engineers. If you’re a software engineer or researcher who’s curious and passionate about Level 4 autonomous driving, we'd like to meet you.\n\nWaymo interns partner with leaders in the industry on projects that create impact to the company. We believe learning is a two-way street: applying your knowledge while providing you with opportunities to expand your skill-set. Interns are an important part of our culture and our recruiting pipeline. Join us at Waymo for a fun and rewarding internship!\n\nYou Will\n\n\n\n- Investigate driving behavior issues from logs and understand the root cause. Look for trends in behavior from large amounts of data. \n- Research, design, and implement new perception and driving behavior in depots with many vehicles. \n- Improve evaluation capabilities to better understand on-road performance.\n- Directly contribute to solving some of the most challenging driving situations in the long tail.\n\nYou Have\n\n\n\n- Currently enrolled in Bachelor's or Master's degree in Computer Science, ML, Robotics, or similar technical field of study.\n- General software engineering experience programming in C++ with robust and efficient code.\n- Ability to collaborate within and across teams.\n\nWe Prefer\n\n\n\n- AV or Robotics experience.\n- Experience in graph search, optimization, or path planning algorithms.\n- Coding proficiency in Python and SQL.\n\nNote: This will be a hybrid onsite internship position. We will accept resumes on a rolling basis until the role is filled. To be in consideration for multiple roles, you will need to apply to each one individually - please apply to the top 3 roles you are interested in.\n\nThe expected hourly rate for this full-time position is listed below. Interns are also eligible to participate in the Company’s generous benefits programs, subject to eligibility requirements.\n\nHourly Bachelors Pay\n\n$60—$60 USD\n\nThe expected hourly rate for this full-time position is listed below. Interns are also eligible to participate in the Company’s generous benefits programs, subject to eligibility requirements.\n\nHourly Masters Pay\n\n$70—$70 USD",
+  "posted": "2026-10-21",
+  "id": "caf2e57973",
+  "found_at": "2026-10-21T14:56-07:00",
+  "visa": "no restriction found",
+  "fit": 4,
+  "fit_why": "C++ AV/robotics core; his stack is web and Python, not C++ systems"
+ },
+ {
+  "company": "GlobalFoundries",
+  "role": "Software Engineering Intern, Cloud Platform (Summer 2027)",
+  "location": "USA - California - Santa Clara",
+  "link": "https://zapply.jobs/l/d/workday-globalfoundries-external-JR-2604034?s=gh-internships-2027",
+  "source": "Zapply 2027",
+  "jd": "",
+  "posted": "",
+  "visa": "sponsors ✅",
+  "id": "3f713e5809",
+  "found_at": "2026-10-21T14:56-07:00",
+  "fit": "",
+  "fit_why": ""
+ }
+]
