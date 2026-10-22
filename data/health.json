@@ -17,6 +17,15 @@
   "speedyapply USA": 0
  },
  "today": {
+  "date": "2026-10-22",
+  "linkedin_results": 0,
+  "linkedin_runs": 0,
+  "new_jobs": 0,
+  "problems": [],
+  "runs": 0,
+  "visa_dropped": 0
+ },
+ "yesterday": {
   "date": "2026-10-21",
   "linkedin_results": 528,
   "linkedin_runs": 16,
@@ -24,14 +33,5 @@
   "problems": [],
   "runs": 19,
   "visa_dropped": 9
- },
- "yesterday": {
-  "date": "2026-10-20",
-  "linkedin_results": 444,
-  "linkedin_runs": 16,
-  "new_jobs": 51,
-  "problems": [],
-  "runs": 19,
-  "visa_dropped": 17
  }
 }
