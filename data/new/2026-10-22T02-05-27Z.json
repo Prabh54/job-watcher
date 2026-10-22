@@ -1,0 +1,58 @@
+[
+ {
+  "company": "OpenArt AI",
+  "role": "Early Adopter & Product Builder Intern, Creative AI",
+  "location": "San Carlos, CA",
+  "link": "https://www.linkedin.com/jobs/view/4482409468/",
+  "source": "LinkedIn",
+  "jd": "🎨 About OpenArt\n\nOpenArt is an AI Storytelling and Visual Creation Platform used by millions worldwide. We’re building the next generation of creative tools powered by cutting-edge AI, enabling anyone to create videos, visuals, characters, and stories with unprecedented speed and imagination. We believe the future of creativity is AI-native, and we’re shaping that future.\n\n🚀 Why Join OpenArt\n\n\n\n- Real impact through leadership exposure — work directly with C-level leaders and the key decision-making committee, with opportunities for your ideas and judgment to shape a product used by more than 10M users worldwide. \n- A direct role in growth strategy — help leadership assess where to expand, which customers and partners to prioritize, and how to plan for scale. \n- Exposure to the creative AI ecosystem — research the market and gather insights from creative professionals, agencies, model providers, operators and investors. \n- Return offer opportunities — strong interns will be considered for full-time roles across product, engineering, research and GTM. \n\nAbout the Role\n\nYou'll help shape how OpenArt feels to use. This role is for builders with a technical background and strong product taste: people who follow AI progress closely and know how to turn new capabilities into features creative professionals love.\n\nEmployment Type\n\nYear-round internship with rolling start dates: full-time in summer, part-time (15–20 hrs/week) during the fall and spring semesters. Minimum 3-month commitment\n\nWhat You’ll Do\n\n\n\n- Track tech progress: follow new AI models, tools and tech trends at the cutting edge, often before public launch through early access, understand what each makes possible, and bring a regular take on what OpenArt should adopt or build. \n- Turn ideas into features: translate new capabilities into feature ideas, prototype them, and work with designers and engineers to ship them. \n- Test hands-on: run usability tests on new features and benchmark competing creative AI products, then form a clear judgment on what's great, what's broken and what to do next, and get the team aligned on it. \n- Partner across teams: work with Growth and Community on creator programs, challenges and showcases that highlight great work made on OpenArt. \n- Stay close to users: listening to users is part of doing this job well. Talk with them every day (interviews, Discord, social), understand what they need, and let that shape every feature you push for. \n\nWhat We’re Looking ForCore Requirements\n\n\n\n- Studying or trained in CS, engineering, HCI, design or a related technical field. We welcome undergraduate and graduate students at any stage, as well as candidates on a gap year or in other situations. \n- Proactively using AI creative tools (OpenArt, Midjourney, Runway, Krea, Higgsfield, ComfyUI or similar) with strong opinions on what makes them great or frustrating. \n- A builder with product taste: you have engineering skills (e.g., Python, JavaScript/TypeScript, working with APIs), you've built or shipped something (an app, side project, tool or design), and you can explain the choices behind it. \n\nNice to Have\n\n\n\n- Close involvement in developer and creative professional communities, which gives you early exposure to new trends and high-value information. \n- Good taste in what you read and strong learning habits, so you catch important trends early. \n\nWork Setup\n\n\n\n- Bay Area required (hybrid allowed)\n- Visa sponsorship available\n\nCompensation &amp; Benefits\n\nThe expected base salary range for this role is $40 to $50 per hour, plus the same in-office benefits as our full-time employees.\n\n",
+  "posted": "2026-10-22",
+  "id": "c3b52bca8e",
+  "found_at": "2026-10-21T19:05-07:00",
+  "visa": "no restriction found",
+  "fit": 7,
+  "fit_why": "Product-builder AI creative role; strong fit with his full-stack and AI skills"
+ },
+ {
+  "company": "Keysight Technologies",
+  "role": "Software Engineering Intern",
+  "location": "Calabasas, CA",
+  "link": "https://www.linkedin.com/jobs/view/4479454909/",
+  "source": "LinkedIn",
+  "jd": "Overview\n\nKeysight is at the forefront of technology innovation, delivering breakthroughs and trusted insights in electronic design, simulation, prototyping, test, manufacturing, and optimization. Our ~16,800 employees create world-class solutions in communications, 5G, automotive, energy, quantum, aerospace, defense, and semiconductor markets for customers in over 100 countries. Learn more about what we do.\n\nOur award-winning culture embraces a bold vision of where technology can take us and a passion for tackling challenging problems with industry-first solutions. We believe that when people feel a sense of belonging, they can be more creative, innovative, and thrive at all points in their careers.\n\nResponsibilities\n\nJoin Keysight Technologies’ Communications Solutions Group (CSG) as a Software Engineering Intern and contribute to the development of the Keysight Fabric Emulator — a software-defined platform that emulates complex, multi-switch Ethernet-based data center topologies on a single hardware appliance. In this project, you will be exposed to the following:\n\n\n\n- The latest development in networking technologies and high-performance networking stacks\n- Data Center fabric, programmable switches, smartNics/DPUs\n- A wide variety of industry standard tools and application development cycle\n- Work in a high performant development team environment and able to deliver solutions to complex problems in time and with high quality solutions\n\nResponsibilities\n\n\n\n- In this role, the candidate will:\n- Learn/expand their knowledge about data centers networking\n- Work on a project on multiple levels from ASIC programming to public API server\n- Design low level features programming the ASIC, providing the right ASIC independent abstraction API to higher levels\n\nQualifications\n\nIdeal candidates for this position would possess the following attributes:\n\n\n\n- Bachelor's, Master or PhD degree in Data Center space (Networking, Security) or Computer Engineering\n- Candidate must have hands on experience with programming switch ASICs \n- Programming experience in C, C++, Python\n- Experience with Kubernetes, building services and debugging in Kubernetes environment\n- Familiarity with CI/CD and Git or other version control systems\n- Familiarity with gRPC, protobuf (nice to have)\n- Strong troubleshooting and problem-solving skills\n- Strong communication skills.\n\nThe level of role will be based on applicable experience, education and skills; most offers will be between the minimum and midpoint of the salary range listed below.\n\nMIN $38.31 to MAX $41.25\n\nCareers Privacy Statement***Keysight is an Equal Opportunity Employer.***",
+  "posted": "2026-10-22",
+  "id": "7664861634",
+  "found_at": "2026-10-21T19:05-07:00",
+  "visa": "no restriction found",
+  "fit": 2,
+  "fit_why": "Requires switch ASIC programming and data center networking experience he lacks"
+ },
+ {
+  "company": "HPE",
+  "role": "Software Development Intern, AI-Assisted Development (Summer 2027) / Stagiaire en...",
+  "location": "St. Laurent",
+  "link": "https://zapply.jobs/l/d/workday-hpe-acjobsite-1214294?s=gh-canada-internships-2027",
+  "source": "Zapply Canada",
+  "jd": "",
+  "posted": "",
+  "visa": "check sponsorship",
+  "id": "f9d1e524c5",
+  "found_at": "2026-10-21T19:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ },
+ {
+  "company": "HPE (University)",
+  "role": "Software Development Intern, AI-Assisted Development (Summer 2027) / Stagiaire en...",
+  "location": "St. Laurent",
+  "link": "https://zapply.jobs/l/d/workday-hpe-jobsathpe-1214294?s=gh-canada-internships-2027",
+  "source": "Zapply Canada",
+  "jd": "",
+  "posted": "",
+  "visa": "check sponsorship",
+  "id": "7eb4cff6e7",
+  "found_at": "2026-10-21T19:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ }
+]
