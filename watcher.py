@@ -52,7 +52,16 @@ import requests
 TZ = ZoneInfo("America/Vancouver")
 
 # --- LinkedIn ------------------------------------------------------------------------
-LINKEDIN_KEYWORDS = ["software intern", "software co-op"]
+# Title recall matters more than keyword economy here: 37% of the Canadian intern/co-op roles
+# the repos surface have no "software" in the title at all ("Developer Intern, Front-End
+# Platform", "Application Developer Co-op", "Data Science Co-op"). Each extra keyword is another
+# search in every location, so LINKEDIN_MAX_ITEMS_PER_RUN below is the real cost guard.
+LINKEDIN_KEYWORDS = [
+    "software intern", "software co-op",
+    "developer intern", "developer co-op",
+    "backend intern", "full stack intern",
+    "data intern",
+]
 LINKEDIN_LOCATIONS = [            # (name LinkedIn understands, LinkedIn geoId)
     ("Canada", "101174742"),
     ("California, United States", "102095887"),
@@ -69,6 +78,10 @@ LINKEDIN_BUFFER_MIN = 30
 LINKEDIN_MIN_INTERVAL_MIN = 45
 LINKEDIN_LIMIT_PER_SEARCH = 30    # max jobs per search for a normal hourly run (~90 min window).
                                   # Longer windows (the 7am catch-up) scale this up, to at most 150.
+# Hard ceiling on billed Apify results per run, across every keyword and location. With 7 keywords
+# x 3 locations the uncapped 7am catch-up would ask for thousands; this keeps the worst run
+# bounded no matter how the keyword list grows. Watch the "results billed" line in the 9pm summary.
+LINKEDIN_MAX_ITEMS_PER_RUN = 450
 
 # --- Night pause ---------------------------------------------------------------------
 # Nothing runs from 11pm to 6:59am Vancouver time: no LinkedIn calls (saves Apify credit) and no
@@ -99,16 +112,32 @@ ROLE_WORDS = (
     r"machine learning|ml|ai|artificial intelligence|computer science|"
     r"data engineer\w*|data science|data scientist|data platform|data infrastructure)\b"
 )
+# Hard disqualifiers: these kill a title wherever they appear. Wrong level, wrong degree,
+# wrong discipline, or a role I actively don't want (QA/test, IT support, PM).
 EXCLUDE_WORDS = (
     r"\b(senior|sr\.?|staff|principal|lead|manager|director|phd|ph\.d|doctoral|postdoc|mba|"
     r"master'?s|masters|graduate student|high school|new grad|new graduate|"
-    r"hardware|firmware|embedded|asic|fpga|rtl|verification|electrical|mechanical|civil|"
+    r"hardware|firmware|embedded|asic|fpga|rtl|electrical|mechanical|civil|"
     r"chemical|manufacturing|supplier|sales|marketing|recruit\w*|human resources|accounting|"
     r"legal|nurs\w*|clinical|french|bilingual|"
-    r"analyst|business intelligence|qa|quality assurance|test|tester|testing|sdet|"
-    r"it support|help ?desk|technical support|desktop support|support engineer|information technology|"
-    r"architect|consultant|consulting|solutions engineer|product manag\w*|program manag\w*|"
-    r"project manag\w*)\b"
+    r"qa|quality assurance|test|tester|testing|sdet|"
+    r"it support|help ?desk|technical support|desktop support|"
+    r"product manag\w*|program manag\w*|project manag\w*)\b"
+)
+# Soft disqualifiers: these describe the WORK, so they only kill a title that has no real
+# engineering anchor in it. They used to be hard, and they were throwing away genuine SWE roles
+# whose team name happened to contain one, e.g.
+#   Entrust "Software Development Intern - Citizen Remote Identity Verification"
+#   CAE     "Software Engineering Intern - AI, Automation and Business Intelligence"
+# A bare "Technical Analyst Intern" still gets dropped, because there is no anchor.
+SOFT_EXCLUDE_WORDS = (
+    r"\b(analyst|business intelligence|verification|information technology|"
+    r"architect|consultant|consulting|solutions engineer|support engineer)\b"
+)
+SWE_ANCHOR = (
+    r"\b(software (engineer\w*|developer|development)|swe|sde|"
+    r"full[- ]?stack (engineer\w*|developer)|back[- ]?end (engineer\w*|developer)|"
+    r"front[- ]?end (engineer\w*|developer)|web developer|application developer)\b"
 )
 # "research" drops a title unless it is clearly an engineering role ("Software Engineer Intern, Research Platform")
 RESEARCH_OK = r"\b(software engineer\w*|software developer|developer|swe|sde)\b"
@@ -179,6 +208,20 @@ CANADA_LOC = (
     r"oakville|gatineau|regina|saskatoon|surrey, bc|guelph|london, on|hamilton, on)\b"
 )
 CANADA_CODES = r",\s*(ON|BC|QC|AB|MB|SK|NS|NB|NL|PE|YT|NT|NU)\b"
+# Spelled-out Canadian places, mapped to a province, for the duplicate key below (many repo rows
+# write "Toronto" or "Vancouver" with no province code at all).
+CANADA_CITY_PROV = [
+    (r"\b(british columbia|vancouver|burnaby|richmond, bc|surrey, bc|victoria, bc|kelowna|kamloops)\b", "BC"),
+    (r"\b(ontario|toronto|ottawa|waterloo|kitchener|mississauga|markham|brampton|oakville|"
+     r"richmond hill|guelph|hamilton, on|london, on|windsor, on|kingston, on)\b", "ON"),
+    (r"\b(qu[eé]bec|montr[eé]al|gatineau|laval|sherbrooke)\b", "QC"),
+    (r"\b(alberta|calgary|edmonton)\b", "AB"),
+    (r"\b(manitoba|winnipeg)\b", "MB"),
+    (r"\b(saskatchewan|saskatoon|regina)\b", "SK"),
+    (r"\b(nova scotia|halifax|dartmouth)\b", "NS"),
+    (r"\b(new brunswick|fredericton|moncton|saint john)\b", "NB"),
+    (r"\b(newfoundland|st\. john'?s)\b", "NL"),
+]
 
 KEY_MEMORY_DAYS = 30              # same company + role is treated as a duplicate for 30 days
 # Links are remembered far longer than company+role keys, because a link is an exact match and
@@ -188,6 +231,11 @@ KEY_MEMORY_DAYS = 30              # same company + role is treated as a duplicat
 LINK_MEMORY_DAYS = 180
 NEW_FILE_KEEP_DAYS = 21           # data/new files older than this are deleted (sync has had them)
 MAX_INDIVIDUAL_PUSHES = 25        # more new jobs than this in one run → the rest in one summary push
+# Phone noise control. Every job still lands in data/new and in job_queue.xlsx; this only decides
+# what is worth interrupting me for. Canadian roles always get their own push. A US role has to
+# earn one with a fit score of at least this, because I need sponsorship there and a weak US
+# posting is not worth a notification. Everything else goes into one digest push per run.
+PUSH_FIT_FLOOR_US = 7
 JD_MIN_CHARS = 200
 
 # --- Fit score (Haiku) ---------------------------------------------------------------
@@ -248,7 +296,41 @@ def norm(text):
     return " ".join(text.split())
 
 
-def job_key(company, role):
+def loc_bucket(location):
+    """The location half of the duplicate key.
+
+    Canada is split by province: a Toronto posting and a Vancouver posting of the same role at
+    the same company are two separate jobs and I want both. The whole US collapses into one
+    bucket, because the same US req listed in four cities is noise, and US roles are the lower
+    priority anyway. Province-level (not city-level) keeps the repos' many spellings of one job
+    together: "Oakville, ON / Waterloo, ON" and "Toronto, ON, Canada; Oakville, ON, Canada" both
+    land on ca-on instead of becoming two pushes.
+    """
+    loc = location or ""
+    low = loc.lower()
+    provs = sorted(set(re.findall(CANADA_CODES, loc)))
+    if provs:
+        return "ca-" + "-".join(p.lower() for p in provs)
+    # "New Brunswick - NJ - US" is not Canada; an explicit US marker with no Canada marker wins
+    # before the spelled-out city/province names are consulted.
+    if re.search(r"\b(us|usa|u\.s\.a?\.?|united states)\b", low) and not re.search(r"\bcanada\b", low):
+        return "us"
+    found = sorted({code for pat, code in CANADA_CITY_PROV if re.search(pat, low)})
+    if found:
+        return "ca-" + "-".join(c.lower() for c in found)
+    if in_canada(loc):
+        return "ca"
+    if re.search(NA_WORDS, low) or re.search(NA_CODES, loc):
+        return "us"
+    return "other"
+
+
+def job_key(company, role, location=""):
+    return f"{norm(company)}|{norm(role)}|{loc_bucket(location)}"
+
+
+def legacy_job_key(company, role):
+    """The pre-location key format, still sitting in seen.json. See the note in run()."""
     return f"{norm(company)}|{norm(role)}"
 
 
@@ -311,6 +393,8 @@ def clean_link(url):
 def is_relevant(role, location):
     r = role.lower()
     if not re.search(INTERN_WORDS, r) or not re.search(ROLE_WORDS, r) or re.search(EXCLUDE_WORDS, r):
+        return False
+    if re.search(SOFT_EXCLUDE_WORDS, r) and not re.search(SWE_ANCHOR, r):
         return False
     if re.search(r"\bresearch", r) and not re.search(RESEARCH_OK, r):
         return False
@@ -417,7 +501,8 @@ def linkedin_limits(lookback_sec):
     """Per-search limit and per-run billed cap, scaled to the length of the look-back window."""
     per_search = min(150, max(LINKEDIN_LIMIT_PER_SEARCH,
                               math.ceil(LINKEDIN_LIMIT_PER_SEARCH * lookback_sec / 5400)))
-    return per_search, per_search * len(LINKEDIN_KEYWORDS) * len(LINKEDIN_LOCATIONS)
+    total = per_search * len(LINKEDIN_KEYWORDS) * len(LINKEDIN_LOCATIONS)
+    return per_search, min(LINKEDIN_MAX_ITEMS_PER_RUN, total)
 
 
 def from_apify(lookback_sec):
@@ -1014,8 +1099,15 @@ def run():
         if j.get("visa") == "no" and not in_canada(j["location"]):
             continue  # repo says no sponsorship / US citizens only
         relevant += 1
-        k = job_key(j["company"], j["role"])
+        k = job_key(j["company"], j["role"], j["location"])
         if j["link"] in seen["links"] or k in seen["keys"] or k in batch or j["link"] in batch:
+            continue
+        # seen.json still holds keys written in the old company|role format, with no location in
+        # them. Honour those for non-Canadian roles, so changing the key format doesn't replay the
+        # whole US backlog in one run. Never honour them for a Canadian role: those are exactly
+        # the postings the old key was swallowing (Stripe Toronto losing to Stripe SF, Microsoft
+        # Vancouver losing to Redmond). The legacy keys age out on their own in 30 days.
+        if not in_canada(j["location"]) and legacy_job_key(j["company"], j["role"]) in seen["keys"]:
             continue
         batch.update((k, j["link"]))
         new.append(j)
@@ -1023,7 +1115,7 @@ def run():
 
     for j in new:
         seen["links"][j["link"]] = NOW.isoformat()[:10]
-        seen["keys"][job_key(j["company"], j["role"])] = NOW.isoformat()
+        seen["keys"][job_key(j["company"], j["role"], j["location"])] = NOW.isoformat()
 
     if first_run:
         with BACKLOG_FILE.open("w", newline="", encoding="utf-8") as f:
@@ -1059,18 +1151,33 @@ def run():
         out.write_text(json.dumps(new, indent=1, ensure_ascii=False))
         health["today"]["new_jobs"] += len(new)
 
-        # LinkedIn first (freshest), then repos
-        new.sort(key=lambda j: j["source"] != "LinkedIn")
-        for j in new[:MAX_INDIVIDUAL_PUSHES]:
+        # Canada first, then LinkedIn (freshest source), then best fit.
+        new.sort(key=lambda j: (not in_canada(j["location"]), j["source"] != "LinkedIn",
+                                -(j.get("fit") or 0)))
+        def worth_a_push(j):
+            return in_canada(j["location"]) or (j.get("fit") or 0) >= PUSH_FIT_FLOOR_US
+        loud = [j for j in new if worth_a_push(j)]
+        quiet = [j for j in new if not worth_a_push(j)]
+        for j in loud[:MAX_INDIVIDUAL_PUSHES]:
             jd_note = "JD ✓" if len(j["jd"]) >= JD_MIN_CHARS else "needs JD"
             fit_note = f"fit {j['fit']}/10 · " if j.get("fit") else ""
             visa_note = f" · visa: {j['visa']}" if j["visa"] else ""
-            push(f"{j['company']}", f"{j['role']}\n{fit_note}{j['location'] or '—'} · {j['source']} · {jd_note}{visa_note}",
-                 click=j["link"], priority=4 if j["source"] == "LinkedIn" else 3, tags=["briefcase"])
-        if len(new) > MAX_INDIVIDUAL_PUSHES:
-            rest = new[MAX_INDIVIDUAL_PUSHES:]
+            flag = "🇨🇦 " if in_canada(j["location"]) else ""
+            push(f"{flag}{j['company']}", f"{j['role']}\n{fit_note}{j['location'] or '—'} · {j['source']} · {jd_note}{visa_note}",
+                 click=j["link"],
+                 priority=5 if in_canada(j["location"]) else (4 if j["source"] == "LinkedIn" else 3),
+                 tags=["briefcase"])
+        if len(loud) > MAX_INDIVIDUAL_PUSHES:
+            rest = loud[MAX_INDIVIDUAL_PUSHES:]
             push(f"+{len(rest)} more new jobs",
                  "\n".join(f"• {j['company']} — {j['role']}" for j in rest[:40]), tags=["briefcase"])
+        if quiet:
+            push(f"+{len(quiet)} lower-priority US roles",
+                 "In the sheet, not worth a push each (US, fit under "
+                 f"{PUSH_FIT_FLOOR_US} or unscored):\n"
+                 + "\n".join(f"• {j['company']} — {j['role']}"
+                              + (f" ({j['fit']}/10)" if j.get("fit") else "") for j in quiet[:40]),
+                 priority=2, tags=["briefcase"])
 
     # prune old new-job files
     for f in NEW_DIR.glob("*.json"):
