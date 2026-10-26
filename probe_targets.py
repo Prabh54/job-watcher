@@ -15,12 +15,24 @@ import targets
 
 WD = lambda tenant, n, site: ["workday", f"{tenant}.wd{n}.myworkdayjobs.com", tenant, site]
 
+ZAPPLY_SAMPLES = [
+    "https://zapply.jobs/l/d/workday-moog-moog-external-career-site-R-26-19819",
+    "https://zapply.jobs/l/d/workday-symbotic-symbotic-R8202",
+    "https://zapply.jobs/l/d/phenom-cisco-2025924",
+    "https://zapply.jobs/l/d/oracle-vertiv-20279203",
+    "https://zapply.jobs/l/d/ashby-replit-7c3c9d29-cec2-4367-8564-eadaed165aea",
+    "https://zapply.jobs/l/d/qualcomm-3098303",
+    "https://zapply.jobs/l/d/microsoft-200049019",
+]
+
+ONLY = {"RBC"}   # set to None to probe every company
+
 CANDIDATES = {
     "Amazon": [["amazon"]],
     "Databricks": [["greenhouse", "databricks"]],
     "Atlassian": [["atlassian"], ["lever", "atlassian"], WD("atlassian", 3, "Atlassian")],
     "Microsoft": [["microsoft"]],
-    "RBC": [WD("rbc", 3, "RBCGLOBAL1"), WD("rbc", 3, "RBC_Careers"), ["rmk", "jobs.rbc.com"]],
+    "RBC": [WD("rbc", 3, "RBCGLOBAL1"), WD("rbc", 3, "ExternalPrivatePostingStudents")],
     "SAP": [["rmk", "jobs.sap.com"]],
     "TELUS": [["rmk", "careers.telus.com"], WD("telus", 3, "TELUS_Careers"), WD("telus", 3, "External")],
     "Google": [["google"]],
@@ -85,12 +97,29 @@ def probe(company, feed):
     return rec
 
 
+def zapply_diag(url):
+    """Why don't Zapply redirect links resolve? Record exactly what the server sends back."""
+    rec = {"url": url}
+    try:
+        r = targets.HTTP.get(url, allow_redirects=False, timeout=20)
+        rec.update(status=r.status_code, location=r.headers.get("Location"),
+                   ctype=r.headers.get("Content-Type"), server=r.headers.get("Server"))
+        rec["head"] = r.text[:1500]
+        links = re.findall(r'https?://[^"\'\s<>]+', r.text)
+        rec["links"] = [l for l in links if "zapply" not in l and not re.search(r"\.(js|css|png|svg|ico|woff2?)(\?|$)", l)][:15]
+        r2 = targets.HTTP.get(url, allow_redirects=True, timeout=20)
+        rec.update(final_status=r2.status_code, final_url=r2.url)
+    except Exception as e:
+        rec["error"] = f"{e.__class__.__name__}: {e}"
+    return rec
+
+
 def main():
     missing = [t["name"] for t in targets.TARGETS if t["name"] not in CANDIDATES]
-    work = [(c, f) for c, feeds in CANDIDATES.items() for f in feeds]
+    work = [(c, f) for c, feeds in CANDIDATES.items() for f in feeds if not ONLY or c in ONLY]
     with ThreadPoolExecutor(max_workers=10) as ex:
         results = list(ex.map(lambda cf: probe(*cf), work))
-    out = {"missing_from_candidates": missing, "results": results}
+    out = {"missing_from_candidates": missing, "results": results, "zapply": [zapply_diag(u) for u in ZAPPLY_SAMPLES]}
     with open("probe_result.json", "w") as f:
         json.dump(out, f, indent=1)
     for r in results:
