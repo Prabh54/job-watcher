@@ -10,6 +10,14 @@ Sources
               Searches: "software intern" + "software co-op" in Canada, California, Texas.
   Repos     — speedyapply USA internships, Zapply Internships-2027, Simplify off-season,
               Zapply Canada-Internships-2027, negarprh Canadian-Tech-Internships-2027.
+  Career pages — the target companies in targets.py (core_companies.csv), polled straight from
+              their own careers feeds (Greenhouse, Lever, Ashby, Workday, SuccessFactors, Amazon,
+              Microsoft, Google, ...). Free public endpoints, no Apify.
+
+Target companies: a job at any company in targets.py, from ANY source, gets a ⭐ in its push
+title (after the 🇨🇦 for Canadian roles) and is always pushed, even a low-fit US role. A
+company's first careers-page sweep sends one summary push for its open Canadian roles and saves
+its US roles to data/target_backlog.csv, so adding a company never floods the phone.
 
 Each run
   1. Pull every source.
@@ -44,6 +52,8 @@ from urllib.parse import quote, urlparse, parse_qs, urlencode, urlunparse
 from zoneinfo import ZoneInfo
 
 import requests
+
+import targets as T   # target-company list + careers-feed readers (targets.py)
 
 # =====================================================================================
 # CONFIG
@@ -107,7 +117,7 @@ INTERN_WORDS = r"\b(intern|interns|internship|internships|co-?op|coop|student|pl
 # engineering, data engineering and data science. Analyst, QA/test, IT support, research-only
 # and architect/consultant titles are dropped.
 ROLE_WORDS = (
-    r"\b(software|developer|swe|sde|programmer|back[- ]?end|front[- ]?end|full[- ]?stack|web|"
+    r"\b(software|developer|swe|sde|sysde|systems development engineer\w*|programmer|back[- ]?end|front[- ]?end|full[- ]?stack|web|"
     r"mobile|ios|android|cloud|devops|platform|site reliability|sre|infrastructure|"
     r"machine learning|ml|ai|artificial intelligence|computer science|"
     r"data engineer\w*|data science|data scientist|data platform|data infrastructure)\b"
@@ -255,6 +265,10 @@ EXCEL_CELL_LIMIT = 32000
 # Alerts
 LINKEDIN_ZERO_STREAK_ALERT = 3    # daytime runs in a row with 0 LinkedIn results
 REPO_FAIL_STREAK_ALERT = 3
+TARGET_FAIL_STREAK_ALERT = 6      # one company's careers feed failing this many daytime runs in a row
+TARGET_WORKERS = 8                # careers feeds polled in parallel
+TARGET_STAR = "⭐"                # shown in the push title for jobs at a target company
+TARGET_BACKLOG_FILE_NAME = "target_backlog.csv"   # US roles found on a company's first sweep
 DAYTIME_HOURS = range(7, 23)
 HEARTBEAT_HOUR = 21               # daily summary at/after 9pm Vancouver
 GAP_ALERT_HOURS = 3               # (kept for reference; the gap check now counts missed runs)
@@ -268,6 +282,7 @@ NEW_DIR = DATA / "new"
 SEEN_FILE = DATA / "seen.json"
 HEALTH_FILE = DATA / "health.json"
 BACKLOG_FILE = DATA / "backlog.csv"
+TARGET_BACKLOG_FILE = DATA / TARGET_BACKLOG_FILE_NAME
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "").strip()
 CANDIDATE_PROFILE = os.environ.get("CANDIDATE_PROFILE", "").strip()
@@ -334,6 +349,17 @@ def legacy_job_key(company, role):
     return f"{norm(company)}|{norm(role)}"
 
 
+def job_keys(company, role, location=""):
+    """Every duplicate key for a job. For a target company this includes the key under its
+    canonical name too, so a repo's "TD" row and the TD careers page's "TD Bank" row (same role,
+    same province) count as one job."""
+    keys = {job_key(company, role, location)}
+    t = T.is_target(company)
+    if t:
+        keys.add(job_key(t["name"], role, location))
+    return keys
+
+
 def job_id(link):
     return hashlib.sha1(link.encode()).hexdigest()[:10]
 
@@ -391,6 +417,8 @@ def clean_link(url):
     path = p.path
     if "ashbyhq.com" in p.netloc:
         path = re.sub(r"/application/?$", "", path)  # same posting as the bare job page
+    if "myworkdayjobs.com" in p.netloc:
+        path = re.sub(r"^/[a-z]{2}-[A-Z]{2}/", "/", path)  # /en-US/Site/job/... == /Site/job/...
     q = [(k, v) for k, vs in parse_qs(p.query).items() for v in vs
          if not re.match(r"(utm_|ref$|source$|src$|s$|gh_src$|lever-source|embed$)", k, re.I)]
     return urlunparse(p._replace(path=path, query=urlencode(q), fragment=""))
@@ -417,6 +445,23 @@ def is_relevant(role, location):
 def in_canada(location):
     loc = location or ""
     return bool(re.search(CANADA_LOC, loc.lower()) or re.search(CANADA_CODES, loc))
+
+
+def careers_location_ok(location):
+    """Stricter location check for jobs read straight off a company's careers site.
+
+    Repo and LinkedIn rows are already US/Canada lists, so is_relevant() keeps any location it
+    can't place. A careers site lists the whole world (Gurugram, Krakow, Penang), so here the
+    location must name Canada or the US, or be too vague to judge ("3 Locations", "Remote").
+    """
+    loc = location or ""
+    low = loc.lower()
+    if in_canada(loc) or re.search(NA_WORDS, low) or re.search(NA_CODES, loc) or re.search(r"\bCAN\b|\bUSA?\b", loc):
+        return True
+    if re.search(NON_NA, low):
+        return False
+    vague = re.sub(r"\b(\d+|multiple|several|various|locations?|remote|hybrid|anywhere|flexible)\b|[^a-z]", "", low)
+    return vague == ""
 
 
 def visa_label(job):
@@ -678,6 +723,49 @@ def from_repo(name, kind, url):
     return jobs
 
 
+def from_targets(health):
+    """Poll every target company's own careers feed (targets.py). Free public endpoints.
+
+    Returns (jobs, ok_names). One company failing never stops the others; a company whose feed
+    fails TARGET_FAIL_STREAK_ALERT daytime runs in a row gets one alert a day (it is still tagged
+    when it shows up on LinkedIn or a repo).
+    """
+    from concurrent.futures import ThreadPoolExecutor
+
+    polled = [t for t in T.TARGETS if t["feeds"]]
+
+    def one(t):
+        try:
+            return t, T.fetch_target(t), None
+        except Exception as e:
+            return t, [], f"{e.__class__.__name__}: {str(e)[:200]}"
+
+    with ThreadPoolExecutor(max_workers=TARGET_WORKERS) as pool:
+        results = list(pool.map(one, polled))
+
+    streaks = health.setdefault("target_fail_streak", {})
+    jobs, ok_names, failed = [], [], []
+    for t, got, err in results:
+        if err:
+            failed.append(t["name"])
+            streaks[t["name"]] = streaks.get(t["name"], 0) + 1
+            if streaks[t["name"]] >= TARGET_FAIL_STREAK_ALERT:
+                alert(health, f"target_{t['name']}", f"⚠️ {t['name']} careers feed failing",
+                      f"{streaks[t['name']]} runs in a row. Still caught via LinkedIn and the repos. "
+                      f"Error: {err}", 24)
+            continue
+        streaks[t["name"]] = 0
+        ok_names.append(t["name"])
+        for j in got:
+            if not careers_location_ok(j.get("location", "")):
+                continue
+            j.update(source="Career page", posted="", visa="")
+            jobs.append(j)
+    log(f"Career pages: {len(ok_names)}/{len(polled)} companies OK, {len(jobs)} US/Canada postings"
+        + (f" (failed: {', '.join(failed)})" if failed else ""))
+    return jobs, ok_names
+
+
 # ----------------------------------------------------------------------------- links + JDs
 
 def resolve_link(url):
@@ -936,6 +1024,7 @@ def summary_text(t):
     problems = sorted(set(t.get("problems", [])))
     text = (f"{t.get('runs', 0)} runs · {t.get('new_jobs', 0)} new jobs"
             f" ({t.get('visa_dropped', 0)} US roles skipped for citizenship/no sponsorship)\n"
+            f"{TARGET_STAR} Target companies: {t.get('target_new', 0)} new\n"
             f"LinkedIn: {t.get('linkedin_runs', 0)} checks, {t.get('linkedin_results', 0)} results billed\n"
             + ("Problems: " + "; ".join(problems) if problems else "All sources OK"))
     return text, problems
@@ -1092,6 +1181,14 @@ def run():
                 alert(health, f"repo_{name}", f"⚠️ {name} failing",
                       f"{streaks[name]} runs in a row. Error: {str(e)[:250]}", 12)
 
+    # --- Target companies' own careers pages
+    # A company's first successful sweep would replay every role it currently has open, so it is
+    # handled separately below (Canadian roles to the sheet with one summary push, US roles to
+    # data/target_backlog.csv). From the second sweep on, only genuinely new postings come through.
+    baselined = set(health.get("targets_baselined", []))
+    target_jobs, target_ok = from_targets(health)
+    all_jobs += target_jobs
+
     # --- Filter + dedupe
     cutoff = (NOW - timedelta(days=KEY_MEMORY_DAYS)).isoformat()
     seen["keys"] = {k: t for k, t in seen["keys"].items() if t >= cutoff}
@@ -1106,8 +1203,8 @@ def run():
         if j.get("visa") == "no" and not in_canada(j["location"]):
             continue  # repo says no sponsorship / US citizens only
         relevant += 1
-        k = job_key(j["company"], j["role"], j["location"])
-        if j["link"] in seen["links"] or k in seen["keys"] or k in batch or j["link"] in batch:
+        ks = job_keys(j["company"], j["role"], j["location"])
+        if j["link"] in seen["links"] or j["link"] in batch or any(k in seen["keys"] or k in batch for k in ks):
             continue
         # seen.json still holds keys written in the old company|role format, with no location in
         # them. Honour those for non-Canadian roles, so changing the key format doesn't replay the
@@ -1116,13 +1213,36 @@ def run():
         # Vancouver losing to Redmond). The legacy keys age out on their own in 30 days.
         if not in_canada(j["location"]) and legacy_job_key(j["company"], j["role"]) in seen["keys"]:
             continue
-        batch.update((k, j["link"]))
+        batch.update(ks | {j["link"]})
         new.append(j)
     log(f"{relevant} relevant of {len(all_jobs)} total → {len(new)} new")
 
     for j in new:
         seen["links"][j["link"]] = NOW.isoformat()[:10]
-        seen["keys"][job_key(j["company"], j["role"], j["location"])] = NOW.isoformat()
+        for k in job_keys(j["company"], j["role"], j["location"]):
+            seen["keys"][k] = NOW.isoformat()
+        j["target"] = bool(T.is_target(j["company"]))
+
+    # First sweep of a company's careers page: keep the Canadian roles (they go to the sheet, with
+    # one summary push instead of one push each) and park the US ones in target_backlog.csv.
+    # Everything is already marked seen above, so none of it comes back next hour.
+    first_sweep = [j for j in new if j["source"] == "Career page" and j["company"] not in baselined]
+    if first_sweep and not first_run:
+        backlog_us = [j for j in first_sweep if not in_canada(j["location"])]
+        if backlog_us:
+            fresh = not TARGET_BACKLOG_FILE.exists()
+            with TARGET_BACKLOG_FILE.open("a", newline="", encoding="utf-8") as f:
+                w = csv.writer(f)
+                if fresh:
+                    w.writerow(["Found", "Company", "Role", "Location", "Link"])
+                for j in backlog_us:
+                    w.writerow([LOCAL.strftime("%Y-%m-%d"), j["company"], j["role"], j["location"], j["link"]])
+            log(f"First sweep: {len(backlog_us)} US role(s) saved to data/{TARGET_BACKLOG_FILE_NAME}, not pushed")
+        backlog_ids = {id(j) for j in backlog_us}
+        new = [j for j in new if id(j) not in backlog_ids]
+        for j in first_sweep:
+            j["first_sweep"] = True
+    health["targets_baselined"] = sorted(baselined | set(target_ok))
 
     if first_run:
         with BACKLOG_FILE.open("w", newline="", encoding="utf-8") as f:
@@ -1158,26 +1278,43 @@ def run():
         out.write_text(json.dumps(new, indent=1, ensure_ascii=False))
         health["today"]["new_jobs"] += len(new)
 
-        # Canada first, then LinkedIn (freshest source), then best fit.
-        new.sort(key=lambda j: (not in_canada(j["location"]), j["source"] != "LinkedIn",
-                                -(j.get("fit") or 0)))
+        health["today"]["target_new"] = health["today"].get("target_new", 0) + sum(j["target"] for j in new)
+
+        def star(j):
+            return f"{TARGET_STAR} " if j.get("target") else ""
+
+        # Canada first, then target companies, then LinkedIn (freshest source), then best fit.
+        new.sort(key=lambda j: (not in_canada(j["location"]), not j.get("target"),
+                                j["source"] != "LinkedIn", -(j.get("fit") or 0)))
+        sweep = [j for j in new if j.get("first_sweep")]
+        new_live = [j for j in new if not j.get("first_sweep")]
+        if sweep:
+            push(f"🇨🇦 {TARGET_STAR} {len(sweep)} open Canadian role{'s' if len(sweep) != 1 else ''} "
+                 f"at your target companies",
+                 "First scan of their careers pages. All added to your sheet; from now on each new "
+                 "posting gets its own push.\n"
+                 + "\n".join(f"• {j['company']} — {j['role']}" + (f" ({j['fit']}/10)" if j.get("fit") else "")
+                             for j in sweep[:40]),
+                 priority=4, tags=["briefcase"])
+
         def worth_a_push(j):
-            return in_canada(j["location"]) or (j.get("fit") or 0) >= PUSH_FIT_FLOOR_US
-        loud = [j for j in new if worth_a_push(j)]
-        quiet = [j for j in new if not worth_a_push(j)]
+            return in_canada(j["location"]) or j.get("target") or (j.get("fit") or 0) >= PUSH_FIT_FLOOR_US
+        loud = [j for j in new_live if worth_a_push(j)]
+        quiet = [j for j in new_live if not worth_a_push(j)]
         for j in loud[:MAX_INDIVIDUAL_PUSHES]:
             jd_note = "JD ✓" if len(j["jd"]) >= JD_MIN_CHARS else "needs JD"
             fit_note = f"fit {j['fit']}/10 · " if j.get("fit") else ""
             visa_note = f" · visa: {j['visa']}" if j["visa"] else ""
             flag = "🇨🇦 " if in_canada(j["location"]) else ""
-            push(f"{flag}{j['company']}", f"{j['role']}\n{fit_note}{j['location'] or '—'} · {j['source']} · {jd_note}{visa_note}",
+            push(f"{flag}{star(j)}{j['company']}",
+                 f"{j['role']}\n{fit_note}{j['location'] or '—'} · {j['source']} · {jd_note}{visa_note}",
                  click=j["link"],
-                 priority=5 if in_canada(j["location"]) else (4 if j["source"] == "LinkedIn" else 3),
+                 priority=5 if in_canada(j["location"]) else (4 if j.get("target") or j["source"] == "LinkedIn" else 3),
                  tags=["briefcase"])
         if len(loud) > MAX_INDIVIDUAL_PUSHES:
             rest = loud[MAX_INDIVIDUAL_PUSHES:]
             push(f"+{len(rest)} more new jobs",
-                 "\n".join(f"• {j['company']} — {j['role']}" for j in rest[:40]), tags=["briefcase"])
+                 "\n".join(f"• {star(j)}{j['company']} — {j['role']}" for j in rest[:40]), tags=["briefcase"])
         if quiet:
             push(f"+{len(quiet)} lower-priority US roles",
                  "In the sheet, not worth a push each (US, fit under "

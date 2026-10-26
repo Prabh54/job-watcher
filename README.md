@@ -5,6 +5,14 @@ Hourly cloud check for new SWE / data **intern and co-op** postings in Canada an
 ## Sources
 - **LinkedIn**: Apify `curious_coder/linkedin-jobs-scraper`, with JobSpy as a backup. Searches "software intern", "software co-op", "developer intern", "developer co-op", "backend intern", "full stack intern" and "data intern" in Canada, California and Texas. (37% of the Canadian roles the repos find have no "software" in the title — "Developer Intern, Front-End Platform", "Application Developer Co-op" — so the two original keywords were missing them.) `LINKEDIN_MAX_ITEMS_PER_RUN` caps billed Apify results per run at 450 however long the keyword list gets.
 - **Repos**: speedyapply USA internships, Zapply Internships-2027, Simplify off-season, Zapply Canada-Internships-2027, negarprh Canadian-Tech-Internships-2027.
+- **Career pages** (`targets.py`): my 45 core target companies (`core_companies.csv`, Oct 2026). 38 are polled every daytime run straight from their own careers feeds (Greenhouse, Lever, Ashby, Workday, SuccessFactors, iCIMS, Jobvite, Rippling, Amazon, Microsoft, Google, Atlassian, EA, Intuit). Free public endpoints, no Apify. Careers sites list the whole world, so these rows must name Canada or the US (or be a vague "3 Locations" / "Remote"). SAP, Demonware/Activision, Fortinet, Clio, Shopify, BCI and Presto Phoenix have no usable public feed: they are still ⭐-tagged when LinkedIn or a repo finds them.
+
+## Target companies (⭐)
+- A job at any company in `targets.py`, from **any** source, gets ⭐ in its push title after the 🇨🇦 (e.g. `🇨🇦 ⭐ Amazon`) and is always pushed, even a US role under 7/10.
+- Matching is by company name, with exact-only aliases for ambiguous names so Sentry Insurance, Cohere Health, RBC Bearings, TD SYNNEX and Motorola Mobility are not tagged.
+- The same role from a repo and a careers page is one job, even when the company is written differently ("TD" vs "TD Bank").
+- A company's **first** careers-page sweep doesn't push each open role: its Canadian roles go to the sheet with one summary push, and its US roles are saved to `data/target_backlog.csv`.
+- To add a company: add a `dict(...)` to `TARGETS` in `targets.py`, then run Actions → probe-targets to find which feed works (results land on the `probe` branch).
 
 ## Filters
 - **Roles (SWE first):** intern or co-op titles in software, full-stack, backend, frontend, mobile, cloud/devops, ML/AI engineering, data engineering or data science. Senior, PhD/master's, QA/test, IT support, PM, hardware/embedded, research-only and French-required titles are dropped outright (`EXCLUDE_WORDS`).
@@ -26,12 +34,13 @@ Hourly cloud check for new SWE / data **intern and co-op** postings in Canada an
 - `data/seen.json` holds the duplicate memory: links for 180 days, plus company + role + **location bucket** for 30 days. Canada is bucketed by province and the whole US is one bucket, so a Toronto posting and a Vancouver posting of the same role are both kept, while the same US req listed in four cities stays one entry. (Before this, Stripe Toronto lost to Stripe SF and Microsoft Vancouver lost to Redmond.)
 - `data/health.json` tracks alerts and daily counters.
 - `data/backlog.csv` lists everything that was already open on the first run.
+- `data/target_backlog.csv` lists US roles found on a target company's first careers-page sweep.
 
 ## Phone alerts (ntfy)
-- One push per **Canadian** job (priority 5, flagged 🇨🇦) and per US job scoring at least `PUSH_FIT_FLOOR_US` (7/10). Tap it to open the posting.
+- One push per **Canadian** job (priority 5, flagged 🇨🇦), per **target-company** job (⭐), and per US job scoring at least `PUSH_FIT_FLOOR_US` (7/10). Tap it to open the posting.
 - Everything else — US roles under 7/10 or with no score — arrives as one quiet digest push per run. Those jobs are still written to `data/new` and still reach `job_queue.xlsx`; they just don't each ring the phone.
 - 🚨 when LinkedIn fails on both Apify and JobSpy, or the run crashes.
-- ⚠️ when Apify fails but JobSpy covered it, LinkedIn returns 0 for 3 daytime runs, a repo fails 3 runs in a row, LinkedIn hits the per-run cap, or GitHub skips runs.
+- ⚠️ when Apify fails but JobSpy covered it, LinkedIn returns 0 for 3 daytime runs, a repo fails 3 runs in a row, a target company's careers feed fails 6 runs in a row (once a day at most), LinkedIn hits the per-run cap, or GitHub skips runs.
 - 📋 a daily summary at 9pm. **If it doesn't arrive, something is broken: check the Actions tab and LinkedIn manually.**
 
 ## Secrets
