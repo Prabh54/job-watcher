@@ -12,6 +12,7 @@ import traceback
 from concurrent.futures import ThreadPoolExecutor
 
 import targets
+import zapply
 
 WD = lambda tenant, n, site: ["workday", f"{tenant}.wd{n}.myworkdayjobs.com", tenant, site]
 
@@ -114,12 +115,26 @@ def zapply_diag(url):
     return rec
 
 
+def zapply_backfill():
+    """Resolve every dead Zapply link from job_queue.xlsx and fetch its JD (for a one-off backfill)."""
+    import os
+    os.environ["DRY_RUN"] = "1"
+    import watcher
+    cache, out = {}, []
+    for url in open("probe_zapply.txt").read().split():
+        link = zapply.direct_link(url, cache)
+        jd = watcher.fetch_jd(link) if link != url else ""
+        out.append({"zapply": url, "link": link if link != url else "", "jd": jd})
+    return out, cache
+
+
 def main():
     missing = [t["name"] for t in targets.TARGETS if t["name"] not in CANDIDATES]
     work = [(c, f) for c, feeds in CANDIDATES.items() for f in feeds if not ONLY or c in ONLY]
     with ThreadPoolExecutor(max_workers=10) as ex:
         results = list(ex.map(lambda cf: probe(*cf), work))
-    out = {"missing_from_candidates": missing, "results": results, "zapply": [zapply_diag(u) for u in ZAPPLY_SAMPLES]}
+    backfill, wd_cache = zapply_backfill()
+    out = {"missing_from_candidates": missing, "results": results, "backfill": backfill, "wd_cache": wd_cache}
     with open("probe_result.json", "w") as f:
         json.dump(out, f, indent=1)
     for r in results:

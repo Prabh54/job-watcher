@@ -41,7 +41,8 @@ TARGETS = [
     dict(name="Atlassian", band="Big tech", aliases=["atlassian"], prefix=["atlassian"], feeds=[["atlassian"]]),
     dict(name="Microsoft", band="Big tech", aliases=["microsoft", "the coalition"], prefix=["microsoft"], feeds=[["microsoft"]]),
     dict(name="RBC", band="Big tech", aliases=["rbc", "royal bank of canada", "rbc royal bank"],
-         prefix=["royal bank of canada", "rbc capital markets", "rbc wealth management", "rbc royal bank"], feeds=[["workday", "rbc.wd3.myworkdayjobs.com", "rbc", "RBCGLOBAL1"]]),
+         prefix=["royal bank of canada", "rbc capital markets", "rbc wealth management", "rbc royal bank"], feeds=[["workday", "rbc.wd3.myworkdayjobs.com", "rbc", "RBCGLOBAL1"],
+                ["workday", "rbc.wd3.myworkdayjobs.com", "rbc", "ExternalPrivatePostingStudents"]]),
     dict(name="SAP", band="Big tech", aliases=["sap"], prefix=["sap"], feeds=[]),
     dict(name="TELUS", band="Big tech", aliases=["telus"], prefix=["telus"], feeds=[["rmk", "careers.telus.com"]]),
     dict(name="Google", band="Big tech", aliases=["google", "alphabet"], prefix=["google"], feeds=[["google"]]),
@@ -154,8 +155,11 @@ def _text(s):
 
 def f_greenhouse(slug):
     d = _get(f"https://boards-api.greenhouse.io/v1/boards/{slug}/jobs").json()
+    # absolute_url is often the company's own site (databricks.com, stripe.com/jobs?gh_jid=),
+    # which the JD fetcher can't read; jd_src points it at Greenhouse's own copy instead.
     return [dict(role=j.get("title", ""), location=(j.get("location") or {}).get("name", ""),
-                 link=j.get("absolute_url", ""), jd="") for j in d.get("jobs", [])]
+                 link=j.get("absolute_url", ""), jd="",
+                 jd_src=f"https://job-boards.greenhouse.io/{slug}/jobs/{j.get('id')}") for j in d.get("jobs", [])]
 
 
 def f_lever(slug):
