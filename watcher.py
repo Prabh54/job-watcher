@@ -384,10 +384,16 @@ def clean_link(url):
         return f"https://www.linkedin.com/jobs/view/{m.group(1)}/"
     p = urlparse(url)
     if "zapply.jobs" in p.netloc:
-        return url  # redirect link; resolved to the real posting later
+        # Redirect link, resolved to the real posting later. The path identifies the job; the
+        # ?s= tag only says which Zapply list it came from (gh-internships-2027 vs
+        # gh-canada-internships-2027), so keeping it made one job look like two.
+        return urlunparse(p._replace(query="", fragment=""))
+    path = p.path
+    if "ashbyhq.com" in p.netloc:
+        path = re.sub(r"/application/?$", "", path)  # same posting as the bare job page
     q = [(k, v) for k, vs in parse_qs(p.query).items() for v in vs
-         if not re.match(r"(utm_|ref$|source$|src$|s$|gh_src$|lever-source)", k, re.I)]
-    return urlunparse(p._replace(query=urlencode(q), fragment=""))
+         if not re.match(r"(utm_|ref$|source$|src$|s$|gh_src$|lever-source|embed$)", k, re.I)]
+    return urlunparse(p._replace(path=path, query=urlencode(q), fragment=""))
 
 
 def is_relevant(role, location):
@@ -1090,7 +1096,8 @@ def run():
     cutoff = (NOW - timedelta(days=KEY_MEMORY_DAYS)).isoformat()
     seen["keys"] = {k: t for k, t in seen["keys"].items() if t >= cutoff}
     link_cutoff = (NOW - timedelta(days=LINK_MEMORY_DAYS)).isoformat()[:10]
-    seen["links"] = {k: t for k, t in seen["links"].items() if t >= link_cutoff}
+    # Re-clean stored links so ones saved under an older clean_link() still match today's form.
+    seen["links"] = {clean_link(k): t for k, t in seen["links"].items() if t >= link_cutoff}
     relevant, new, batch = 0, [], set()
     for j in all_jobs:
         j["link"] = clean_link(j["link"])
