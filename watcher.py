@@ -695,22 +695,30 @@ def parse_markdown_tables(text, name):
 
 def parse_html_tables(text, name):
     jobs, last_company = [], ""
-    for body in re.findall(r"(?is)<tbody>(.*?)</tbody>", text):
-        for tr in re.findall(r"(?is)<tr>(.*?)</tr>", body):
+    # Columns are found by header name: the off-season list has a Terms column (Application is
+    # 5th), the main Summer list doesn't (Application is 4th). A fixed index read the Age column
+    # on the Summer list and found no link in any row.
+    for table in re.findall(r"(?is)<table>(.*?)</table>", text):
+        heads = [strip_cell(h).lower() for h in re.findall(r"(?is)<th[^>]*>(.*?)</th>", table)]
+        col = {h: i for i, h in enumerate(heads)}
+        c_co, c_role, c_loc = col.get("company", 0), col.get("role", 1), col.get("location", 2)
+        c_app = col.get("application", col.get("apply", 4))
+        for body in re.findall(r"(?is)<tbody>(.*?)</tbody>", table):
+          for tr in re.findall(r"(?is)<tr>(.*?)</tr>", body):
             tds = re.findall(r"(?is)<td[^>]*>(.*?)</td>", tr)
-            if len(tds) < 5 or "🔒" in tr:
+            if len(tds) <= max(c_co, c_role, c_loc, c_app) or "🔒" in tr:
                 continue
-            company = strip_cell(tds[0]).replace("🔥", "").strip()
+            company = strip_cell(tds[c_co]).replace("🔥", "").strip()
             if company in ("", "↳"):
                 company = last_company
             last_company = company
-            links = [u for u in links_in(tds[4]) if "simplify.jobs/p/" not in u] or links_in(tds[4])
+            links = [u for u in links_in(tds[c_app]) if "simplify.jobs/p/" not in u] or links_in(tds[c_app])
             if not links:
                 continue
-            role_raw = strip_cell(tds[1])
+            role_raw = strip_cell(tds[c_role])
             visa = "no" if ("🛂" in role_raw or "🇺🇸" in role_raw) else ""
             role = re.sub(r"[🎓🛂🇺🇸]", "", role_raw).strip()
-            jobs.append({"company": company, "role": role, "location": strip_cell(tds[2]),
+            jobs.append({"company": company, "role": role, "location": strip_cell(tds[c_loc]),
                          "link": links[0], "source": name, "jd": "", "posted": "", "visa": visa})
     return jobs
 
