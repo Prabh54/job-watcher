@@ -54,6 +54,7 @@ from zoneinfo import ZoneInfo
 import requests
 
 import targets as T   # target-company list + careers-feed readers (targets.py)
+import zapply         # rebuilds real posting links from Zapply's dead redirect links (zapply.py)
 
 # =====================================================================================
 # CONFIG
@@ -768,25 +769,21 @@ def from_targets(health):
 
 # ----------------------------------------------------------------------------- links + JDs
 
-def resolve_link(url):
-    """Zapply links redirect to the real posting; follow them so you get the direct ATS link."""
+def resolve_link(url, wd_cache=None):
+    """Turn a Zapply link into the real posting link (see zapply.py).
+
+    Zapply's /l/d/ redirects stopped working for scripts in Oct 2026 (they all land on the
+    generic zapply.jobs/jobs/ page), which left every Zapply row at "Needs JD". The slug names
+    the original posting, so zapply.direct_link() rebuilds it; Workday hosts are looked up once
+    and cached in seen.json.
+    """
     if "zapply.jobs/" not in url:
         return url
     try:
-        r = HTTP.get(url, allow_redirects=True, timeout=TIMEOUT)
-        if "zapply.jobs" not in urlparse(r.url).netloc:
-            return r.url
-        m = re.search(r'http-equiv="refresh"[^>]*url=([^"\']+)', r.text, re.I) or \
-            re.search(r'window\.location(?:\.href)?\s*=\s*["\'](https?://[^"\']+)', r.text)
-        if m:
-            return html.unescape(m.group(1))
-    except Exception:
-        pass
-    # Fallback: Zapply slugs name the ATS, e.g. /l/d/greenhouse-epicgames-6138140004
-    m = re.search(r"zapply\.jobs/l/d/greenhouse-([\w]+)-(\d{6,})", url)
-    if m:
-        return f"https://job-boards.greenhouse.io/{m.group(1)}/jobs/{m.group(2)}"
-    return url
+        return zapply.direct_link(url, wd_cache)
+    except Exception as e:
+        log(f"  Zapply link not resolved ({e.__class__.__name__}): {url[:80]}")
+        return url
 
 
 def jd_workday(url):
@@ -1256,9 +1253,10 @@ def run():
         log("First run: baseline saved, no per-job pushes.")
     elif new:
         for j in new:
-            j["link"] = clean_link(resolve_link(j["link"]))
+            j["link"] = clean_link(resolve_link(j["link"], seen.setdefault("wd_hosts", {})))
             if len(j["jd"]) < JD_MIN_CHARS:
-                j["jd"] = fetch_jd(j["link"])
+                j["jd"] = fetch_jd(j.get("jd_src") or j["link"])
+            j.pop("jd_src", None)
             j["jd"] = j["jd"][:EXCEL_CELL_LIMIT]
             j["id"] = job_id(j["link"])
             j["found_at"] = LOCAL.isoformat(timespec="minutes")
