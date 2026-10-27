@@ -179,6 +179,7 @@
   "apex technology|simulation software engineering internship spring or summer 2027": "2026-10-07T17:45:33.880587+00:00",
   "appian|software engineering intern": "2026-10-07T17:45:33.880587+00:00",
   "applied innovation|software solutions intern grand rapids mi": "2026-10-07T17:45:33.880587+00:00",
+  "applied materials|2027 spring data scientist co op gloucester ma|us": "2026-10-27T03:05:31.028821+00:00",
   "applied materials|2027 summer intern software engineer bachelors degree santa clara": "2026-10-21T14:05:23.729789+00:00",
   "applied materials|data scientist co op|us": "2026-10-26T22:51:07.945363+00:00",
   "aptiv|cloud engineer intern": "2026-10-12T23:05:28.578317+00:00",
@@ -2718,6 +2719,7 @@
   "https://altera.wd1.myworkdayjobs.com/altera/job/Toronto-Ontario-Canada/Quartus-Compiler-Software---Intern_R03108": "2026-10-07",
   "https://amat.wd1.myworkdayjobs.com/External/job/GloucesterMA/XMLNAME-2027-Spring-Data-Scientist-Co-op---Gloucester--MA_R2632146": "2026-10-26",
   "https://amat.wd1.myworkdayjobs.com/External/job/Santa-ClaraCA/XMLNAME-2027-Summer-Intern--Software-Engineer--Bachelors-Degree--Santa-Clara-_R2630672": "2026-10-21",
+  "https://amat.wd1.myworkdayjobs.com/external/job/GloucesterMA/XMLNAME-2027-Spring-Data-Scientist-Co-op---Gloucester--MA_R2632146": "2026-10-27",
   "https://amazon.jobs/en/jobs/10517567/software-development-engineer-intern-annapurna-labs-2027": "2026-10-07",
   "https://amazon.jobs/en/jobs/10538066/ml-systems-software-development-engineer-intern-annapurna-labs-2027": "2026-10-07",
   "https://amazon.jobs/en/jobs/10553947/software-development-engineer-intern-summer-2027-can": "2026-10-07",
@@ -5198,6 +5200,7 @@
   "https://zapply.jobs/l/d/workday-alliance-nissanjobs-R00215331": "2026-10-12",
   "https://zapply.jobs/l/d/workday-altera-altera-R03320": "2026-10-23",
   "https://zapply.jobs/l/d/workday-amat-external-R2630672": "2026-10-21",
+  "https://zapply.jobs/l/d/workday-amat-external-R2632146": "2026-10-27",
   "https://zapply.jobs/l/d/workday-americanfidelity-external-JR1118": "2026-10-19",
   "https://zapply.jobs/l/d/workday-analogdevices-external-R267690": "2026-10-26",
   "https://zapply.jobs/l/d/workday-aptiv-aptiv-careers-J000704368": "2026-10-13",
@@ -5513,6 +5516,7 @@
   "https://zoetis.wd5.myworkdayjobs.com/zoetis/job/Kalamazoo---Downtown-Portage-Street/Chemistry-Data-Science-Intern---Digital-CMC-Workflows_JR00021822-2": "2026-10-16"
  },
  "wd_hosts": {
+  "amat/external": "amat.wd1.myworkdayjobs.com",
   "generac/external": "generac.wd5.myworkdayjobs.com",
   "zillow/zillow-group-external": "zillow.wd5.myworkdayjobs.com"
  }
