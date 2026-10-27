@@ -4,9 +4,9 @@
   "li_zero": "2026-10-11T23:54:05.385359+00:00"
  },
  "heartbeat_sent": "2026-10-26",
- "last_active_run": "2026-10-27T14:05:38.307786+00:00",
- "last_linkedin_ok": "2026-10-27T14:05:38.307786+00:00",
- "last_run": "2026-10-27T14:05:38.307786+00:00",
+ "last_active_run": "2026-10-27T15:05:34.398292+00:00",
+ "last_linkedin_ok": "2026-10-27T15:05:34.398292+00:00",
+ "last_run": "2026-10-27T15:05:34.398292+00:00",
  "linkedin_zero_streak": 0,
  "missed_summary_reported": "2026-10-16",
  "repo_fail_streak": {
@@ -40,7 +40,7 @@
   "Kinaxis": 0,
   "Lyft": 0,
   "Manulife": 0,
-  "Microsoft": 1,
+  "Microsoft": 2,
   "MongoDB": 0,
   "Motorola Solutions": 0,
   "NetApp": 0,
@@ -53,7 +53,7 @@
   "TD Bank": 0,
   "TELUS": 0,
   "Visier": 0,
-  "Waabi": 1,
+  "Waabi": 0,
   "Wealthsimple": 0
  },
  "targets_baselined": [
@@ -98,13 +98,13 @@
  ],
  "today": {
   "date": "2026-10-27",
-  "linkedin_results": 183,
-  "linkedin_runs": 1,
-  "new_jobs": 20,
+  "linkedin_results": 223,
+  "linkedin_runs": 2,
+  "new_jobs": 21,
   "problems": [],
-  "runs": 1,
-  "target_new": 2,
-  "visa_dropped": 2
+  "runs": 2,
+  "target_new": 3,
+  "visa_dropped": 3
  },
  "yesterday": {
   "date": "2026-10-26",
