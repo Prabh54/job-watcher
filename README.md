@@ -4,7 +4,8 @@ Hourly cloud check for new SWE / data **intern and co-op** postings in Canada an
 
 ## Sources
 - **LinkedIn**: Apify `curious_coder/linkedin-jobs-scraper`, with JobSpy as a backup. Searches "software intern", "software co-op", "developer intern", "developer co-op", "backend intern", "full stack intern" and "data intern" in Canada, California and Texas. (37% of the Canadian roles the repos find have no "software" in the title — "Developer Intern, Front-End Platform", "Application Developer Co-op" — so the two original keywords were missing them.) `LINKEDIN_MAX_ITEMS_PER_RUN` caps billed Apify results per run at 450 however long the keyword list gets.
-- **Repos**: speedyapply USA internships, Zapply Internships-2027, Simplify off-season, Zapply Canada-Internships-2027, negarprh Canadian-Tech-Internships-2027.
+- **Repos**: speedyapply USA internships, Zapply Internships-2027, Simplify off-season, Zapply Canada-Internships-2027, negarprh Canadian-Tech-Internships-2027, and (from Oct 28 2026) Simplify's main Summer 2027 list. A repo added later gets a first-load sweep: its Canadian roles go to the sheet with one summary push, its US roles to `data/repo_backlog.csv`. `ORIGINAL_REPOS` in `watcher.py` lists the five that predate this.
+- **Zapply links**: Zapply's redirect links stopped working for scripts (Oct 2026). `zapply.py` rebuilds the real posting link from the slug (Ashby, Lever, Greenhouse, SmartRecruiters, Microsoft, ByteDance, Cisco, and Workday via a cached host lookup). Oracle- and Qualcomm-hosted Zapply rows can't be rebuilt.
 - **Career pages** (`targets.py`): my 45 core target companies (`core_companies.csv`, Oct 2026). 38 are polled every daytime run straight from their own careers feeds (Greenhouse, Lever, Ashby, Workday, SuccessFactors, iCIMS, Jobvite, Rippling, Amazon, Microsoft, Google, Atlassian, EA, Intuit). Free public endpoints, no Apify. Careers sites list the whole world, so these rows must name Canada or the US (or be a vague "3 Locations" / "Remote"). SAP, Demonware/Activision, Fortinet, Clio, Shopify, BCI and Presto Phoenix have no usable public feed: they are still ⭐-tagged when LinkedIn or a repo finds them.
 
 ## Target companies (⭐)
@@ -35,6 +36,7 @@ Hourly cloud check for new SWE / data **intern and co-op** postings in Canada an
 - `data/health.json` tracks alerts and daily counters.
 - `data/backlog.csv` lists everything that was already open on the first run.
 - `data/target_backlog.csv` lists US roles found on a target company's first careers-page sweep.
+- `data/repo_backlog.csv` lists US roles found on a newly added repo's first load.
 
 ## Phone alerts (ntfy)
 - One push per **Canadian** job (priority 5, flagged 🇨🇦), per **target-company** job (⭐), and per US job scoring at least `PUSH_FIT_FLOOR_US` (7/10). Tap it to open the posting.

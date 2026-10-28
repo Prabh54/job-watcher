@@ -110,7 +110,14 @@ REPOS = {
     "Simplify off-season": ("html", "https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/dev/README-Off-Season.md"),
     "Zapply Canada": ("md", "https://raw.githubusercontent.com/zapplyjobs/Canada-Internships-2027/main/README.md"),
     "negarprh Canada": ("md", "https://raw.githubusercontent.com/negarprh/Canadian-Tech-Internships-2027/main/README.md"),
+    # Added Oct 28 2026. Simplify's main list: ~470 relevant roles none of the five above carry
+    # (RBC Developer Intern x9, SOTI, ...). Listed after the others so a role they share keeps
+    # its original source.
+    "Simplify Summer 2027": ("html", "https://raw.githubusercontent.com/SimplifyJobs/Summer2027-Internships/dev/README.md"),
 }
+# Repos that were live before first-sweep protection existed. Any repo not in this set gets a
+# first sweep the first time it loads (see run()), so adding a list never floods the phone.
+ORIGINAL_REPOS = {"speedyapply USA", "Zapply 2027", "Simplify off-season", "Zapply Canada", "negarprh Canada"}
 
 # --- Filters -------------------------------------------------------------------------
 INTERN_WORDS = r"\b(intern|interns|internship|internships|co-?op|coop|student|placement)\b"
@@ -270,6 +277,7 @@ TARGET_FAIL_STREAK_ALERT = 6      # one company's careers feed failing this many
 TARGET_WORKERS = 8                # careers feeds polled in parallel
 TARGET_STAR = "⭐"                # shown in the push title for jobs at a target company
 TARGET_BACKLOG_FILE_NAME = "target_backlog.csv"   # US roles found on a company's first sweep
+REPO_BACKLOG_FILE_NAME = "repo_backlog.csv"       # US roles found on a newly added repo's first load
 DAYTIME_HOURS = range(7, 23)
 HEARTBEAT_HOUR = 21               # daily summary at/after 9pm Vancouver
 GAP_ALERT_HOURS = 3               # (kept for reference; the gap check now counts missed runs)
@@ -284,6 +292,7 @@ SEEN_FILE = DATA / "seen.json"
 HEALTH_FILE = DATA / "health.json"
 BACKLOG_FILE = DATA / "backlog.csv"
 TARGET_BACKLOG_FILE = DATA / TARGET_BACKLOG_FILE_NAME
+REPO_BACKLOG_FILE = DATA / REPO_BACKLOG_FILE_NAME
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "").strip()
 CANDIDATE_PROFILE = os.environ.get("CANDIDATE_PROFILE", "").strip()
@@ -1173,12 +1182,15 @@ def run():
 
     # --- Repos
     streaks = health.setdefault("repo_fail_streak", {})
+    repos_baselined = set(health.get("repos_baselined", ORIGINAL_REPOS))
+    repo_ok = []
     for name, (kind, url) in REPOS.items():
         try:
             got = from_repo(name, kind, url)
-            log(f"{name}: {len(got)} listings")
+            log(f"{name}: {len(got)} listings" + ("" if name in repos_baselined else " (first load)"))
             all_jobs += got
             streaks[name] = 0
+            repo_ok.append(name)
         except Exception as e:
             log(f"{name}: FAILED ({e.__class__.__name__}: {e})")
             streaks[name] = streaks.get(name, 0) + 1
@@ -1228,26 +1240,39 @@ def run():
             seen["keys"][k] = NOW.isoformat()
         j["target"] = bool(T.is_target(j["company"]))
 
-    # First sweep of a company's careers page: keep the Canadian roles (they go to the sheet, with
-    # one summary push instead of one push each) and park the US ones in target_backlog.csv.
-    # Everything is already marked seen above, so none of it comes back next hour.
-    first_sweep = [j for j in new if j["source"] == "Career page" and j["company"] not in baselined]
-    if first_sweep and not first_run:
-        backlog_us = [j for j in first_sweep if not in_canada(j["location"])]
-        if backlog_us:
-            fresh = not TARGET_BACKLOG_FILE.exists()
-            with TARGET_BACKLOG_FILE.open("a", newline="", encoding="utf-8") as f:
-                w = csv.writer(f)
-                if fresh:
-                    w.writerow(["Found", "Company", "Role", "Location", "Link"])
-                for j in backlog_us:
-                    w.writerow([LOCAL.strftime("%Y-%m-%d"), j["company"], j["role"], j["location"], j["link"]])
-            log(f"First sweep: {len(backlog_us)} US role(s) saved to data/{TARGET_BACKLOG_FILE_NAME}, not pushed")
-        backlog_ids = {id(j) for j in backlog_us}
-        new = [j for j in new if id(j) not in backlog_ids]
-        for j in first_sweep:
-            j["first_sweep"] = True
+    # First sweep of a source that was just added: a target company's careers page, or a newly
+    # added repo. Keep the Canadian roles (they go to the sheet with ONE summary push instead of
+    # one push each) and park the US ones in a backlog CSV. Everything is already marked seen
+    # above, so none of it comes back next hour.
+    def write_backlog(path, jobs):
+        fresh = not path.exists()
+        with path.open("a", newline="", encoding="utf-8") as f:
+            w = csv.writer(f)
+            if fresh:
+                w.writerow(["Found", "Company", "Role", "Location", "Source", "Link"])
+            for j in jobs:
+                w.writerow([LOCAL.strftime("%Y-%m-%d"), j["company"], j["role"], j["location"],
+                            j["source"], j["link"]])
+
+    if not first_run:
+        for kind, is_first, path in (
+                ("target", lambda j: j["source"] == "Career page" and j["company"] not in baselined,
+                 TARGET_BACKLOG_FILE),
+                ("repo", lambda j: j["source"] in REPOS and j["source"] not in repos_baselined,
+                 REPO_BACKLOG_FILE)):
+            first_sweep = [j for j in new if is_first(j)]
+            if not first_sweep:
+                continue
+            backlog_us = [j for j in first_sweep if not in_canada(j["location"])]
+            if backlog_us:
+                write_backlog(path, backlog_us)
+                log(f"First sweep ({kind}): {len(backlog_us)} US role(s) saved to data/{path.name}, not pushed")
+            backlog_ids = {id(j) for j in backlog_us}
+            new = [j for j in new if id(j) not in backlog_ids]
+            for j in first_sweep:
+                j["first_sweep"] = kind
     health["targets_baselined"] = sorted(baselined | set(target_ok))
+    health["repos_baselined"] = sorted(repos_baselined | set(repo_ok))
 
     if first_run:
         with BACKLOG_FILE.open("w", newline="", encoding="utf-8") as f:
@@ -1292,15 +1317,25 @@ def run():
         # Canada first, then target companies, then LinkedIn (freshest source), then best fit.
         new.sort(key=lambda j: (not in_canada(j["location"]), not j.get("target"),
                                 j["source"] != "LinkedIn", -(j.get("fit") or 0)))
-        sweep = [j for j in new if j.get("first_sweep")]
+        sweep = [j for j in new if j.get("first_sweep") == "target"]
+        repo_sweep = [j for j in new if j.get("first_sweep") == "repo"]
         new_live = [j for j in new if not j.get("first_sweep")]
+
+        def sweep_lines(jobs):
+            return "\n".join(f"• {star(j)}{j['company']} — {j['role']}"
+                             + (f" ({j['fit']}/10)" if j.get("fit") else "") for j in jobs[:40])
         if sweep:
             push(f"🇨🇦 {TARGET_STAR} {len(sweep)} open Canadian role{'s' if len(sweep) != 1 else ''} "
                  f"at your target companies",
                  "First scan of their careers pages. All added to your sheet; from now on each new "
-                 "posting gets its own push.\n"
-                 + "\n".join(f"• {j['company']} — {j['role']}" + (f" ({j['fit']}/10)" if j.get("fit") else "")
-                             for j in sweep[:40]),
+                 "posting gets its own push.\n" + sweep_lines(sweep),
+                 priority=4, tags=["briefcase"])
+        if repo_sweep:
+            names = ", ".join(sorted({j["source"] for j in repo_sweep}))
+            push(f"🇨🇦 {len(repo_sweep)} open Canadian role{'s' if len(repo_sweep) != 1 else ''} from {names}",
+                 "First load of a newly added list. All added to your sheet (US roles saved to "
+                 f"data/{REPO_BACKLOG_FILE_NAME} instead); from now on each new posting gets its own push.\n"
+                 + sweep_lines(sorted(repo_sweep, key=lambda j: -(j.get("fit") or 0))),
                  priority=4, tags=["briefcase"])
 
         def worth_a_push(j):
