@@ -1,0 +1,32 @@
+[
+ {
+  "company": "Amazon Data Services, Inc.",
+  "role": "Data Center Infrastructure Engineer Intern, Summer 2027 - Midwest / Southeast",
+  "location": "Austin, TX",
+  "link": "https://zapply.jobs/l/d/amazon-025c04aa-4fef-4d19-919e-0b21ae36426b",
+  "source": "Zapply 2027",
+  "jd": "",
+  "posted": "",
+  "visa": "check sponsorship",
+  "target": true,
+  "id": "da6f64ab13",
+  "found_at": "2026-10-29T15:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ },
+ {
+  "company": "Altera",
+  "role": "Software Engineer - Factory Apps - Intern",
+  "location": "Toronto",
+  "link": "https://altera.wd1.myworkdayjobs.com/altera/job/Toronto-Ontario-Canada/Software-Engineer---Factory-Apps---Intern_R03384",
+  "source": "Zapply Canada",
+  "jd": "Job Details: \n\n Job Description: \n About Us\n Altera is at the forefront of programmable logic and hardware acceleration. Our mission is to empower developers and system architects to rapidly design and deploy solutions using advanced FPGA and SoC technologies.\n The Factory Applications team helps developers make effective use of Altera’s FPGA design tools and workflows, including FPGA AI Suite, High Level Synthesis (HLS), and DSP Builder. Our work brings together software, compilers, digital design, and application engineering to help users develop and optimize hardware-accelerated solutions. Join us to contribute to tools and workflows that support innovation in areas such as AI, signal processing, cloud computing, and embedded systems.\n\n Responsibilities\n \n• Assist with the development, validation, and maintenance of Factory Applications tools and workflows across FPGA AI Suite, HLS, and DSP Builder. \n• Help investigate, reproduce, and debug issues encountered when using application flows and related tools. \n• Develop or improve test cases, examples, scripts, and other resources that help validate features and demonstrate tool workflows. \n• Analyze application behavior and results to help identify opportunities to improve usability, performance, or quality. \n• Support integration and testing of new features across relevant tool flows. \n• Collaborate with engineers across software, compiler, FPGA, and applications teams. \n• Document findings and contribute to internal knowledge bases and technical materials. \n What We Offer\n \n• Mentorship and hands-on training from experienced software, FPGA, and applications engineers. \n• Competitive salary and benefits. \n• Opportunities for professional growth and advancement. \n• A supportive and innovative work environment. \n\n Our compensation is designed to reflect the Canadian labour market. The actual salary offered may vary based on several factors, including the position’s location, as well as the candidate’s experience, skills, training, and job-specific knowledge. In addition to base salary, we offer performance-based incentive opportunities that reward both individual contributions and overall company success.​ \n  \n Estimated Salary Range: $95K – $100K CAD​ \n ​ \n We use artificial intelligence to screen, assess, or select applicants for the position.​ This posting is for an existing vacancy.​ Canadian work experience is not required for this role. Applicants must be eligible for any required Canada export authorizations. \n\n Qualifications: \n Minimum Qualifications \n\n Currently pursuing a Bachelor’s degree in Computer Science, Electrical Engineering, Computer Engineering, or a related field, with:\n \n• Academic or project experience with C/C++ programming. \n• Familiarity with software development, debugging, and testing through coursework, projects, or internships. \n• Exposure to digital logic design fundamentals and FPGA or ASIC concepts through coursework or projects. \n• Good analytical, communication, and teamwork skills. \n\n Preferred Qualifications \n \n• Interest in learning about FPGA application tools and hardware-acceleration workflows. \n• Experience with Python or scripting for automation, testing, or data analysis. \n• Familiarity with version control systems such as Git. \n• Exposure to one or more of FPGA AI/ML workflows, HLS, DSP Builder or digital signal processing, or hardware description languages such as Verilog or VHDL. \n• Familiarity with Linux development environments. \n• Experience creating technical documentation, test cases, or project examples. \n \n Job Type: \nStudent / Intern (Fixed Term) \n \n Shift: \nShift 1 (Canada) \n \n Primary Location: \nToronto, Ontario, Canada \n \n Additional Locations: \n\n Posting Statement: \nAll qualified applicants will receive consideration for employment without regard to race, color, religion, religious creed, sex, national origin, ancestry, age, physical or mental disability, medical condition, genetic information, military and veteran status, marital status, pregnancy, gender, gender expression, gender identity, sexual orientation, or any other characteristic protected by local law, regulation, or ordinance.",
+  "posted": "",
+  "visa": "",
+  "target": false,
+  "id": "9a6ae7c09f",
+  "found_at": "2026-10-29T15:05-07:00",
+  "fit": 3,
+  "fit_why": "FPGA/hardware-acceleration tooling; requires C/C++ and digital logic, not web"
+ }
+]
