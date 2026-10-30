@@ -4,9 +4,9 @@
   "li_zero": "2026-10-11T23:54:05.385359+00:00"
  },
  "heartbeat_sent": "2026-10-28",
- "last_active_run": "2026-10-29T23:05:29.322670+00:00",
- "last_linkedin_ok": "2026-10-29T22:56:42.231012+00:00",
- "last_run": "2026-10-29T23:05:29.322670+00:00",
+ "last_active_run": "2026-10-30T00:05:30.896916+00:00",
+ "last_linkedin_ok": "2026-10-30T00:05:30.896916+00:00",
+ "last_run": "2026-10-30T00:05:30.896916+00:00",
  "linkedin_zero_streak": 0,
  "missed_summary_reported": "2026-10-16",
  "repo_fail_streak": {
@@ -107,11 +107,11 @@
  ],
  "today": {
   "date": "2026-10-29",
-  "linkedin_results": 530,
-  "linkedin_runs": 10,
-  "new_jobs": 72,
+  "linkedin_results": 550,
+  "linkedin_runs": 11,
+  "new_jobs": 74,
   "problems": [],
-  "runs": 11,
+  "runs": 12,
   "target_new": 5,
   "visa_dropped": 18
  },
