@@ -1,0 +1,17 @@
+[
+ {
+  "company": "IBM",
+  "role": "Supply Chain Software Engineer Intern",
+  "location": "San Jose, CA",
+  "link": "https://www.linkedin.com/jobs/view/4483484337/",
+  "source": "LinkedIn",
+  "jd": "Introduction\n\nThe IBM Electronic Design Automation (EDA) team is looking for curious, driven students with interests in software engineering, AI, and semiconductor design. Our team develops advanced software and Agentic AI solutions that help design and verify IBM's next-generation processors and computing systems — across areas like logic design, verification, synthesis, routing, and timing analysis.\n\nThese positions are competitive. We welcome applications from students whose backgrounds include strong programming foundations, coursework in computer science, computer engineering, or electrical engineering, and enthusiasm for AI and advanced computing.\n\nYour Role And Responsibilities\n\nEDA is at the center of IBM's Agentic AI transformation in semiconductor development. As an EDA Software Engineering Intern, you will collaborate with experienced engineers on real problems at the intersection of software, AI, and chip design.\n\nWork Experiences You Could Be Exposed To\n\n\n\n- AI &amp; Automation Exploration: Gain exposure to Agentic AI and machine learning techniques applied to chip design workflows, including synthesis and place-and-route automation\n- Tool Development: Contribute to software tools that support logic design, functional verification, timing analysis, and physical design\n- Algorithm Development: Work on algorithms and software solutions that improve design quality and accelerate chip development\n- Team Collaboration: Partner with engineers across IBM zSystems, Power Systems, Storage, and Quantum Computing to tackle challenging real-world problems\n\nAt IBM, we prioritize continuous learning and personal growth within a culture of coaching and mentorship.\n\nPreferred Education\n\nBachelor's Degree\n\nRequired Technical And Professional Expertise\n\n\n\n- Knowledge of computer architecture and microarchitecture.\n- Familiarity with digital, VLSI, or semiconductor design concepts.\n- Exposure to logic design, functional verification, synthesis, place-and-route, or timing analysis.\n- Familiarity with GenAI, Agentic AI systems, ML frameworks, or AI-assisted software development.\n- Exposure to Linux development environments.\n- Familiarity with software engineering practices, testing methodologies, and version control systems.\n\nPreferred Technical And Professional Experience\n\n\n\n- Currently pursuing a BS, MS, or PhD in Computer Science, Computer Engineering, Electrical Engineering, or related field.\n- Familiarity with object-oriented programming languages such as C++, Java, Rust, or similar.\n- Exposure to Python or other scripting languages.\n- Knowledge of data structures, algorithms, and digital logic design.\n- Coursework or exposure to AI or Agent Engineering.\n- Strong analytical and problem-solving skills.\n- Excellent verbal, written, and interpersonal communication skills.\n- Ability to work effectively in collaborative environments.\n- Demonstrated curiosity and willingness to learn new technologies.",
+  "posted": "2026-10-30",
+  "target": false,
+  "id": "cfe284366c",
+  "found_at": "2026-10-30T10:05-07:00",
+  "visa": "no restriction found",
+  "fit": 4,
+  "fit_why": "Required: computer architecture, VLSI, chip design; candidate lacks hardware background"
+ }
+]
