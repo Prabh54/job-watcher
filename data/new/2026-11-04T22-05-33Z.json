@@ -1,0 +1,32 @@
+[
+ {
+  "company": "Hearst Newspapers",
+  "role": "Rebele Editorial AI Development Intern",
+  "location": "San Francisco, CA",
+  "link": "https://www.linkedin.com/jobs/view/4486527523/",
+  "source": "LinkedIn",
+  "jd": "We are hiring a Newsroom AI Intern for the winter season who is enthusiastic about local journalism and eager to assist with editorial AI initiatives and digital tool development. This full-time, paid internship offers flexible hours and provides an opportunity to collaborate with a talented team while contributing to impactful projects in the newsroom.",
+  "posted": "2026-11-04",
+  "target": false,
+  "id": "ee1ca771b8",
+  "found_at": "2026-11-04T15:05-07:00",
+  "visa": "no restriction found",
+  "fit": "",
+  "fit_why": ""
+ },
+ {
+  "company": "K1 Investment Management",
+  "role": "AI Intern",
+  "location": "Manhattan Beach, CA",
+  "link": "https://www.linkedin.com/jobs/view/4486519958/",
+  "source": "LinkedIn",
+  "jd": "\nAI Intern \nFounding AI Team Reporting Directly to Partner \nWant to build fast, ship real products, and make a visible impact at a leading private equity firm? This role is for you.\n\n\nAbout the Role\nK1 is hiring an AI Intern to help launch our internal AI function in Manhattan Beach, CA. This isn’t a standard internship. You’ll be one of our founding team members, working directly with a Founding Partner with no layers of management, no busywork, and genuine ownership from your first day. You’ll operate where AI, enterprise software, and private equity operations meet, delivering working automations and tools that create measurable impact across a portfolio of 275+ companies. Top performers can convert to full-time roles with the opportunity to build and lead their own team. The ideal candidate reflects K1’s core values: Passion, Persistence, Humility, and Excellence.\n\n\nWhat You’ll Do\n\n- Design, build, and deploy AI-driven automations using Claude, Microsoft 365 (Power Automate, Copilot, SharePoint), and custom integrations that replace manual work across the firm and its portfolio companies\n- Quickly prototype AI tools and agents, from competitive intelligence scrapers to board-report generators, and refine them based on feedback from real users\n- Assess new AI models, tools, and frameworks and turn your findings into clear, practical recommendations for the investment team\n- Create internal dashboards, data pipelines, and agentic workflows that give K1’s investors a real edge\n- Take on additional projects as needed\n\n\nWhat We’re Looking For\n\n- Recent 2026 graduate or graduating in 2027, and based in the Los Angeles area. \n- Currently pursuing (or recently completed) a Bachelor’s or Master’s degree in Computer Science, Data Science, Business + CS, or a related field\n- At least one internship or substantial project in AI/ML, software engineering, or data science\n- Daily, hands-on experience with Claude (Anthropic), including prompt engineering, multi-step workflows, and applying it to real tasks\n- Working knowledge of Microsoft 365 (Excel, PowerPoint, SharePoint, Teams); experience with Power Automate or Copilot Studio is a bonus\n- Proficiency in Python and/or JavaScript. You don’t need to be a systems engineer, but you do need to ship code that works\n- A bias for action, comfort with ambiguity, and real curiosity about where AI is going\n- Availability to work in-office in Manhattan Beach 3+ days per week; 5 days preferred. \n\n\nWhy K1\n\n- Direct access to a Founding Partner, with no bureaucracy in between\n- A fast track to full-time work, including the chance to build your own team\n- Exposure across 275+ enterprise software companies\n- Scheduling that works around your classes\n- Competitive hourly pay\n\n\nAbout K1\nK1 Investment Management is among the largest investors in small-cap, AI-powered software. We’re committed to building category leaders in technology that transform lives and industries, and we’ve invested in more than 275 companies since our founding. Based in Manhattan Beach, California, K1 partners with founders and management teams early to build AI-powered, mission-critical systems of record for enterprise customers worldwide.\n\n\nStarting compensation is $20/hour, with the opportunity for an increase based upon performance.\n\n\nLearn more at k1.com and follow K1 Investment Management on LinkedIn.\n\n",
+  "posted": "2026-11-04",
+  "target": false,
+  "id": "aae1a66957",
+  "found_at": "2026-11-04T15:05-07:00",
+  "visa": "no restriction found",
+  "fit": 7,
+  "fit_why": "Strong Python/JS, AI tooling and RAG fit; enterprise PE automation"
+ }
+]
