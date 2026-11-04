@@ -1,0 +1,62 @@
+[
+ {
+  "company": "AmTrust Financial Services, Inc.",
+  "role": "IT Data Engineer Internship - Summer 2027",
+  "location": "Dallas, TX",
+  "link": "https://www.linkedin.com/jobs/view/4486524389/",
+  "source": "LinkedIn",
+  "jd": "\nOverview\nThe Data Engineering Intern will join a collaborative team responsible for building and supporting enterprise data solutions that enable analytics, reporting, and business decision-making across the organization. This role provides hands-on experience with modern data engineering practices, including data integration, data quality management, data modeling, metadata management, and cloud-based data platforms. The intern will work alongside experienced data engineers, architects, and business stakeholders to gain practical exposure to the full data lifecycle.\n\n\nIn addition to traditional data engineering responsibilities, the intern will have opportunities to explore and leverage Artificial Intelligence (AI) technologies to improve data processes, automate repetitive tasks, and enhance data-driven insights. The ideal candidate is curious, analytical, and eager to learn emerging technologies while contributing to real-world projects. This internship is designed to provide meaningful technical experience, professional mentorship, and exposure to the growing intersection of data engineering and AI within an enterprise environment\n\n\nWhat You’ll Do:\n\n- Assist in developing and maintaining data pipelines and data movement processes across various business systems.\n- Support data quality initiatives by implementing, testing, and monitoring data quality rules and controls.\n- Participate in data modeling activities, including conceptual, logical, and physical data models.\n- Help document and maintain metadata, data lineage, and data governance artifacts.\n- Collaborate with business and technical teams to understand data requirements and support analytics initiatives.\n- Explore and apply AI-powered tools and techniques to improve data engineering processes, automation, and insights.\n- Perform testing, troubleshooting, and validation of data solutions to ensure accuracy and reliability.\n\n\nWhat’s in it for You:\n\n- Assigned mentor from the Data Engineering team for day-to-day guidance.\n- Regular meetings with team members across Data Engineering, BI, Data Science, Architecture, and AI.\n- Executive exposure, such as attending leadership or project status meetings to understand business priorities.\n- Cross-functional collaboration with business analysts, data owners, and operations teams.\n- Participation in lunch-and-learn sessions, technical workshops, and company networking events.\n- Opportunities to present project updates and final internship results to leadership.\n\n\nQualifications \n\n- Rising Senior (seeking those that are graduated or graduating in December 2027 or May 2028).\n- Experience with Python, SQL, or another programming language.\n- Exposure to cloud platforms such as Azure, AWS, or Google Cloud.\n- Knowledge of data warehousing, ETL/ELT, or data integration technologies and concepts.\n- Familiarity with Power BI, Tableau, or other reporting tools.\n- Understanding of data quality, data governance, or metadata concepts.\n- Interest in Artificial Intelligence, Machine Learning, and Generative AI applications.\n- Experience with academic, personal, or open-source data and AI projects.",
+  "posted": "2026-11-04",
+  "target": false,
+  "id": "fc2ea198e2",
+  "found_at": "2026-11-04T12:05-07:00",
+  "visa": "no restriction found",
+  "fit": 6,
+  "fit_why": "Data engineering intern; strong Python/SQL fit, lacks cloud and BI tools"
+ },
+ {
+  "company": "Quadric",
+  "role": "AI Kernel Engineer Intern",
+  "location": "Burlingame, CA",
+  "link": "https://www.linkedin.com/jobs/view/4487523748/",
+  "source": "LinkedIn",
+  "jd": "Quadric is redefining edge AI with the industry's first General Purpose Neural Processing Unit (GPNPU), enabling developers to run both neural network inference and conventional C++ code on a single programmable architecture. Our technology powers intelligent edge devices across automotive, industrial, robotics, and embedded systems.\n\nFounded in 2016 and based in downtown Burlingame, California, Quadric is building the world's first supercomputer designed for the real-time needs of edge devices. Quadric aims to empower developers in every industry with superpowers to create tomorrow's technology, today. The company was co-founded by technologists from MIT and Carnegie Mellon, who were previously the technical co-founders of the Bitcoin computing company 21.\n\nThe Opportunity\n\nAs a AI Kernel Engineer Intern , you will work closely with our senior AI Kernel Engineers to help enable a variety of AI/LLM models to run efficiently on the Quadric platform. This is a hands-on role where you will dive deep into hardware architecture and optimization techniques. You will gain invaluable experience developing, profiling, and optimizing kernel code, directly contributing to the performance of our AI inference stack.\n\nNote: Our preference is for this internship to be based out of our Burlingame, California office. Candidates should be based in the Bay Area or able to relocate for the internship period and available to work on site.\n\nWhat You'll Do\n\nDevelop &amp; Implement\n\n\n\n- Assist in developing AI/LLM kernels and operators on the Quadric platform for efficient inference. \n\nAnalyze &amp; Profile\n\n\n\n- Help profile kernel performance across compute, data, and parallelism to identify micro-architecture and software bottlenecks. \n\nCode Optimization\n\n\n\n- Work alongside senior engineers to optimize C/C++ code to maximize hardware utilization for different workloads. \n\nCollaborate\n\n\n\n- Partner across related areas of the AI inference stack to support team priorities and business goals. \n\nToolchain Contribution\n\n\n\n- Contribute to improvements in the Quadric toolchain, compiler, and runtime. \n\nWhat Success Looks Like\n\nWithin your internship, you'll:\n\n\n\n- Build a working understanding of kernel development and optimization for a GPNPU-class architecture. \n- Contribute kernel or operator work that meaningfully improves AI inference performance. \n- Develop hands-on fluency with performance profiling and hardware-aware code optimization. \n\nWhat We're Looking For\n\nRequired\n\n\n\n- Currently pursuing a Bachelor's, Master's, or PhD in Computer Science, Electrical Engineering, or a related field. \n- Strong proficiency in C/C++ and Python. \n- Solid foundational understanding of computer architecture and hardware-software interaction. \n- Demonstrated capability in problem-solving, debugging, and clear technical communication. \n\nPreferred\n\n\n\n- Academic or project experience with model and kernel inference performance profiling. \n- Exposure to or experience with compute development frameworks such as CUDA, DSP, NEON, or Triton-lang. \n- Familiarity with assembly language. \n- Previous internship experience in a hardware-oriented software role or AI/ML optimization. \n\nWhat we offer\n\nThe hourly salary range for this temporary position is $50-57/hr . This range reflects the full span of levels and geographies at which Quadric hires for this role. The actual hourly salary offered will depend on a number of factors, including the specific level of the role, years and depth of relevant experience, technical skills and competencies.\n\nQuadric interns receive hands-on experience working alongside industry experts in AI and semiconductor technology, with access to mentorship and meaningful project ownership from day one along with following\n\n\n\n- Catered lunch each day in our office\n- Downtown Burlingame office location, close to shops, cafes, and local amenities\n- A work culture focused on innovative disruption\n\nIf this role resonates with you, we encourage you to apply even if your experience does not perfectly match every qualification. We value potential, curiosity, and a willingness to learn just as much as direct experience.\n\nEqual Employment Opportunity\n\nQuadric is an equal opportunity employer. We do not discriminate on the basis of race, color, religion, sex, national origin, age, disability, veteran status, sexual orientation, gender identity, marital status, medical condition, or any other characteristic protected by applicable federal, state, or local law\n\nE-Verify and Right to Work Notices\n\nQuadric participates in the E-Verify program to confirm employment eligibility for U.S.-based roles. As part of this process, applicants may review the following notices, which explain your rights and our participation in E-Verify. These notices are provided in English and Spanish.\n\n\n\n- E-Verify Participation Notice (English | Spanish)\n- Right to Work Notice (English | Spanish)\n\nNo action is required from candidates during the application process. These notices are provided for informational purposes only.\n\nPrivacy\n\nBy submitting an application, you acknowledge that Quadric will collect and process your personal information as part of the hiring process. Please review our Privacy Policy to understand how we handle your data\n\n",
+  "posted": "2026-11-04",
+  "target": false,
+  "id": "92e1256a65",
+  "found_at": "2026-11-04T12:05-07:00",
+  "visa": "no restriction found",
+  "fit": 2,
+  "fit_why": "Embedded GPNPU kernel/C++ hardware work; far from his web stack"
+ },
+ {
+  "company": "Qualcomm",
+  "role": "FY27 Intern - Machine Learning Engineering Internship - Canada (4 months)",
+  "location": "Markham",
+  "link": "https://zapply.jobs/l/d/qualcomm-3099048",
+  "source": "Zapply Canada",
+  "jd": "",
+  "posted": "",
+  "visa": "",
+  "target": false,
+  "id": "65c5198638",
+  "found_at": "2026-11-04T12:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ },
+ {
+  "company": "Qualcomm",
+  "role": "FY27 Intern - AI and DSP Applications Engineering Internship - Canada (4 months)",
+  "location": "Markham",
+  "link": "https://zapply.jobs/l/d/qualcomm-3099047",
+  "source": "Zapply Canada",
+  "jd": "",
+  "posted": "",
+  "visa": "",
+  "target": false,
+  "id": "0b302a09f5",
+  "found_at": "2026-11-04T12:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ }
+]
