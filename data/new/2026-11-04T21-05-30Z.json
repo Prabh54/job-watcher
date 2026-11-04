@@ -1,0 +1,17 @@
+[
+ {
+  "company": "Hira",
+  "role": "Data Engineer Intern (Summer 2027)",
+  "location": "San Francisco Bay Area",
+  "link": "https://www.linkedin.com/jobs/view/4486528272/",
+  "source": "LinkedIn",
+  "jd": "Company Description Hira is an automation platform that streamlines the job application process using dedicated personal agents that operate continuously to identify strong career opportunities. The platform is designed to reduce the time and effort required to search and apply for roles, offering a more efficient and personalized experience. Hira leverages modern conversational interfaces and integrations to deliver its services where users already communicate. Currently, Hira is available on iMessage and Muse, making it accessible and easy to use for a broad range of job seekers.\nRole Description The Data Engineer Intern (Summer 2027) will support the design, development, and maintenance of data pipelines that power Hira’s core product and analytics. This is a full-time, on-site role based in the San Francisco Bay Area. Day-to-day responsibilities include assisting with building and optimizing ETL processes, working with data models and data warehouses, and helping ensure data quality and reliability across systems. The intern will collaborate with software engineers, data analysts, and product team members to translate business needs into scalable data solutions. The role may also involve documenting data workflows, monitoring data performance, and contributing to internal tools that improve how data is managed and used.\nQualifications\n \n\n- Candidates should possess skills in Data Engineering and Data Warehousing to support scalable data infrastructure and storage solutions.\n- Candidates should possess skills in Data Modeling and Data Analytics to design structured datasets and derive insights for product and business decisions.\n- Candidates should possess skills in Extract Transform Load (ETL) processes to build and maintain reliable data pipelines from multiple sources.\n- Familiarity with SQL and at least one programming language commonly used in data engineering (such as Python or Java) is beneficial.\n- Understanding of cloud data platforms and tools (e.g., AWS, GCP, or Azure) is advantageous.\n- Strong problem-solving abilities, attention to detail, and willingness to learn in a fast-paced environment are important.\n- Currently pursuing a degree in Computer Science, Data Science, Engineering, or a related field with an expected graduation date after Summer 2027.",
+  "posted": "2026-11-04",
+  "target": false,
+  "id": "df8538e830",
+  "found_at": "2026-11-04T14:05-07:00",
+  "visa": "no restriction found",
+  "fit": 7,
+  "fit_why": "SQL, Python, data pipelines match; cloud and warehousing gaps"
+ }
+]
