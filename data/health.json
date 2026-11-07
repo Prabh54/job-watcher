@@ -107,6 +107,15 @@
   "Wealthsimple"
  ],
  "today": {
+  "date": "2026-11-07",
+  "linkedin_results": 0,
+  "linkedin_runs": 0,
+  "new_jobs": 0,
+  "problems": [],
+  "runs": 0,
+  "visa_dropped": 0
+ },
+ "yesterday": {
   "date": "2026-11-06",
   "linkedin_results": 1041,
   "linkedin_runs": 16,
@@ -115,17 +124,5 @@
   "runs": 17,
   "target_new": 14,
   "visa_dropped": 43
- },
- "yesterday": {
-  "date": "2026-11-05",
-  "linkedin_results": 979,
-  "linkedin_runs": 15,
-  "new_jobs": 51,
-  "problems": [
-   "⚠️ Microsoft careers feed failing"
-  ],
-  "runs": 16,
-  "target_new": 4,
-  "visa_dropped": 32
  }
 }
