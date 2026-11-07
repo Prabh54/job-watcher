@@ -5,10 +5,10 @@
   "target_Microsoft": "2026-11-05T18:05:38.255029+00:00"
  },
  "heartbeat_sent": "2026-11-06",
- "last_active_run": "2026-11-07T22:14:40.259395+00:00",
- "last_linkedin_ok": "2026-11-07T22:05:29.601572+00:00",
- "last_run": "2026-11-07T22:14:40.259395+00:00",
- "linkedin_zero_streak": 2,
+ "last_active_run": "2026-11-07T23:05:29.271487+00:00",
+ "last_linkedin_ok": "2026-11-07T23:05:29.271487+00:00",
+ "last_run": "2026-11-07T23:05:29.271487+00:00",
+ "linkedin_zero_streak": 0,
  "missed_summary_reported": "2026-10-16",
  "repo_fail_streak": {
   "Simplify Summer 2027": 0,
@@ -108,11 +108,11 @@
  ],
  "today": {
   "date": "2026-11-07",
-  "linkedin_results": 386,
-  "linkedin_runs": 9,
+  "linkedin_results": 390,
+  "linkedin_runs": 10,
   "new_jobs": 8,
   "problems": [],
-  "runs": 10,
+  "runs": 11,
   "target_new": 1,
   "visa_dropped": 4
  },
