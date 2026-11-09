@@ -107,6 +107,15 @@
   "Wealthsimple"
  ],
  "today": {
+  "date": "2026-11-09",
+  "linkedin_results": 0,
+  "linkedin_runs": 0,
+  "new_jobs": 0,
+  "problems": [],
+  "runs": 0,
+  "visa_dropped": 0
+ },
+ "yesterday": {
   "date": "2026-11-08",
   "linkedin_results": 250,
   "linkedin_runs": 16,
@@ -115,15 +124,5 @@
   "runs": 18,
   "target_new": 0,
   "visa_dropped": 3
- },
- "yesterday": {
-  "date": "2026-11-07",
-  "linkedin_results": 407,
-  "linkedin_runs": 16,
-  "new_jobs": 8,
-  "problems": [],
-  "runs": 17,
-  "target_new": 1,
-  "visa_dropped": 5
  }
 }
