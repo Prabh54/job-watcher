@@ -1,0 +1,17 @@
+[
+ {
+  "company": "GenPark",
+  "role": "Backend Developer Intern",
+  "location": "San Jose, CA",
+  "link": "https://www.linkedin.com/jobs/view/4487672333/",
+  "source": "LinkedIn",
+  "jd": "\nLocation: San Jose, CA\nJob Type: Internship\nCompensation: Paid internship; compensation to be discussed based on experience and availability.About the Role\nWe are looking for a Backend Developer Intern to join our engineering team and help build reliable, scalable, and secure backend systems.\nIn this role, you will work with server-side applications, APIs, databases, and cloud services. You will collaborate with frontend engineers and product team members to support new features, improve existing systems, and gain hands-on experience with production software development.Responsibilities\n\n- Develop and maintain backend services and server-side application logic\n- Design, build, and integrate REST APIs\n- Work with relational and NoSQL databases\n- Write clean, efficient, and maintainable backend code\n- Debug, test, and troubleshoot application issues\n- Improve system performance, reliability, and scalability\n- Support authentication, authorization, and third-party integrations\n- Collaborate with frontend developers on application features\n- Participate in code reviews and technical discussions\n- Assist with deployment, documentation, and ongoing system improvements\n- Research and evaluate new backend technologies when neededQualifications\n\n- Currently pursuing or recently completed a degree in Computer Science, Software Engineering, or a related field\n- Familiarity with Python, Node.js, Java, or another backend programming language\n- Basic understanding of server-side development and API design\n- Familiarity with SQL or NoSQL databases\n- Understanding of Git and version control\n- Strong problem-solving and debugging skills\n- Good communication and teamwork abilities\n- Willingness to learn new technologies and development practicesPreferred Qualifications\n\n- Experience with Node.js, Express, FastAPI, Django, Spring Boot, or similar frameworks\n- Familiarity with PostgreSQL, MySQL, MongoDB, or similar databases\n- Experience building or integrating REST APIs\n- Understanding of authentication, authorization, and application security\n- Familiarity with Docker, CI/CD, or containerized applications\n- Exposure to AWS, Azure, Google Cloud, or similar cloud platforms\n- Personal projects, GitHub contributions, hackathons, or previous internship experience are a plusWhat We Value\nWe value strong coding fundamentals, practical problem-solving, curiosity, and the ability to learn quickly. Candidates with hands-on backend projects or software development experience are encouraged to apply.",
+  "posted": "2026-11-09",
+  "target": false,
+  "id": "23c5deff7a",
+  "found_at": "2026-11-08T18:05-07:00",
+  "visa": "no restriction found",
+  "fit": 9,
+  "fit_why": "Backend REST APIs, Node/Express, PostgreSQL, Docker, CI match directly"
+ }
+]
