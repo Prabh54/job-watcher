@@ -5,9 +5,9 @@
   "target_Microsoft": "2026-11-05T18:05:38.255029+00:00"
  },
  "heartbeat_sent": "2026-11-08",
- "last_active_run": "2026-11-09T21:05:31.969423+00:00",
- "last_linkedin_ok": "2026-11-09T21:05:31.969423+00:00",
- "last_run": "2026-11-09T21:05:31.969423+00:00",
+ "last_active_run": "2026-11-09T22:05:32.419044+00:00",
+ "last_linkedin_ok": "2026-11-09T22:05:32.419044+00:00",
+ "last_run": "2026-11-09T22:05:32.419044+00:00",
  "linkedin_zero_streak": 0,
  "missed_summary_reported": "2026-10-16",
  "repo_fail_streak": {
@@ -50,7 +50,7 @@
   "Kinaxis": 0,
   "Lyft": 0,
   "Manulife": 0,
-  "Microsoft": 1,
+  "Microsoft": 0,
   "MongoDB": 0,
   "Motorola Solutions": 0,
   "NetApp": 0,
@@ -108,13 +108,13 @@
  ],
  "today": {
   "date": "2026-11-09",
-  "linkedin_results": 299,
-  "linkedin_runs": 8,
-  "new_jobs": 21,
+  "linkedin_results": 307,
+  "linkedin_runs": 9,
+  "new_jobs": 24,
   "problems": [],
-  "runs": 8,
-  "target_new": 3,
-  "visa_dropped": 7
+  "runs": 9,
+  "target_new": 5,
+  "visa_dropped": 8
  },
  "yesterday": {
   "date": "2026-11-08",
