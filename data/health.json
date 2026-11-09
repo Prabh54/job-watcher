@@ -5,9 +5,9 @@
   "target_Microsoft": "2026-11-05T18:05:38.255029+00:00"
  },
  "heartbeat_sent": "2026-11-08",
- "last_active_run": "2026-11-09T05:05:29.391926+00:00",
- "last_linkedin_ok": "2026-11-09T05:05:29.391926+00:00",
- "last_run": "2026-11-09T05:05:29.391926+00:00",
+ "last_active_run": "2026-11-09T14:05:32.134250+00:00",
+ "last_linkedin_ok": "2026-11-09T14:05:32.134250+00:00",
+ "last_run": "2026-11-09T14:05:32.134250+00:00",
  "linkedin_zero_streak": 0,
  "missed_summary_reported": "2026-10-16",
  "repo_fail_streak": {
@@ -41,7 +41,7 @@
   "Expedia Group": 0,
   "F5": 0,
   "FluidAI Medical": 0,
-  "GeoComply": 0,
+  "GeoComply": 1,
   "Global Relay": 0,
   "Google": 0,
   "Harvey": 0,
@@ -50,7 +50,7 @@
   "Kinaxis": 0,
   "Lyft": 0,
   "Manulife": 0,
-  "Microsoft": 0,
+  "Microsoft": 1,
   "MongoDB": 0,
   "Motorola Solutions": 0,
   "NetApp": 0,
@@ -108,11 +108,12 @@
  ],
  "today": {
   "date": "2026-11-09",
-  "linkedin_results": 0,
-  "linkedin_runs": 0,
-  "new_jobs": 0,
+  "linkedin_results": 104,
+  "linkedin_runs": 1,
+  "new_jobs": 5,
   "problems": [],
-  "runs": 0,
+  "runs": 1,
+  "target_new": 1,
   "visa_dropped": 0
  },
  "yesterday": {
