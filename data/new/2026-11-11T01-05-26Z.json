@@ -1,0 +1,62 @@
+[
+ {
+  "company": "Jobverse.io",
+  "role": "AI/ML Engineering Intern",
+  "location": "Sunnyvale, TX",
+  "link": "https://www.linkedin.com/jobs/view/4489680407/",
+  "source": "LinkedIn",
+  "jd": "Amperesand builds next-generation power infrastructure systems. The AI/ML Engineering Intern will develop AI and machine learning solutions that improve engineering workflows, reliability, and product development, collaborating with cross-functional teams on production-facing work.\n\nResponsibilities\n\n\n\n- Design and develop AI/ML solutions that accelerate product development and engineering workflows\n- Build AI frameworks, agentic workflows, and knowledge assistants that help teams access and utilize engineering data\n- Fine-tune, evaluate, and optimize Large Language Models (LLMs) for domain-specific engineering use cases\n- Develop Retrieval-Augmented Generation (RAG) applications using engineering documentation, test data, and design knowledge\n- Train and deploy machine learning models to support Mechanical Design Engineering and related teams\n- Partner with Mechanical, Electrical, Manufacturing, and Software Engineers to solve high-impact business and engineering problems\n- Build data pipelines, model evaluation frameworks, and AI experimentation workflows\n- Document solutions and contribute production-quality code in a fast-paced startup environment\n- Bring a customer-oriented, team-first mindset to a fast-paced startup environment",
+  "posted": "2026-11-11",
+  "target": false,
+  "id": "70ed59b175",
+  "found_at": "2026-11-10T18:05-07:00",
+  "visa": "no restriction found",
+  "fit": 8,
+  "fit_why": "RAG, LLM and ML pipelines match his OpenAI/RAG and Python work"
+ },
+ {
+  "company": "Hunt Consolidated, Inc.",
+  "role": "Application Developer Intern - Summer 2027",
+  "location": "Dallas, TX",
+  "link": "https://www.linkedin.com/jobs/view/4489661224/",
+  "source": "LinkedIn",
+  "jd": "Job Description\n\n JOB DESCRIPTION \n\nWe are currently seeking a Application Developer Intern for IT Digital Solutions department located in our Dallas, TX office. This is a paid summer internship opportunity with housing provided if needed.\n\nWe’re looking for a motivated Application Developer Intern to help design, build, and maintain backend applications and services. You’ll work mainly on backend development in Python and Java and help support our new AI-driven development initiatives.\n\nThe ideal candidate is currently pursuing a degree in Computer Science, Software Engineering, or a related field and has a foundation in programming through coursework, personal projects, or prior internships. Familiarity with AI-assisted coding tools such as Claude Code, OpenAI Codex, or GitHub Copilot is a plus. Experience isn’t required, but we’re looking for curiosity about using these tools in real development workflows. You’ll work with experienced developers, get hands-on exposure to production systems, and build skills in modern, AI-enabled software engineering.\n\nResponsibilities\n\n\n\n- Design, develop, test, and deploy scalable backend applications and APIs.\n- Build and maintain enterprise-grade solutions using Python and Java.\n- Develop and optimize integrations between applications, services, and databases.\n- Collaborate with cross-functional teams to gather requirements and deliver technical solutions.\n- Leverage AI-powered development tools to improve development efficiency and code quality.\n- Participate in architecture discussions and contribute to technical design decisions.\n- Troubleshoot and resolve complex technical issues across the application stack.\n- Support the exploration and implementation of AI-related development frameworks and tools.\n- Document technical designs, processes, and development standards.\n\n\nRequired Degree Background\n\n\n\n- Rising junior or senior pursuing an undergraduate degree or master’s in Computer Science\n- Minimum of 3.0 grade point average\n\n\nRequired Skills/Knowledge\n\n\n\n- Knowledge of Python, Java, Claude Code / Codex experience \n- Experience with Azure DevOps and Git for source control, CI/CD pipelines, and release management.\n- Experience building and consuming RESTful APIs and microservices. \n- Experience with relational and/or NoSQL databases. \n- Strong understanding of software architecture, design patterns, and development best practices. \n- Experience working in Agile development environments. \n- Excellent problem-solving and analytical skills. \n- Strong communication and collaboration abilities.\n\n\nAbilities/Behaviors\n\n\n\n- Self-starter and excellent work ethic.\n- Exceptional creativity and the ability to think outside the box.\n- Ability to work in a team environment.\n- Ability to manage multiple tasks and areas of responsibility concurrently.\n- Bring innovative ideas and a fresh perspective to\n- Ability to provide academic transcripts.\n\n\nCompany Highlights\n\n\n\n- For 90 years, we have nurtured creative ideas and turned them into successful realities using three core strategic pillars – creativity, excellence, and people. \n- Free covered employee parking for Dallas HQ-based employees.\n- Free specialty coffee bar in the Dallas HQ.\n- Onsite breakfast and lunch area in the Dallas HQ.\n- Commitment to the following ideals:\n\n- Work/Life Balance.\n- Ongoing professional development opportunities.\n- An exceptional employee experience.\nHunt is committed to a diverse and inclusive workplace. Hunt is an equal opportunity employer and does not discriminate on the basis of race, national origin, gender, gender identity, sexual orientation, protected veteran status, disability, age, or other legally protected status.\n\n",
+  "posted": "2026-11-10",
+  "target": false,
+  "id": "83f3fd5c2b",
+  "found_at": "2026-11-10T18:05-07:00",
+  "visa": "no restriction found",
+  "fit": 8,
+  "fit_why": "Backend Python/Java APIs with AI coding tools; strong match to QuestLog and RKJ work"
+ },
+ {
+  "company": "Sedaro",
+  "role": "DevOps Intern",
+  "location": "Arlington, Virginia",
+  "link": "https://zapply.jobs/l/d/bamboohr-sedarotech-96",
+  "source": "Zapply 2027",
+  "jd": "",
+  "posted": "",
+  "visa": "check sponsorship",
+  "target": false,
+  "id": "ab8e2217bd",
+  "found_at": "2026-11-10T18:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ },
+ {
+  "company": "Sedaro",
+  "role": "Software Engineer Intern",
+  "location": "Arlington, Virginia",
+  "link": "https://zapply.jobs/l/d/bamboohr-sedarotech-97",
+  "source": "Zapply 2027",
+  "jd": "",
+  "posted": "",
+  "visa": "check sponsorship",
+  "target": false,
+  "id": "d4a3293d25",
+  "found_at": "2026-11-10T18:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ }
+]
