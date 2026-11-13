@@ -108,6 +108,15 @@
   "Wealthsimple"
  ],
  "today": {
+  "date": "2026-11-13",
+  "linkedin_results": 0,
+  "linkedin_runs": 0,
+  "new_jobs": 0,
+  "problems": [],
+  "runs": 0,
+  "visa_dropped": 0
+ },
+ "yesterday": {
   "date": "2026-11-12",
   "linkedin_results": 1108,
   "linkedin_runs": 16,
@@ -116,18 +125,5 @@
   "runs": 17,
   "target_new": 6,
   "visa_dropped": 14
- },
- "yesterday": {
-  "date": "2026-11-11",
-  "linkedin_results": 1543,
-  "linkedin_runs": 16,
-  "new_jobs": 63,
-  "problems": [
-   "⚠️ Apify failed, used JobSpy backup",
-   "⚠️ Apify failed, used JobSpy backup"
-  ],
-  "runs": 17,
-  "target_new": 3,
-  "visa_dropped": 21
  }
 }
