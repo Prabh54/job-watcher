@@ -1,0 +1,62 @@
+[
+ {
+  "company": "Copart",
+  "role": "Site Reliability Engineer Intern",
+  "location": "Dallas, TX",
+  "link": "https://www.linkedin.com/jobs/view/4456440147/",
+  "source": "LinkedIn",
+  "jd": "Copart, Inc. a technology leader and the premier online vehicle auction platform globally, with over 200 facilities located across the world, Copart links vehicle sellers to more than 750,000 buyers in over 190 countries. We believe in providing an unmatched experience, every day and everywhere, driven by our people, processes, and technology. \n\nCopart, a global leader in online vehicle auctions, is seeking a highly skilled and proactive Site Reliability Engineer Intern to join our SRE team at our Dallas location. This role is pivotal in ensuring the stability, performance, and reliability of Copart’s critical applications and global data center infrastructure through advanced monitoring, troubleshooting, and automation.\n\nAs a key member of our 24/7 operations, you will contribute to meeting our stringent SLA commitments and play a crucial role in maintaining operational excellence.\n\nWhat You’ll Do (Essential Duties &amp; Responsibilities)\n\nMonitoring &amp; Automation\n\n\n\n- Proactively monitor Copart’s global data centers and application infrastructure using internal tools, identifying and resolving issues before they impact operations.\n- Design, build, and optimize monitoring and automation tools using Python and Ansible to collect key metrics and enable automated remediation of infrastructure and application issues.\n- Maintain and optimize a suite of monitoring and collaboration tools, including Datadog and Kubernetes-related observability tooling.\n- Conduct monthly security patching for operating systems and critical applications.\n\nCollaboration &amp; Improvement\n\n\n\n- Support for Infrastructure teams, quickly and efficiently troubleshooting and communicating issues across various Copart domains.\n- Partner with cross-functional internal teams, including Product Development, DevOps, Network, Systems, and Database teams.\n- Develop analytical and reporting capabilities to monitor performance, identify areas for improvement, and implement quality control plans using Data Dog.\n- Create and maintain comprehensive standard operating procedures (SOPs), system diagrams, and training materials for team use.\n- Support incident management activities including triage, tracking, root cause analysis, and monthly review of lessons learned.\n- Process change paperwork throughout the day as part of daily operational requirements.\n\nIncident Management Requirements\n\n\n\n- Experience triaging, tracking, and resolving incidents in a production environment\n- Ability to perform initial impact assessment and severity classification\n- Strong communication skills for updates to stakeholders during active incidents\n- Experience documenting incident timelines, actions taken, and resolution details.\n- Coordinate and perform periodic failover testing for Copart’s network, systems infrastructure, and application environments to ensure business continuity.\n- Participation in root cause analysis and post-incident review processes\n- Ability to identify trends, recurring issues, and opportunities for preventive action\n\nWho We’re Looking For (Ideal Candidate Profile)\n\n\n\n- Collaborative &amp; Communicative: A strong team player with excellent interpersonal, oral, and written communication skills who thrives in a collaborative environment.\n- Technically Versatile: Beyond core knowledge of Linux and Windows, you bring experience with virtual environments, basic networking, scripting, automation, and observability tools. Familiarity with Datadog is a plus.\n- Innovative &amp; Proactive: You continuously look for ways to improve processes and procedures and are comfortable suggesting and implementing practical solutions to improve efficiency and reliability.\n- Self-Starter &amp; Adaptable: A highly motivated individual who can work independently, manage competing priorities, and perform effectively in a flexible work schedule.\n\nHighly Desired Skills (A Big Plus)\n\n\n\n- Intermediate proficiency in programming and scripting.\n- Strong troubleshooting skills across Linux/Unix/Windows-based systems.\n- Hands-on experience with virtual machine management software, particularly VMware vSphere a plus.\n- Familiarity with monitoring and observability tools such as Datadog.\n- Basic understanding of AI tools and concepts, including the ability to work with AI-assisted workflows, prompt-based tools, or automation-enhanced support processes.\n- Ability to leverage AI tools to improve efficiency in troubleshooting, documentation, analysis, or operational support is a plus.\n- Any experience with AWS or GCP\n\nAt Copart, we are focused on harnessing the power of diversity, inclusion, and collaboration. By embracing diverse perspectives, we open doors to innovation and unleash the full potential of our team. We are dedicated to fostering a workplace where everyone feels appreciated, included, and inspired to grow and contribute meaningfully.\n\nE-Verify Program Participant: Copart participates in the Department of Homeland Security U.S. Citizenship and Immigration Services' E-Verify program (For U.S. applicants and employees only). Please click below to learn more about the E-Verify program:\n\n\n\n- E-verify Participation\n- Right to Work\n\n",
+  "posted": "2026-11-13",
+  "target": false,
+  "id": "316f1eb329",
+  "found_at": "2026-11-13T10:05-07:00",
+  "visa": "no restriction found",
+  "fit": 4,
+  "fit_why": "SRE ops role: Linux/Windows sysadmin, incidents, Datadog, Ansible; weak fit"
+ },
+ {
+  "company": "Career Launch Tech Initiative",
+  "role": "Software Engineer Internship(Volunteer)",
+  "location": "Los Angeles, CA",
+  "link": "https://www.linkedin.com/jobs/view/4490738543/",
+  "source": "LinkedIn",
+  "jd": "\nOrganization: Career Launch Tech Initiative (CLTI)\nType: Volunteer\nLocation: Remote (with potential opportunities for on-site collaboration with partner companies)\nCommitment: Flexible (20-25 hours per week recommended)\n\n\nAbout CLTI:\nCareer Launch Tech Initiative (CLTI) is a 501(c)(3) nonprofit whose mission is to equip underserved communities with the technology, training, and resources necessary to access career development opportunities.\n\n\nThe Role:\nCLTI is seeking a Volunteer Software Engineer to collaborate with one of our partner companies, providing pro-bono software engineering support on impactful projects. This is a unique opportunity to contribute your expertise to initiatives that drive social good while gaining hands-on experience and expanding your professional network.\n\n\nKey Responsibilities:\n\n- Collaborate with the engineering team of a partner company to design, develop, and maintain software solutions.\n- Build scalable and efficient applications.\n- Leverage knowledge of Artificial Intelligence and Machine Learning to enhance project outcomes.\n- Participate in code reviews, testing, and debugging to ensure high-quality deliverables.\n- Work closely with stakeholders to understand project goals and align technical solutions accordingly.\n\n\nPreferred Qualifications:\n\n- Master’s student or graduate in Computer Science or a related field.\n- Knowledge of Artificial Intelligence and Machine Learning is a plus.\n- Passion for leveraging technology to create meaningful social impact.\n- Strong communication and teamwork skills.\n\n\nWhat You’ll Gain:\n\n- Opportunity to work on real-world projects with a tangible impact on underrepresented communities.Experience collaborating with industry professionals through CLTI’s partner network.\n- Networking opportunities with tech leaders and peers passionate about social impact.\n- Recognition for your contribution to a nonprofit cause.",
+  "posted": "2026-11-13",
+  "target": false,
+  "id": "82946bd36d",
+  "found_at": "2026-11-13T10:05-07:00",
+  "visa": "no restriction found",
+  "fit": 7,
+  "fit_why": "Volunteer SWE role; strong full-stack/AI overlap, but unpaid and partner-dependent"
+ },
+ {
+  "company": "WoodmenLife",
+  "role": "2027 Summer Software Engineer Intern",
+  "location": "Omaha, NE",
+  "link": "https://jobs.dayforcehcm.com/en-US/woodmenlife/candidateportal/jobs/2923",
+  "source": "speedyapply USA",
+  "jd": "",
+  "posted": "",
+  "visa": "check sponsorship",
+  "target": false,
+  "id": "f5e3365991",
+  "found_at": "2026-11-13T10:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ },
+ {
+  "company": "Interco",
+  "role": "Paid Internship -- Software Development -- React",
+  "location": "St. Louis, MO",
+  "link": "https://jobs.smartrecruiters.com/Interco/744000158581114-paid-internship-software-development-react-?oga=true",
+  "source": "speedyapply USA",
+  "jd": "Interco is a global metals trading and recycling company headquartered in St. Louis with facilities in Missouri and Illinois. The company buys, sells, and processes nonferrous metals and electronics scrap worldwide utilizing established partnerships with end consumers in the United States, Europe, Latin America, and Asia.\n www.intercojobs.com\n\nInterco is seeking a Software Development Intern to join a dynamic development team with the responsibility of contributing to the company's Enterprise Resource Planning projects. This position calls for a strong command of frontend technologies as the ideal candidate will have experience using design tools such as Figma and will be working largely with the React framework. The position is full-time and will require the candidate to work on-site Monday through Friday.\n\nResponsibilities: \n \n• Translate Figma wireframes into responsive, interactive user interfaces \n• Write clean, maintainable code for web applications using the React framework \n• Proactively document features, design choices, and implementation strategies \n• Collaborate with team members for API integration and to ensure user experiences are in alignment with the company’s goals Qualifications: \n \n• Currently pursuing or recently completed a technical degree \n• Exposure to design tools such as Figma \n• A strong eye for design and attention to detail \n• Experience with front-end frameworks such as React \n• Proficiency with programming languages such as JavaScript, HTML, and CSS\n\nCompensation: \n \n• $15 per Hour \n• This Internship does not offer additional benefits About Interco \n Interco has been recycling computers, batteries, metals, and electronics with a focused track record of innovation and integrity since 1996. The company specializes in the placement of smelter-ready materials catering to commercial, industrial, dealer, and government organizations nationwide.  \n The Interco recycling facilities are separated into three departments: nonferrous metals, computers and electronics, and battery processing. The nonferrous facility is located on the 40-acre main campus in Madison (IL) while the computers and electronics are processed in Edwardsville where the Administrative and some logistics offices are located. The commercial department is located on The Hill in St. Louis. \n As a matter of company policy, Interco does not sponsor employment visas or hire from outside of the USA, nor does the company sponsor candidates who do not currently reside within the USA without an existing H-1B visa.  \n This job description is designed to provide a general overview of the requirements of the job and does not entail a comprehensive listing of all activities, duties or responsibilities that will be required. Interco Trading Company reserves the right to modify this job description at any time; including assigning or reassigning job duties or eliminating this position at any time.\n Candidate information will be kept confidential according to EEO guidelines.\n Work remotely: No \n www.intercojobs.com",
+  "posted": "",
+  "visa": "no restriction found",
+  "target": false,
+  "id": "2214211236",
+  "found_at": "2026-11-13T10:05-07:00",
+  "fit": 7,
+  "fit_why": "React frontend intern; strong stack match, Figma design gap"
+ }
+]
