@@ -9,9 +9,9 @@
   "target_Motorola Solutions": "2026-11-14T04:05:41.349176+00:00"
  },
  "heartbeat_sent": "2026-11-13",
- "last_active_run": "2026-11-14T15:05:27.055262+00:00",
- "last_linkedin_ok": "2026-11-14T15:05:27.055262+00:00",
- "last_run": "2026-11-14T15:05:27.055262+00:00",
+ "last_active_run": "2026-11-14T16:05:33.428396+00:00",
+ "last_linkedin_ok": "2026-11-14T16:05:33.428396+00:00",
+ "last_run": "2026-11-14T16:05:33.428396+00:00",
  "linkedin_zero_streak": 0,
  "missed_summary_reported": "2026-10-16",
  "repo_fail_streak": {
@@ -34,7 +34,7 @@
   "1Password": 0,
   "Amazon": 0,
   "Atlassian": 0,
-  "Autodesk": 7,
+  "Autodesk": 8,
   "BMO": 0,
   "Capital One": 0,
   "Cohere": 0,
@@ -54,7 +54,7 @@
   "Kinaxis": 0,
   "Lyft": 0,
   "Manulife": 0,
-  "Microsoft": 1,
+  "Microsoft": 2,
   "MongoDB": 0,
   "Motorola Solutions": 0,
   "NetApp": 0,
@@ -112,15 +112,15 @@
  ],
  "today": {
   "date": "2026-11-14",
-  "linkedin_results": 262,
-  "linkedin_runs": 2,
-  "new_jobs": 5,
+  "linkedin_results": 304,
+  "linkedin_runs": 3,
+  "new_jobs": 6,
   "problems": [
    "⚠️ Autodesk careers feed failing"
   ],
-  "runs": 2,
+  "runs": 3,
   "target_new": 1,
-  "visa_dropped": 3
+  "visa_dropped": 4
  },
  "yesterday": {
   "date": "2026-11-13",
