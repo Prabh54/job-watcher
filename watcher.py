@@ -78,6 +78,26 @@ LINKEDIN_LOCATIONS = [            # (name LinkedIn understands, LinkedIn geoId)
     ("California, United States", "102095887"),
     ("Texas, United States", "102748797"),
 ]
+# Added Nov 15 2026. Canadian postings say "co-op" far more than "intern", but only two of the
+# main keywords used it. These run in Canada only, so they add 5 searches, not 15. Apify bills per
+# result returned, not per search, and an hourly window is small, so the extra cost is modest.
+LINKEDIN_CANADA_ONLY_KEYWORDS = [
+    "data co-op", "full stack co-op", "backend co-op",
+    "machine learning co-op", "machine learning intern",
+]
+
+
+def linkedin_searches():
+    """Every (keyword, location, geoId) search, Canada first.
+
+    The per-run billed cap (LINKEDIN_MAX_ITEMS_PER_RUN) cuts whatever comes last when a long
+    window (the 7am catch-up) hits it, so Canada goes first and the US is what gets trimmed.
+    """
+    canada = [l for l in LINKEDIN_LOCATIONS if l[0] == "Canada"]
+    others = [l for l in LINKEDIN_LOCATIONS if l[0] != "Canada"]
+    out = [(kw, loc, geo) for loc, geo in canada for kw in LINKEDIN_KEYWORDS + LINKEDIN_CANADA_ONLY_KEYWORDS]
+    out += [(kw, loc, geo) for loc, geo in others for kw in LINKEDIN_KEYWORDS]
+    return out
 # Each run looks back over the time since the last successful LinkedIn check plus a 30-minute
 # buffer (LinkedIn sometimes lists a job a few minutes after its "posted" time), never less than
 # 90 minutes and never more than 24 hours. So a late or skipped run never leaves a gap.
@@ -128,7 +148,12 @@ ROLE_WORDS = (
     r"\b(software|developer|swe|sde|sysde|systems development engineer\w*|programmer|back[- ]?end|front[- ]?end|full[- ]?stack|web|"
     r"mobile|ios|android|cloud|devops|platform|site reliability|sre|infrastructure|"
     r"machine learning|ml|ai|artificial intelligence|computer science|"
-    r"data engineer\w*|data science|data scientist|data platform|data infrastructure)\b"
+    r"data engineer\w*|data science|data scientist|data platform|data infrastructure|"
+    # Added Nov 15 2026 after tracing the Canadian repo listings: real SWE roles whose titles hit
+    # none of the words above (KRAFTON UI Programming, Intel Compiler Engineer, Aptiv Linux
+    # Engineer, Element Fleet Forward Deployed Engineer, NVIDIA Math Libraries, Citi ... -
+    # Application Development).
+    r"programming|compiler\w*|linux|forward deployed|gen ?ai|math libraries|application development)\b"
 )
 # Hard disqualifiers: these kill a title wherever they appear. Wrong level, wrong degree,
 # wrong discipline, or a role I actively don't want (QA/test, IT support, PM).
@@ -155,7 +180,7 @@ SOFT_EXCLUDE_WORDS = (
 SWE_ANCHOR = (
     r"\b(software (engineer\w*|developer|development)|swe|sde|"
     r"full[- ]?stack (engineer\w*|developer)|back[- ]?end (engineer\w*|developer)|"
-    r"front[- ]?end (engineer\w*|developer)|web developer|application developer)\b"
+    r"front[- ]?end (engineer\w*|developer)|web developer|application developer|application development)\b"
 )
 # "research" drops a title unless it is clearly an engineering role ("Software Engineer Intern, Research Platform")
 RESEARCH_OK = r"\b(software engineer\w*|software developer|developer|swe|sde)\b"
@@ -548,13 +573,12 @@ def alert(health, key, title, message, every_hours):
 
 def linkedin_urls(lookback_sec):
     urls = []
-    for kw in LINKEDIN_KEYWORDS:
-        for loc, geo in LINKEDIN_LOCATIONS:
-            urls.append(
-                "https://www.linkedin.com/jobs/search/?"
-                f"keywords={quote(kw)}&location={quote(loc)}&geoId={geo}"
-                f"&f_TPR=r{int(lookback_sec)}&sortBy=DD"
-            )
+    for kw, loc, geo in linkedin_searches():
+        urls.append(
+            "https://www.linkedin.com/jobs/search/?"
+            f"keywords={quote(kw)}&location={quote(loc)}&geoId={geo}"
+            f"&f_TPR=r{int(lookback_sec)}&sortBy=DD"
+        )
     return urls
 
 
@@ -562,7 +586,7 @@ def linkedin_limits(lookback_sec):
     """Per-search limit and per-run billed cap, scaled to the length of the look-back window."""
     per_search = min(150, max(LINKEDIN_LIMIT_PER_SEARCH,
                               math.ceil(LINKEDIN_LIMIT_PER_SEARCH * lookback_sec / 5400)))
-    total = per_search * len(LINKEDIN_KEYWORDS) * len(LINKEDIN_LOCATIONS)
+    total = per_search * len(linkedin_searches())
     return per_search, min(LINKEDIN_MAX_ITEMS_PER_RUN, total)
 
 
@@ -614,31 +638,31 @@ def from_jobspy(lookback_sec):
     from jobspy import scrape_jobs
     jobs, errors = [], 0
     hours = max(2, math.ceil(lookback_sec / 3600))
-    for kw in LINKEDIN_KEYWORDS:
-        for loc, _ in LINKEDIN_LOCATIONS:
-            try:
-                df = scrape_jobs(site_name=["linkedin"], search_term=kw, location=loc,
-                                 results_wanted=LINKEDIN_LIMIT_PER_SEARCH, hours_old=hours,
-                                 linkedin_fetch_description=True, description_format="markdown", verbose=0)
-            except Exception as e:
-                errors += 1
-                log(f"  JobSpy '{kw}' / {loc} failed: {e}")
-                continue
-            for _, row in df.iterrows():
-                d = str(row.get("description") or "")
-                jobs.append({
-                    "company": str(row.get("company") or ""),
-                    "role": str(row.get("title") or ""),
-                    "location": str(row.get("location") or loc),
-                    "link": str(row.get("job_url") or ""),
-                    "source": "LinkedIn",
-                    "jd": "" if d == "nan" else d,
-                    "posted": str(row.get("date_posted") or ""),
-                })
-            time.sleep(2)
+    searches = linkedin_searches()
+    for kw, loc, _ in searches:
+        try:
+            df = scrape_jobs(site_name=["linkedin"], search_term=kw, location=loc,
+                             results_wanted=LINKEDIN_LIMIT_PER_SEARCH, hours_old=hours,
+                             linkedin_fetch_description=True, description_format="markdown", verbose=0)
+        except Exception as e:
+            errors += 1
+            log(f"  JobSpy '{kw}' / {loc} failed: {e}")
+            continue
+        for _, row in df.iterrows():
+            d = str(row.get("description") or "")
+            jobs.append({
+                "company": str(row.get("company") or ""),
+                "role": str(row.get("title") or ""),
+                "location": str(row.get("location") or loc),
+                "link": str(row.get("job_url") or ""),
+                "source": "LinkedIn",
+                "jd": "" if d == "nan" else d,
+                "posted": str(row.get("date_posted") or ""),
+            })
+        time.sleep(2)
     # JobSpy logs LinkedIn blocks instead of raising, so an empty result across all six searches
     # is treated as a failure rather than "no new jobs".
-    if errors == len(LINKEDIN_KEYWORDS) * len(LINKEDIN_LOCATIONS) or not jobs:
+    if errors == len(searches) or not jobs:
         raise RuntimeError("JobSpy got nothing from LinkedIn (likely blocked)")
     return jobs
 
@@ -753,10 +777,18 @@ def from_targets(health):
     polled = [t for t in T.TARGETS if t["feeds"]]
 
     def one(t):
-        try:
-            return t, T.fetch_target(t), None
-        except Exception as e:
-            return t, [], f"{e.__class__.__name__}: {str(e)[:200]}"
+        # One retry after a short pause. Most failures are a single bad response (Microsoft's
+        # search API fails about every other run; Workday throws the odd 521), and a second try a
+        # few seconds later usually works, so a blip no longer counts toward an alert.
+        err = None
+        for attempt in range(2):
+            try:
+                return t, T.fetch_target(t), None
+            except Exception as e:
+                err = f"{e.__class__.__name__}: {str(e)[:200]}"
+                if attempt == 0:
+                    time.sleep(5)
+        return t, [], err
 
     with ThreadPoolExecutor(max_workers=TARGET_WORKERS) as pool:
         results = list(pool.map(one, polled))
@@ -772,6 +804,12 @@ def from_targets(health):
                       f"{streaks[t['name']]} runs in a row. Still caught via LinkedIn and the repos. "
                       f"Error: {err}", 24)
             continue
+        # A feed that had been alerted on is working again: say so once, at low priority, so a
+        # stale "failing" alert isn't left looking current.
+        if streaks.get(t["name"], 0) >= TARGET_FAIL_STREAK_ALERT and f"target_{t['name']}" in health.get("alerts", {}):
+            push(f"✅ {t['name']} careers feed working again",
+                 f"Back after {streaks[t['name']]} failed runs. Nothing to do.", priority=2,
+                 tags=["white_check_mark"])
         streaks[t["name"]] = 0
         ok_names.append(t["name"])
         for j in got:
@@ -1036,7 +1074,7 @@ def new_day(health):
 
 def summary_text(t):
     problems = sorted(set(t.get("problems", [])))
-    text = (f"{t.get('runs', 0)} runs · {t.get('new_jobs', 0)} new jobs"
+    text = (f"{t.get('runs', 0)} runs · {t.get('new_jobs', 0)} new jobs ({t.get('new_canada', 0)} 🇨🇦)"
             f" ({t.get('visa_dropped', 0)} US roles skipped for citizenship/no sponsorship)\n"
             f"{TARGET_STAR} Target companies: {t.get('target_new', 0)} new\n"
             f"LinkedIn: {t.get('linkedin_runs', 0)} checks, {t.get('linkedin_results', 0)} results billed\n"
@@ -1162,6 +1200,13 @@ def run():
                       f"Apify: {apify_error}\nJobSpy: {str(e2)[:200]}", 3)
         if li_jobs is not None:
             log(f"LinkedIn ({used}): {len(li_jobs)} results")
+            # Canada vs US split, so a quiet day can be told apart from a search that stopped
+            # returning Canadian roles.
+            li_ca = [j for j in li_jobs if in_canada(j["location"])]
+            li_ca_rel = sum(is_relevant(j["role"], j["location"]) for j in li_ca)
+            li_us_rel = sum(is_relevant(j["role"], j["location"]) for j in li_jobs if j not in li_ca)
+            log(f"  Canada: {len(li_ca)} results ({li_ca_rel} pass the filter) · "
+                f"US: {len(li_jobs) - len(li_ca)} results ({li_us_rel} pass the filter)")
             all_jobs += li_jobs
             health["last_linkedin_ok"] = NOW.isoformat()
             health["today"]["linkedin_runs"] += 1
@@ -1232,7 +1277,9 @@ def run():
             continue
         batch.update(ks | {j["link"]})
         new.append(j)
-    log(f"{relevant} relevant of {len(all_jobs)} total → {len(new)} new")
+    new_ca = sum(in_canada(j["location"]) for j in new)
+    log(f"{relevant} relevant of {len(all_jobs)} total → {len(new)} new ({new_ca} Canadian)")
+    health["today"]["new_canada"] = health["today"].get("new_canada", 0) + new_ca
 
     for j in new:
         seen["links"][j["link"]] = NOW.isoformat()[:10]
