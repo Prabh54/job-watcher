@@ -1,0 +1,17 @@
+[
+ {
+  "company": "CLOUDAIHUB LLC",
+  "role": "Cloud Engineering Intern — CLOUDAIHUB LLC",
+  "location": "Fremont, CA",
+  "link": "https://www.linkedin.com/jobs/view/4490236610/",
+  "source": "LinkedIn",
+  "jd": "\nLocation: Fremont, CA (Hybrid / Remote across the U.S.)\nCompensation: $20.00 / hour\nEmployment Type: InternshipAbout CLOUDAIHUB LLC\nCLOUDAIHUB LLC helps businesses design, migrate, secure, and scale cloud, database, and AI architectures. Headquartered in Fremont, CA and serving teams nationwide, we deliver zero-downtime cloud migrations, managed cloud operations, security and compliance readiness (SOC2, HIPAA, PCI, GDPR), and cost optimization across AWS, Azure, GCP, OCI, and IBM Cloud.Role Overview\nWe are looking for a hands-on Cloud Engineering Intern to assist our engineers with cloud infrastructure setup, migrations, database support, and operational documentation. This is a practical learning role where you will work directly with live cloud environments and client deliverables.What You Will Do\n\n- Assist with cloud infrastructure provisioning, configuration, and maintenance across AWS, Azure, or GCP.\n- Support cloud migration tasks, environment testing, and basic monitoring/alerting checks.\n- Help with database administration support, backups, query/performance checks, and security hardening checklists.\n- Document architectures, runbooks, and compliance/security controls (e.g., SOC2, HIPAA, GDPR readiness items).\n- Collaborate with senior engineers and support our 4-week hands-on training initiatives when needed.Qualifications\n\n- Currently pursuing or recently completed a degree/certificate in Computer Science, Cloud Computing, Information Systems, or a related field (or equivalent hands-on project experience).\n- Basic familiarity with at least one major cloud provider (AWS, Azure, or GCP) and Linux/command-line fundamentals.\n- Comfort with basic networking concepts and scripting (Bash or Python).\n- Strong communication skills, curiosity, and attention to detail.What You Get\n\n- $20/hour competitive internship pay.\n- Real-world exposure to multi-cloud architecture, databases, and client consulting workflows.\n- Mentorship from experienced cloud and database practitioners at CLOUDAIHUB LLC.How to Apply\n\n- Send your resume  to info@cloudaihub.ai",
+  "posted": "2026-11-15",
+  "target": false,
+  "id": "5a072bcb22",
+  "found_at": "2026-11-15T16:05-07:00",
+  "visa": "no restriction found",
+  "fit": 4,
+  "fit_why": "Cloud/infra and DB ops focus, not his full-stack/LLM core"
+ }
+]
