@@ -966,6 +966,17 @@ Calibrate strictly. Most postings are average; do not cluster everything at 7-8.
  3-4   Weak: different specialty, or asks for skills/experience he does not have.
  1-2   Wrong: senior-level, requires a degree he lacks, or unrelated field.
 
+Hard caps (these override everything above): if the posting REQUIRES current Master's or PhD
+enrollment or a graduate degree, score at most 3. If it requires French (or another language
+besides English) fluency, score at most 3. If it requires years of professional experience
+beyond an internship, score at most 3. "Preferred" or "nice to have" is not a requirement.
+
+Frontend, backend and full-stack web roles are ALL his core work: never mark a role down for
+leaning frontend or leaning backend.
+Judge the work, not the company's industry. A web, backend, data or AI role at an IoT, energy,
+finance, insurance or healthcare company scores on its stack and tasks. Mark down for domain only
+when the work itself needs specialist knowledge (robotics, VLSI/EDA, embedded, physics modelling).
+
 Mark down hard for: years of experience beyond a student, graduate degree required, a specialty
 he has no exposure to (embedded, firmware, hardware, game engines, security research, mobile
 native). Mark up for: web/full-stack, backend/API and database work, his named languages and
