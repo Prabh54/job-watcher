@@ -968,7 +968,8 @@ Calibrate strictly. Most postings are average; do not cluster everything at 7-8.
 
 Mark down hard for: years of experience beyond a student, graduate degree required, a specialty
 he has no exposure to (embedded, firmware, hardware, game engines, security research, mobile
-native). Mark up for: web/full-stack, his named languages and frameworks, data/ML with Python,
+native). Mark up for: web/full-stack, backend/API and database work, his named languages and
+frameworks, AI/LLM application engineering (RAG, agents, LLM evaluation), data/ML with Python,
 and co-op or internship framing."""
 
 
