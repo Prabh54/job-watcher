@@ -971,6 +971,9 @@ enrollment or a graduate degree, score at most 3. If it requires French (or anot
 besides English) fluency, score at most 3. If it requires years of professional experience
 beyond an internship, score at most 3. "Preferred" or "nice to have" is not a requirement.
 
+Low-code/no-code roles (Power Platform, Copilot Studio, RPA) and generic IT or "technical"
+internships with little real coding: 4-5 at most, whatever company or AI label they carry.
+
 Frontend, backend and full-stack web roles are ALL his core work: never mark a role down for
 leaning frontend or leaning backend.
 Judge the work, not the company's industry. A web, backend, data or AI role at an IoT, energy,
