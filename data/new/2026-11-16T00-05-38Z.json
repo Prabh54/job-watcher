@@ -1,0 +1,17 @@
+[
+ {
+  "company": "Viavi Solutions",
+  "role": "Software Engineering Co-op",
+  "location": "Germantown, MD USA",
+  "link": "https://viavisolutions.wd1.myworkdayjobs.com/careers/job/Germantown-MD-USA/Software-Engineering-Co-op_260005308-1",
+  "source": "Zapply 2027",
+  "jd": "Summary: \nVIAVI (NASDAQ: VIAV) is a global provider of network test, monitoring and assurance solutions for telecommunications, cloud, enterprises, first responders, military, aerospace, and railway. VIAVI is also a leader in light management technologies for 3D sensing, anti-counterfeiting, consumer electronics, industrial, automotive, government and aerospace applications.\n\nWe are the people behind the products that help keep the world connected at home, school, work, at play, and everywhere in between. VIAVI employees are passionate about supporting customer success and we welcome people who bring their best every day to the company – to question, to collaborate and to push for solutions that will delight our customers.\n\nAs a Software Engineering Co-op in our Germantown, MD Metro software team, you will contribute to the software behind our high-performance network test instruments. You will work alongside full-time engineers on real product code, test automation, and DevOps tooling, and see your work ship. \n Duties & Responsibilities: \n Responsibilities\n \n• Develop, test, and debug features for embedded Linux-based test instruments under the guidance of a mentor. \n• Participate in Agile/Scrum ceremonies: sprint planning, stand-ups, reviews, and retrospectives. \n• Take part in code reviews and follow team coding standards and static-analysis rules. \n• Document designs, test results, and findings, and present your work to the team. \n \n Pre-Requisites / Skills / Experience Requirements: \n Qualifications\n Required \n \n• Currently pursuing a BS or MS in Computer Science, Computer Engineering, Electrical Engineering, or a related field. \n• Coursework or project experience in C or C++ and object-oriented design. \n• Familiarity with Linux and the command line. \n• Experience with Git or another version control system. \n• Familiarity with using AI tools for software development (code generation, debugging, testing, and documentation), including reviewing and validating AI-generated output. \n• Strong problem-solving, communication, and teamwork skills. \n Preferred \n \n• Scripting experience (Python, Tcl, Bash). \n• Exposure to unit testing or test-driven development. \n• Networking fundamentals (TCP/IP, Ethernet) or telecom concepts (optical, OTN, CPRI, 5G). \n• Qt/QML, embedded Linux, or RTOS experience. \n• Prior exposure to Agile/Scrum and tools such as Jira and Confluence. \n If you have what it takes to push boundaries and seize opportunities, apply to join our team today. \n   \n VIAVI Solutions is an equal opportunity and affirmative action employer – minorities/females/veterans/persons with disabilities. \n Job Posting Pay Range: \n19 to\n35 Exceptional qualifications, experience and location may impact salary.  VIAVI offers a competitive benefits package that includes paid time off , health, life and disability insurance, 401(k), and a bonus program.",
+  "posted": "",
+  "visa": "sponsors ✅",
+  "target": false,
+  "id": "755acee74b",
+  "found_at": "2026-11-15T17:05-07:00",
+  "fit": 4,
+  "fit_why": "Embedded Linux test instruments; C/C++ and networking, not his web stack"
+ }
+]
