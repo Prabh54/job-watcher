@@ -113,6 +113,15 @@
   "Wealthsimple"
  ],
  "today": {
+  "date": "2026-11-16",
+  "linkedin_results": 0,
+  "linkedin_runs": 0,
+  "new_jobs": 0,
+  "problems": [],
+  "runs": 0,
+  "visa_dropped": 0
+ },
+ "yesterday": {
   "date": "2026-11-15",
   "linkedin_results": 324,
   "linkedin_runs": 16,
@@ -125,17 +134,5 @@
   "runs": 17,
   "target_new": 3,
   "visa_dropped": 6
- },
- "yesterday": {
-  "date": "2026-11-14",
-  "linkedin_results": 602,
-  "linkedin_runs": 16,
-  "new_jobs": 16,
-  "problems": [
-   "⚠️ Autodesk careers feed failing"
-  ],
-  "runs": 18,
-  "target_new": 1,
-  "visa_dropped": 10
  }
 }
