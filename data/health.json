@@ -11,9 +11,9 @@
   "target_Motorola Solutions": "2026-11-14T04:05:41.349176+00:00"
  },
  "heartbeat_sent": "2026-11-15",
- "last_active_run": "2026-11-16T04:05:49.874011+00:00",
- "last_linkedin_ok": "2026-11-16T04:05:49.874011+00:00",
- "last_run": "2026-11-16T04:05:49.874011+00:00",
+ "last_active_run": "2026-11-16T05:05:28.824370+00:00",
+ "last_linkedin_ok": "2026-11-16T05:05:28.824370+00:00",
+ "last_run": "2026-11-16T05:05:28.824370+00:00",
  "linkedin_zero_streak": 0,
  "missed_summary_reported": "2026-10-16",
  "repo_fail_streak": {
@@ -38,13 +38,13 @@
   "Atlassian": 0,
   "Autodesk": 0,
   "BMO": 0,
-  "Capital One": 6,
+  "Capital One": 7,
   "Cohere": 0,
   "Databricks": 0,
   "Dialpad": 0,
   "DoorDash": 0,
   "Electronic Arts": 0,
-  "Expedia Group": 6,
+  "Expedia Group": 7,
   "F5": 0,
   "FluidAI Medical": 0,
   "GeoComply": 0,
@@ -114,15 +114,15 @@
  ],
  "today": {
   "date": "2026-11-15",
-  "linkedin_results": 308,
-  "linkedin_runs": 15,
+  "linkedin_results": 324,
+  "linkedin_runs": 16,
   "new_canada": 9,
   "new_jobs": 33,
   "problems": [
    "⚠️ Capital One careers feed failing",
    "⚠️ Expedia Group careers feed failing"
   ],
-  "runs": 16,
+  "runs": 17,
   "target_new": 3,
   "visa_dropped": 6
  },
