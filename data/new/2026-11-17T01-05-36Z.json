@@ -1,0 +1,47 @@
+[
+ {
+  "company": "Tesla",
+  "role": "Internship, Data Engineer, Applications Engineering (Winter/Spring 2027)",
+  "location": "Fremont, CA",
+  "link": "https://www.linkedin.com/jobs/view/4490961702/",
+  "source": "LinkedIn",
+  "jd": "What To Expect\nConsider before submitting an application:\n\nThis position is expected to start around January 2027 and continue through the entire Spring term (ending approximately May 2027 or later, if available). We ask for a minimum of 12 weeks, Full - Time (40 hours/week) and on-site, for most internships. Our internship program is for students who are actively enrolled in an academic program. Recent graduates seeking employment after graduation and not returning to school should apply for full-time positions, not internships.\n\nInternational Students: If your work authorization is through CPT, please consult your school on your ability to work 40 hours per week before applying. You must be able to work 40 hours per week on-site. Many students will be limited to part-time during the academic year.\n\nAbout The Team\nThe Data Engineering team is building a state-of-the-art analytics platform for business and operation intelligence. At Tesla, we have enormous amounts of data and we want to give meaning to it and help business users to make data driven decisions. Our platform will allow users to answer \"what\", \"when\" and \"how\" questions as well as allow them to ask \"what if?\". Interns will help design, develop, maintain and support our Enterprise Data Warehouse and BI platform within Tesla. This position offers a unique opportunity to impact the entire organization by developing data tools and creating a data driven culture.\n\nWhat You'll Do\n\n\n- Design, develop, and maintain batch and streaming data pipelines that ingest, transform, and serve data in Tesla's analytics platform\n- Build and optimize data models and datasets that power business intelligence, operational reporting, and analytics\n- Clearly communicate analysis assumptions, methodology, limitations, and results to technical audiences\n- Work with engineers and stakeholders to gather data requirements and deliver reliable, well-documented data products\n- Write well-organized SQL and Python for transformations, and contribute to orchestration and distributed processing where applicable (Airflow, Spark, Kafka)\n- Monitor and improve data quality, reliability, and performance of datasets and downstream systems\n- Identify, analyze, and interpret trends in complex data sets to support dashboards and reports\n- Drive underlying data systems improvement by working with key cross-functional stakeholders\n\n\nWhat You'll Bring\n\n\n- Currently pursuing a degree in Computer Science, Information Technology or a related field of study and graduating between December 2026-December 2027\n- Proficiency in one or more of the following developer skills: Python, Java, Go, C/C++, Ruby, SQL or other common industry languages\n- Familiarity with database concepts such as MySQL, MS SQL\n- Nice to have: AirFlow, Splunk, Kafka, Spark\n- Excellent grasp of fundamental computer science concepts and ability to write well-organized code\n- Eagerness to collaborate cross-functionally with other engineering teams while able to work independently; detail-oriented and execution focused\n\n\nBenefits\nAs a full-time Tesla Intern, you will be eligible for:\n\n-  Medical plans &gt; plan options with $0 payroll deduction\n-  Family-building, fertility, adoption and surrogacy benefits\n-  Dental (including orthodontic coverage) and vision plans. Both have an option with a $0 payroll contribution\n-  Company Paid (Health Savings Account) HSA Contribution when enrolled in the High Deductible Medical Plan with HSA\n-  Healthcare and Dependent Care Flexible Spending Accounts (FSA)\n-  401(k), Employee Stock Purchase Plans, and other financial benefits\n-  Company Paid Basic Life, AD&amp;D, and short-term disability insurance (90 day waiting period)\n-  Employee Assistance Program\n-  Sick and Vacation time (Flex time for salary positions), and Paid Holidays\n-  Back-up childcare and parenting support resources\n-  Voluntary benefits to include: critical illness, hospital indemnity, accident insurance, theft &amp; legal services, and pet insurance\n-  Commuter benefits\n-  Employee discounts and perks program\n-  Earned Wage Access: Real-time pay access paid daily, subject to eligibility and schedule (applicable for below Sr. Managers levels)\n\n\nExpected Compensation\n\n$32.45 - $45.43 + benefits\n\nPay offered may vary depending on multiple individualized factors, including market location, job-related knowledge, skills, and experience. The total compensation package for this position may also include other elements dependent on the position offered. Details of participation in these benefit plans will be provided if an employee receives an offer of employment.\n\n, Tesla",
+  "posted": "2026-11-17",
+  "target": false,
+  "id": "1a5dd77769",
+  "found_at": "2026-11-16T18:05-07:00",
+  "visa": "no restriction found",
+  "fit": 6,
+  "fit_why": "Data engineering pipelines fit; core needs Java/Go/SQL and Airflow/Spark"
+ },
+ {
+  "company": "Schweitzer Engineering Laboratories",
+  "role": "Software Engineer Intern",
+  "location": "Washington - Pullman",
+  "link": "https://zapply.jobs/l/d/workday-selinc-sel-2026-24060",
+  "source": "Zapply 2027",
+  "jd": "",
+  "posted": "",
+  "visa": "sponsors ✅",
+  "target": false,
+  "id": "f0f120656f",
+  "found_at": "2026-11-16T18:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ },
+ {
+  "company": "Lumentum",
+  "role": "Internship - Data Science & Analytics",
+  "location": "USA - CA - San Jose",
+  "link": "https://zapply.jobs/l/d/workday-lumentum-lite-20261771",
+  "source": "Zapply 2027",
+  "jd": "",
+  "posted": "",
+  "visa": "sponsors ✅",
+  "target": false,
+  "id": "644c15c33c",
+  "found_at": "2026-11-16T18:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ }
+]
