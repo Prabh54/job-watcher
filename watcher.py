@@ -273,7 +273,8 @@ CANADA_LOC = (
     r"\b(canada|ontario|british columbia|quebec|qu[eé]bec|alberta|manitoba|saskatchewan|nova scotia|"
     r"new brunswick|newfoundland|toronto|vancouver|montr[eé]al|ottawa|waterloo|kitchener|calgary|"
     r"edmonton|burnaby|richmond hill|mississauga|markham|halifax|winnipeg|victoria, bc|saint john|"
-    r"oakville|gatineau|regina|saskatoon|surrey, bc|guelph|london, on|hamilton, on)\b"
+    r"oakville|gatineau|regina|saskatoon|surrey, bc|guelph|london, on|hamilton, on|"
+    r"qc)\b"     # "Qc, CA" (RTX / Pratt & Whitney Quebec rows) was being read as a US job
 )
 CANADA_CODES = r",\s*(ON|BC|QC|AB|MB|SK|NS|NB|NL|PE|YT|NT|NU)\b"
 # Spelled-out Canadian places, mapped to a province, for the duplicate key below (many repo rows
@@ -282,7 +283,7 @@ CANADA_CITY_PROV = [
     (r"\b(british columbia|vancouver|burnaby|richmond, bc|surrey, bc|victoria, bc|kelowna|kamloops)\b", "BC"),
     (r"\b(ontario|toronto|ottawa|waterloo|kitchener|mississauga|markham|brampton|oakville|"
      r"richmond hill|guelph|hamilton, on|london, on|windsor, on|kingston, on)\b", "ON"),
-    (r"\b(qu[eé]bec|montr[eé]al|gatineau|laval|sherbrooke)\b", "QC"),
+    (r"\b(qu[eé]bec|montr[eé]al|gatineau|laval|sherbrooke|qc)\b", "QC"),
     (r"\b(alberta|calgary|edmonton)\b", "AB"),
     (r"\b(manitoba|winnipeg)\b", "MB"),
     (r"\b(saskatchewan|saskatoon|regina)\b", "SK"),
@@ -325,6 +326,8 @@ LINKEDIN_ZERO_STREAK_ALERT = 3    # daytime runs in a row with 0 LinkedIn result
 REPO_FAIL_STREAK_ALERT = 3
 TARGET_FAIL_STREAK_ALERT = 6      # one company's careers feed failing this many daytime runs in a row
 TARGET_WORKERS = 8                # careers feeds polled in parallel
+WORKDAY_RETRY_HOURS = 6           # after Workday refuses us (HTTP 429), leave it alone this long
+WORKDAY_ALERT_EVERY_HOURS = 48    # one low-priority reminder while Workday stays blocked
 TARGET_STAR = "⭐"                # shown in the push title for jobs at a target company
 TARGET_BACKLOG_FILE_NAME = "target_backlog.csv"   # US roles found on a company's first sweep
 REPO_BACKLOG_FILE_NAME = "repo_backlog.csv"       # US roles found on a newly added repo's first load
@@ -695,7 +698,7 @@ def from_jobspy(lookback_sec):
 def from_indeed(lookback_sec):
     """Indeed Canada via JobSpy. Returns Canadian postings from the look-back window."""
     from jobspy import scrape_jobs
-    jobs, errors = [], []
+    jobs, errors, links = [], [], set()
     hours = max(2, math.ceil(lookback_sec / 3600))
     for term in INDEED_TERMS:
         try:
@@ -710,12 +713,14 @@ def from_indeed(lookback_sec):
                 v = row.get(k)
                 return "" if v is None or str(v) == "nan" else str(v)
             loc = val("location")
-            if not in_canada(loc):
-                continue
+            link = val("job_url_direct") or val("job_url")
+            if not in_canada(loc) or link in links:
+                continue      # the same posting comes back under several search terms
+            links.add(link)
             # job_url_direct is the employer's own posting (Workday, Greenhouse, ...) when Indeed
             # has it; fall back to the Indeed page.
             jobs.append({"company": val("company"), "role": val("title"), "location": loc,
-                         "link": val("job_url_direct") or val("job_url"), "source": "Indeed",
+                         "link": link, "source": "Indeed",
                          "jd": val("description"), "posted": val("date_posted")})
         time.sleep(2)
     # JobSpy logs a block (403/429) instead of raising, so nothing at all across every search
@@ -833,6 +838,10 @@ def from_targets(health):
     from concurrent.futures import ThreadPoolExecutor
 
     polled = T.polled()
+    # Workday refused the runner recently: don't contact it again until the cool-down is over.
+    wd_at = health.get("workday_blocked_at")
+    if wd_at and NOW - datetime.fromisoformat(wd_at) < timedelta(hours=WORKDAY_RETRY_HOURS):
+        T.workday_skip(f"Workday cool-down (refused us at {wd_at[:16]}Z)")
 
     def one(t):
         # One retry after a short pause. Most failures are a single bad response (Microsoft's
@@ -843,7 +852,7 @@ def from_targets(health):
             try:
                 return t, T.fetch_target(t), None
             except T.WorkdayBlocked as e:
-                return t, [], f"{e.__class__.__name__}: {str(e)[:200]}"   # retrying won't help this run
+                return t, [], f"WorkdayBlocked: {str(e)[:200]}"   # retrying won't help this run
             except Exception as e:
                 err = f"{e.__class__.__name__}: {str(e)[:200]}"
                 if attempt == 0:
@@ -854,8 +863,14 @@ def from_targets(health):
         results = list(pool.map(one, polled))
 
     streaks = health.setdefault("target_fail_streak", {})
-    jobs, ok_names, failed = [], [], []
+    jobs, ok_names, failed, wd_skipped = [], [], [], []
     for t, got, err in results:
+        if err and err.startswith("WorkdayBlocked"):
+            # Not this company's fault and not a broken feed: Workday is refusing the runner.
+            # No per-company streak or alert (that was 9 separate "feed failing" pushes a day);
+            # one combined reminder below instead.
+            wd_skipped.append(t["name"])
+            continue
         if err:
             failed.append(t["name"])
             streaks[t["name"]] = streaks.get(t["name"], 0) + 1
@@ -881,6 +896,18 @@ def from_targets(health):
             jobs.append(j)
     log(f"Career pages: {len(ok_names)}/{len(polled)} companies OK, {len(jobs)} US/Canada postings"
         + (f" (failed: {', '.join(failed)})" if failed else ""))
+    if wd_skipped:
+        reason = T.workday_blocked() or ""
+        log(f"  Workday not checked ({reason}): {', '.join(wd_skipped)}")
+        if not reason.startswith("Workday cool-down"):
+            health["workday_blocked_at"] = NOW.isoformat()
+            alert(health, "workday_blocked", "ℹ️ Workday careers pages paused",
+                  f"Workday is refusing GitHub's servers (HTTP 429), so these careers pages aren't "
+                  f"checked directly: {', '.join(wd_skipped)}. Their postings still arrive via LinkedIn, "
+                  f"Indeed and the repos. Retried every {WORKDAY_RETRY_HOURS}h; nothing to do.",
+                  WORKDAY_ALERT_EVERY_HOURS)
+    elif health.pop("workday_blocked_at", None):
+        log("  Workday answering again")
     return jobs, ok_names
 
 

@@ -37,10 +37,17 @@ def targets():
             if w.is_relevant(j["role"], j["location"]):
                 b["canada_relevant"].append(f"{j['role']} | {j['location']}")
     failed = {k: v for k, v in health.get("target_fail_streak", {}).items() if v}
-    wd = w.T._wd_state
     return {"ok": len(ok), "polled": len(w.T.polled()), "failed": failed,
-            "workday_blocked": sorted(wd["blocked"]),
-            "workday_sec": round(time.time() - wd["start"]) if wd["start"] else None, "by_company": by}
+            "workday_blocked": w.T.workday_blocked(), "health": health, "by_company": by}
+
+
+def cooldown():
+    """Second pass with the health from the first: Workday must be skipped without any request."""
+    w.T._wd_state.update(blocked=None, last=0.0)
+    health = {"workday_blocked_at": w.NOW.isoformat()}
+    t0 = time.time()
+    jobs, ok = w.from_targets(health)
+    return {"ok": len(ok), "sec": round(time.time() - t0), "blocked": w.T.workday_blocked()}
 
 
 def indeed():
@@ -51,5 +58,6 @@ def indeed():
 
 
 step("targets", targets)
+step("cooldown", cooldown)
 step("indeed", indeed)
 print("probe finished")

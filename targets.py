@@ -105,23 +105,14 @@ TARGETS = [
 
 # -------------------------------------------------------------------------------- Canadian employers
 # Added Nov 18 2026 to get more Canadian roles. NOT target companies: no ⭐ on the phone, and only
-# their Canadian postings are kept. These are the employers that show up most in the Canadian rows
-# of job_queue.xlsx without being on the target list, and each feed below is the exact careers
-# system their own application links in the sheet point to (so no guessed endpoints). Polled the
-# same way as the targets, so a new posting lands within the hour instead of waiting for a repo.
+# their Canadian postings are kept. These are employers that show up in the Canadian rows of
+# job_queue.xlsx without being on the target list, and each feed below is the exact careers system
+# their own application links in the sheet point to (so no guessed endpoints). Polled the same way
+# as the targets, so a new posting lands within the hour instead of waiting for a repo.
+# CIBC, Sun Life, CAE, SOTI, TMX and Ciena were left out on purpose: they're on Workday, which
+# refuses GitHub's runners (see WORKDAY_* below), so their postings still come via LinkedIn,
+# Indeed and the repos.
 CANADA_EMPLOYERS = [
-    dict(name="CIBC", aliases=["cibc", "canadian imperial bank of commerce"], prefix=["cibc"],
-         feeds=[["workday", "cibc.wd3.myworkdayjobs.com", "cibc", "search"]]),
-    dict(name="Sun Life", aliases=["sun life", "sunlife", "sun life financial"], prefix=["sun life"],
-         feeds=[["workday", "sunlife.wd3.myworkdayjobs.com", "sunlife", "Campus"]]),
-    dict(name="CAE", aliases=["cae", "cae inc"], prefix=[],
-         feeds=[["workday", "cae.wd3.myworkdayjobs.com", "cae", "career"]]),
-    dict(name="SOTI", aliases=["soti", "soti inc"], prefix=[],
-         feeds=[["workday", "soti.wd3.myworkdayjobs.com", "soti", "SOTI-Next-Gen"]]),
-    dict(name="TMX Group", aliases=["tmx", "tmx group"], prefix=["tmx group"],
-         feeds=[["workday", "tmx.wd3.myworkdayjobs.com", "tmx", "TMX_Careers"]]),
-    dict(name="Ciena", aliases=["ciena", "ciena corporation"], prefix=["ciena"],
-         feeds=[["workday", "ciena.wd5.myworkdayjobs.com", "ciena", "Careers"]]),
     dict(name="Tenstorrent", aliases=["tenstorrent"], prefix=["tenstorrent"],
          feeds=[["greenhouse", "tenstorrentuniversity"]]),
     dict(name="Equitable Bank", aliases=["equitable bank", "eq bank", "eqbank"], prefix=["equitable bank"],
@@ -244,50 +235,46 @@ def f_ashby(slug):
     return out
 
 
-# Workday rate-limits by IP, and every Workday tenant answers from the same few clusters. Polled
-# in parallel, TD + BMO + Manulife + RBC + Capital One ... all hit Workday from one GitHub runner
-# in the same second, and it answered HTTP 429 to all of them (Nov 2026: 1-4 days of failures in a
-# row). So every Workday request in the process goes through one lock: one request at a time, at
-# least WORKDAY_GAP_SEC apart. A 429 gets one short back-off; a tenant that still answers 429 is
-# skipped for the rest of the run (some tenants refuse a given runner IP outright, and waiting on
-# them just stalls everything else), and all Workday polling stops once WORKDAY_BUDGET_SEC is used.
+# Workday and GitHub Actions (Nov 2026): every Workday tenant (TD, BMO, Manulife, RBC, Capital
+# One, Autodesk, Expedia, F5, Motorola) answers HTTP 429 to GitHub's runners, even one request at
+# a time, from about Nov 15 on. That is Workday refusing this traffic, so the watcher respects it
+# rather than working around it: Workday requests go one at a time, WORKDAY_GAP_SEC apart, and the
+# first 429 stops ALL Workday polling for the run (WorkdayBlocked). The watcher then only tries
+# Workday again every WORKDAY_RETRY_HOURS (watcher.py), and those companies' postings keep coming
+# through LinkedIn, Indeed and the repos.
 WORKDAY_GAP_SEC = 1.5
-WORKDAY_429_WAIT_SEC = 8
-WORKDAY_BUDGET_SEC = 240
 _WD_LOCK = threading.Lock()
-_wd_state = {"last": 0.0, "start": None, "blocked": set()}
+_wd_state = {"last": 0.0, "blocked": None}   # blocked: reason string once Workday said no this run
 
 
 class WorkdayBlocked(Exception):
     pass
 
 
+def workday_skip(reason):
+    """Don't contact Workday at all this run (the watcher's cool-down after a block)."""
+    _wd_state["blocked"] = reason
+
+
+def workday_blocked():
+    return _wd_state["blocked"]
+
+
 def _workday_post(api, body):
-    tenant = api.split("/wday/cxs/")[0]
     with _WD_LOCK:
-        st = _wd_state
-        if st["start"] is None:
-            st["start"] = time.time()
-        if tenant in st["blocked"]:
-            raise WorkdayBlocked(f"{tenant} answered 429 earlier this run; skipped")
-        if time.time() - st["start"] > WORKDAY_BUDGET_SEC:
-            raise WorkdayBlocked(f"Workday time budget ({WORKDAY_BUDGET_SEC}s) used up this run")
-        for attempt in range(2):
-            wait = st["last"] + WORKDAY_GAP_SEC - time.time()
-            if wait > 0:
-                time.sleep(wait)
-            try:
-                r = HTTP.post(api, json=body, timeout=TIMEOUT,
-                              headers={"Accept": "application/json", "Content-Type": "application/json"})
-            finally:
-                st["last"] = time.time()
-            if r.status_code != 429:
-                break
-            if attempt == 0:
-                time.sleep(WORKDAY_429_WAIT_SEC)
+        if _wd_state["blocked"]:
+            raise WorkdayBlocked(_wd_state["blocked"])
+        wait = _wd_state["last"] + WORKDAY_GAP_SEC - time.time()
+        if wait > 0:
+            time.sleep(wait)
+        try:
+            r = HTTP.post(api, json=body, timeout=TIMEOUT,
+                          headers={"Accept": "application/json", "Content-Type": "application/json"})
+        finally:
+            _wd_state["last"] = time.time()
         if r.status_code == 429:
-            st["blocked"].add(tenant)
-            raise WorkdayBlocked(f"HTTP 429 from {tenant} (rate-limited this runner); skipped this run")
+            _wd_state["blocked"] = f"Workday answered HTTP 429 ({api.split('/wday/')[0]})"
+            raise WorkdayBlocked(_wd_state["blocked"])
     r.raise_for_status()
     return r
 
