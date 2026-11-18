@@ -15,6 +15,8 @@ polled directly (its careers site has no usable public feed).
 import html
 import json
 import re
+import threading
+import time
 from urllib.parse import quote, urljoin
 
 import requests
@@ -42,7 +44,10 @@ TARGETS = [
     dict(name="Microsoft", band="Big tech", aliases=["microsoft", "the coalition"], prefix=["microsoft"], feeds=[["microsoft"]]),
     dict(name="RBC", band="Big tech", aliases=["rbc", "royal bank of canada", "rbc royal bank"],
          prefix=["royal bank of canada", "rbc capital markets", "rbc wealth management", "rbc royal bank"], feeds=[["workday", "rbc.wd3.myworkdayjobs.com", "rbc", "RBCGLOBAL1"],
-                ["workday", "rbc.wd3.myworkdayjobs.com", "rbc", "ExternalPrivatePostingStudents"]]),
+                ["workday", "rbc.wd3.myworkdayjobs.com", "rbc", "ExternalPrivatePostingStudents"],
+                # Added Nov 18 2026: RBC's early-talent site, where its student / co-op postings
+                # actually live (found in the links of RBC rows in job_queue.xlsx).
+                ["workday", "rbc.wd3.myworkdayjobs.com", "rbc", "RBCEARLYTALENT1"]]),
     dict(name="SAP", band="Big tech", aliases=["sap"], prefix=["sap"], feeds=[]),
     dict(name="TELUS", band="Big tech", aliases=["telus"], prefix=["telus"], feeds=[["rmk", "careers.telus.com"]]),
     dict(name="Google", band="Big tech", aliases=["google", "alphabet"], prefix=["google"], feeds=[["google"]]),
@@ -98,6 +103,37 @@ TARGETS = [
                                                          "fluid ai"], prefix=["fluidai"], feeds=[["rippling", "fluidai-medical-careers"]]),
 ]
 
+# -------------------------------------------------------------------------------- Canadian employers
+# Added Nov 18 2026 to get more Canadian roles. NOT target companies: no ⭐ on the phone, and only
+# their Canadian postings are kept. These are the employers that show up most in the Canadian rows
+# of job_queue.xlsx without being on the target list, and each feed below is the exact careers
+# system their own application links in the sheet point to (so no guessed endpoints). Polled the
+# same way as the targets, so a new posting lands within the hour instead of waiting for a repo.
+CANADA_EMPLOYERS = [
+    dict(name="CIBC", aliases=["cibc", "canadian imperial bank of commerce"], prefix=["cibc"],
+         feeds=[["workday", "cibc.wd3.myworkdayjobs.com", "cibc", "search"]]),
+    dict(name="Sun Life", aliases=["sun life", "sunlife", "sun life financial"], prefix=["sun life"],
+         feeds=[["workday", "sunlife.wd3.myworkdayjobs.com", "sunlife", "Campus"]]),
+    dict(name="CAE", aliases=["cae", "cae inc"], prefix=[],
+         feeds=[["workday", "cae.wd3.myworkdayjobs.com", "cae", "career"]]),
+    dict(name="SOTI", aliases=["soti", "soti inc"], prefix=[],
+         feeds=[["workday", "soti.wd3.myworkdayjobs.com", "soti", "SOTI-Next-Gen"]]),
+    dict(name="TMX Group", aliases=["tmx", "tmx group"], prefix=["tmx group"],
+         feeds=[["workday", "tmx.wd3.myworkdayjobs.com", "tmx", "TMX_Careers"]]),
+    dict(name="Ciena", aliases=["ciena", "ciena corporation"], prefix=["ciena"],
+         feeds=[["workday", "ciena.wd5.myworkdayjobs.com", "ciena", "Careers"]]),
+    dict(name="Tenstorrent", aliases=["tenstorrent"], prefix=["tenstorrent"],
+         feeds=[["greenhouse", "tenstorrentuniversity"]]),
+    dict(name="Equitable Bank", aliases=["equitable bank", "eq bank", "eqbank"], prefix=["equitable bank"],
+         feeds=[["lever", "eqbank"]]),
+    dict(name="Magnet Forensics", aliases=["magnet forensics"], prefix=["magnet forensics"],
+         feeds=[["lever", "magnetforensics"]]),
+    dict(name="Kepler Communications", aliases=["kepler communications", "kepler"], prefix=["kepler communications"],
+         feeds=[["lever", "kepler"]]),
+]
+for _c in CANADA_EMPLOYERS:
+    _c.update(band="Canadian employer", canada_only=True)
+
 SUFFIXES = {"inc", "incorporated", "llc", "ltd", "limited", "corp", "corporation", "co", "company",
             "canada", "usa", "us", "technologies", "technology", "group", "plc", "ulc", "lp", "the"}
 
@@ -125,14 +161,37 @@ for _t in TARGETS:
         _INDEX.append((_norm(a), True, _t))
 
 
-def is_target(company):
-    """The target dict for this company name, or None."""
+_CA_INDEX = []
+for _t in CANADA_EMPLOYERS:
+    for a in _t["aliases"]:
+        _CA_INDEX.append((_norm(a), False, _t))
+    for a in _t["prefix"]:
+        _CA_INDEX.append((_norm(a), True, _t))
+
+
+def _match(company, index):
     names = {n for n in (_norm(company), _core(company)) if n}   # "Royal Bank of Canada" needs the full form
-    for alias, prefix, t in _INDEX:
+    for alias, prefix, t in index:
         for n in names:
             if n == alias or (prefix and n.startswith(alias + " ")):
                 return t
     return None
+
+
+def is_target(company):
+    """The target dict for this company name, or None. Target companies only (these get the ⭐)."""
+    return _match(company, _INDEX)
+
+
+def canonical(company):
+    """The target OR Canadian-employer dict for this company name, or None. Used for duplicate
+    keys, so LinkedIn's "EQ Bank" and the careers feed's "Equitable Bank" count as one job."""
+    return _match(company, _INDEX) or _match(company, _CA_INDEX)
+
+
+def polled():
+    """Every company whose own careers feed is polled: targets first, then Canadian employers."""
+    return [t for t in TARGETS + CANADA_EMPLOYERS if t["feeds"]]
 
 
 # -------------------------------------------------------------------------------- feed readers
@@ -185,16 +244,43 @@ def f_ashby(slug):
     return out
 
 
+# Workday rate-limits by IP, and every Workday tenant answers from the same few clusters. Polled
+# in parallel, TD + BMO + Manulife + RBC + Capital One ... all hit Workday from one GitHub runner
+# in the same second, and it answered HTTP 429 to all of them (Nov 2026: 1-4 days of failures in a
+# row). So every Workday request in the process goes through one lock: one request at a time, at
+# least WORKDAY_GAP_SEC apart, and a 429 makes the whole Workday queue wait before retrying.
+WORKDAY_GAP_SEC = 1.5
+WORKDAY_429_WAITS = (12, 30)        # seconds to back off on the 1st and 2nd 429, then give up
+_WD_LOCK = threading.Lock()
+_wd_last = [0.0]
+
+
+def _workday_post(api, body):
+    for attempt in range(len(WORKDAY_429_WAITS) + 1):
+        with _WD_LOCK:
+            wait = _wd_last[0] + WORKDAY_GAP_SEC - time.time()
+            if wait > 0:
+                time.sleep(wait)
+            try:
+                r = HTTP.post(api, json=body, timeout=TIMEOUT,
+                              headers={"Accept": "application/json", "Content-Type": "application/json"})
+            finally:
+                _wd_last[0] = time.time()
+            if r.status_code == 429 and attempt < len(WORKDAY_429_WAITS):
+                ra = r.headers.get("Retry-After", "")
+                time.sleep(min(60, int(ra)) if ra.isdigit() else WORKDAY_429_WAITS[attempt])
+                continue
+        r.raise_for_status()
+        return r
+
+
 def f_workday(host, tenant, site):
     """Workday's own JSON search API (what the careers page itself calls)."""
     out, seen = [], set()
     api = f"https://{host}/wday/cxs/{tenant}/{site}/jobs"
     for term in SEARCH_TERMS:
         for offset in (0, 20, 40):
-            r = HTTP.post(api, json={"appliedFacets": {}, "limit": 20, "offset": offset, "searchText": term},
-                          headers={"Accept": "application/json", "Content-Type": "application/json"},
-                          timeout=TIMEOUT)
-            r.raise_for_status()
+            r = _workday_post(api, {"appliedFacets": {}, "limit": 20, "offset": offset, "searchText": term})
             posts = r.json().get("jobPostings", [])
             for p in posts:
                 path = p.get("externalPath", "")

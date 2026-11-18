@@ -10,9 +10,11 @@ Sources
               Searches: "software intern" + "software co-op" in Canada, California, Texas.
   Repos     — speedyapply USA internships, Zapply Internships-2027, Simplify off-season,
               Zapply Canada-Internships-2027, negarprh Canadian-Tech-Internships-2027.
+  Indeed    — Indeed Canada via JobSpy (free). Canada only. Added Nov 18 2026.
   Career pages — the target companies in targets.py (core_companies.csv), polled straight from
               their own careers feeds (Greenhouse, Lever, Ashby, Workday, SuccessFactors, Amazon,
-              Microsoft, Google, ...). Free public endpoints, no Apify.
+              Microsoft, Google, ...), plus CANADA_EMPLOYERS (Canadian postings only, no ⭐).
+              Free public endpoints, no Apify. Workday requests go one at a time (it rate-limits).
 
 Target companies: a job at any company in targets.py, from ANY source, gets a ⭐ in its push
 title (after the 🇨🇦 for Canadian roles) and is always pushed, even a low-fit US role. A
@@ -114,6 +116,20 @@ LINKEDIN_LIMIT_PER_SEARCH = 30    # max jobs per search for a normal hourly run 
 # bounded no matter how the keyword list grows. Watch the "results billed" line in the 9pm summary.
 LINKEDIN_MAX_ITEMS_PER_RUN = 450
 
+# --- Indeed Canada ---------------------------------------------------------------------
+# Added Nov 18 2026. Indeed is Canada's biggest job board after LinkedIn and is read through
+# JobSpy's Indeed API (free, no account, no Apify cost). Canada only: the US already has far more
+# volume than you can apply to. A Nov 18 probe from GitHub Actions found 12 relevant Canadian
+# roles over 3 days, 4 of them on no other source (Mira AI x2, Qualcomm GPU Compiler, UNDP).
+# Indeed matches the description too, so most results are noise; the normal title filter decides.
+INDEED_TERMS = [
+    "software co-op", "software intern", "developer co-op", "developer intern",
+    "software engineering student", "data co-op", "machine learning intern",
+    "full stack intern", "backend co-op",
+]
+INDEED_RESULTS_PER_TERM = 50      # per search per run; a normal hourly window returns far fewer
+INDEED_FAIL_STREAK_ALERT = 4      # daytime runs in a row with Indeed failing before a push
+
 # --- Night pause ---------------------------------------------------------------------
 # Nothing runs from 11pm to 6:59am Vancouver time: no LinkedIn calls (saves Apify credit) and no
 # pushes. The 7am run looks back over the whole night on LinkedIn, and the repos keep everything
@@ -140,7 +156,14 @@ REPOS = {
 ORIGINAL_REPOS = {"speedyapply USA", "Zapply 2027", "Simplify off-season", "Zapply Canada", "negarprh Canada"}
 
 # --- Filters -------------------------------------------------------------------------
-INTERN_WORDS = r"\b(intern|interns|internship|internships|co-?op|coop|student|placement)\b"
+# stagiaire / stage: Quebec and Ottawa employers often title an English posting in French first
+# ("Stagiaire - Développeur Full Stack-EN" at CAE, "Intern, Software Developer, Stagiaire en
+# Développement Logiciel" at Autodesk Montreal). Added Nov 18 2026; the fit score still caps roles
+# whose JD needs French.
+# A bare "stage" only counts as the French word when it opens the title or a segment of it
+# ("Stage hiver 2027 - ...", "... | Stage"), so "Early Stage Software Engineer" stays out.
+INTERN_WORDS = (r"\b(intern|interns|internship|internships|co-?op|coop|student|placement|stagiaire)\b"
+                r"|(?:^|\s[-–|/]\s*|[,(]\s*)stage\b")
 # SWE first: software / full-stack / backend / frontend / mobile / cloud / devops, ML & AI
 # engineering, data engineering and data science. Analyst, QA/test, IT support, research-only
 # and architect/consultant titles are dropped.
@@ -153,7 +176,9 @@ ROLE_WORDS = (
     # none of the words above (KRAFTON UI Programming, Intel Compiler Engineer, Aptiv Linux
     # Engineer, Element Fleet Forward Deployed Engineer, NVIDIA Math Libraries, Citi ... -
     # Application Development).
-    r"programming|compiler\w*|linux|forward deployed|gen ?ai|math libraries|application development)\b"
+    r"programming|compiler\w*|linux|forward deployed|gen ?ai|math libraries|application development|"
+    # French titles (see INTERN_WORDS): développeur / développeuse / développement, logiciel(s), IA
+    r"d[ée]velopp\w*|logiciels?|intelligence artificielle|apprentissage automatique)\b"
 )
 # Hard disqualifiers: these kill a title wherever they appear. Wrong level, wrong degree,
 # wrong discipline, or a role I actively don't want (QA/test, IT support, PM).
@@ -162,7 +187,7 @@ EXCLUDE_WORDS = (
     r"master'?s|masters|graduate student|high school|new grad|new graduate|"
     r"hardware|firmware|embedded|asic|fpga|rtl|electrical|mechanical|civil|"
     r"chemical|manufacturing|supplier|sales|marketing|recruit\w*|human resources|accounting|"
-    r"legal|nurs\w*|clinical|french|bilingual|"
+    r"legal|nurs\w*|clinical|french|bilingual|doctorat|ma[iî]trise|"
     r"qa|quality assurance|test|tester|testing|sdet|"
     r"it support|help ?desk|technical support|desktop support|"
     r"product manag\w*|program manag\w*|project manag\w*)\b"
@@ -174,7 +199,7 @@ EXCLUDE_WORDS = (
 #   CAE     "Software Engineering Intern - AI, Automation and Business Intelligence"
 # A bare "Technical Analyst Intern" still gets dropped, because there is no anchor.
 SOFT_EXCLUDE_WORDS = (
-    r"\b(analyst|business intelligence|verification|information technology|"
+    r"\b(analyst|analyste|business intelligence|verification|information technology|"
     r"architect|consultant|consulting|solutions engineer|support engineer)\b"
 )
 SWE_ANCHOR = (
@@ -389,7 +414,7 @@ def job_keys(company, role, location=""):
     canonical name too, so a repo's "TD" row and the TD careers page's "TD Bank" row (same role,
     same province) count as one job."""
     keys = {job_key(company, role, location)}
-    t = T.is_target(company)
+    t = T.canonical(company)
     if t:
         keys.add(job_key(t["name"], role, location))
     return keys
@@ -465,7 +490,7 @@ def is_relevant(role, location):
         return False
     if re.search(SOFT_EXCLUDE_WORDS, r) and not re.search(SWE_ANCHOR, r):
         return False
-    if re.search(r"\bresearch", r) and not re.search(RESEARCH_OK, r):
+    if re.search(r"\b(research|recherche|chercheu\w*)", r) and not re.search(RESEARCH_OK, r):
         return False
     # The chosen repos are US/Canada lists and LinkedIn is searched by region, so a location is
     # kept unless it clearly names somewhere outside North America with no US/Canada mention.
@@ -667,6 +692,39 @@ def from_jobspy(lookback_sec):
     return jobs
 
 
+def from_indeed(lookback_sec):
+    """Indeed Canada via JobSpy. Returns Canadian postings from the look-back window."""
+    from jobspy import scrape_jobs
+    jobs, errors = [], []
+    hours = max(2, math.ceil(lookback_sec / 3600))
+    for term in INDEED_TERMS:
+        try:
+            df = scrape_jobs(site_name=["indeed"], search_term=term, location="Canada",
+                             country_indeed="Canada", results_wanted=INDEED_RESULTS_PER_TERM,
+                             hours_old=hours, description_format="markdown", verbose=0)
+        except Exception as e:
+            errors.append(f"{term}: {e}")
+            continue
+        for _, row in df.iterrows():
+            def val(k):
+                v = row.get(k)
+                return "" if v is None or str(v) == "nan" else str(v)
+            loc = val("location")
+            if not in_canada(loc):
+                continue
+            # job_url_direct is the employer's own posting (Workday, Greenhouse, ...) when Indeed
+            # has it; fall back to the Indeed page.
+            jobs.append({"company": val("company"), "role": val("title"), "location": loc,
+                         "link": val("job_url_direct") or val("job_url"), "source": "Indeed",
+                         "jd": val("description"), "posted": val("date_posted")})
+        time.sleep(2)
+    # JobSpy logs a block (403/429) instead of raising, so nothing at all across every search
+    # counts as a failure, not as a quiet hour.
+    if len(errors) == len(INDEED_TERMS):
+        raise RuntimeError(errors[0][:250])
+    return jobs
+
+
 def linkedin_lookback(health):
     last = health.get("last_linkedin_ok")
     if not last:
@@ -774,7 +832,7 @@ def from_targets(health):
     """
     from concurrent.futures import ThreadPoolExecutor
 
-    polled = [t for t in T.TARGETS if t["feeds"]]
+    polled = T.polled()
 
     def one(t):
         # One retry after a short pause. Most failures are a single bad response (Microsoft's
@@ -814,6 +872,8 @@ def from_targets(health):
         ok_names.append(t["name"])
         for j in got:
             if not careers_location_ok(j.get("location", "")):
+                continue
+            if t.get("canada_only") and not in_canada(j.get("location", "")):
                 continue
             j.update(source="Career page", posted="", visa="")
             jobs.append(j)
@@ -1240,6 +1300,27 @@ def run():
             elif li_jobs:
                 health["linkedin_zero_streak"] = 0
 
+    # --- Indeed Canada (free). Same look-back rule as LinkedIn, from its own last success.
+    try:
+        last_in = health.get("last_indeed_ok")
+        gap = (NOW - datetime.fromisoformat(last_in)).total_seconds() if last_in else 3600
+        in_jobs = from_indeed(min(24 * 3600, max(LINKEDIN_MIN_LOOKBACK_MIN * 60, gap + LINKEDIN_BUFFER_MIN * 60)))
+        in_rel = sum(is_relevant(j["role"], j["location"]) for j in in_jobs)
+        log(f"Indeed Canada: {len(in_jobs)} results ({in_rel} pass the filter)")
+        all_jobs += in_jobs
+        health["last_indeed_ok"] = NOW.isoformat()
+        if health.get("indeed_fail_streak", 0) >= INDEED_FAIL_STREAK_ALERT and "indeed" in health.get("alerts", {}):
+            push("✅ Indeed Canada working again", "Back after a run of failures. Nothing to do.",
+                 priority=2, tags=["white_check_mark"])
+        health["indeed_fail_streak"] = 0
+    except Exception as e:
+        health["indeed_fail_streak"] = health.get("indeed_fail_streak", 0) + 1
+        log(f"Indeed Canada: FAILED ({e.__class__.__name__}: {str(e)[:200]})")
+        if health["indeed_fail_streak"] >= INDEED_FAIL_STREAK_ALERT:
+            alert(health, "indeed", "⚠️ Indeed Canada failing",
+                  f"{health['indeed_fail_streak']} runs in a row. LinkedIn and the repos still run. "
+                  f"Error: {str(e)[:200]}", 24)
+
     # --- Repos
     streaks = health.setdefault("repo_fail_streak", {})
     repos_baselined = set(health.get("repos_baselined", ORIGINAL_REPOS))
@@ -1386,11 +1467,20 @@ def run():
         def sweep_lines(jobs):
             return "\n".join(f"• {star(j)}{j['company']} — {j['role']}"
                              + (f" ({j['fit']}/10)" if j.get("fit") else "") for j in jobs[:40])
-        if sweep:
-            push(f"🇨🇦 {TARGET_STAR} {len(sweep)} open Canadian role{'s' if len(sweep) != 1 else ''} "
+        sweep_t = [j for j in sweep if j.get("target")]
+        sweep_ca = [j for j in sweep if not j.get("target")]
+        if sweep_t:
+            push(f"🇨🇦 {TARGET_STAR} {len(sweep_t)} open Canadian role{'s' if len(sweep_t) != 1 else ''} "
                  f"at your target companies",
                  "First scan of their careers pages. All added to your sheet; from now on each new "
-                 "posting gets its own push.\n" + sweep_lines(sweep),
+                 "posting gets its own push.\n" + sweep_lines(sweep_t),
+                 priority=4, tags=["briefcase"])
+        if sweep_ca:
+            names = ", ".join(sorted({j["company"] for j in sweep_ca}))
+            push(f"🇨🇦 {len(sweep_ca)} open Canadian role{'s' if len(sweep_ca) != 1 else ''} from newly watched "
+                 f"careers pages",
+                 f"First scan of {names}. All added to your sheet; from now on each new posting gets "
+                 "its own push.\n" + sweep_lines(sweep_ca),
                  priority=4, tags=["briefcase"])
         if repo_sweep:
             names = ", ".join(sorted({j["source"] for j in repo_sweep}))
