@@ -248,30 +248,48 @@ def f_ashby(slug):
 # in parallel, TD + BMO + Manulife + RBC + Capital One ... all hit Workday from one GitHub runner
 # in the same second, and it answered HTTP 429 to all of them (Nov 2026: 1-4 days of failures in a
 # row). So every Workday request in the process goes through one lock: one request at a time, at
-# least WORKDAY_GAP_SEC apart, and a 429 makes the whole Workday queue wait before retrying.
+# least WORKDAY_GAP_SEC apart. A 429 gets one short back-off; a tenant that still answers 429 is
+# skipped for the rest of the run (some tenants refuse a given runner IP outright, and waiting on
+# them just stalls everything else), and all Workday polling stops once WORKDAY_BUDGET_SEC is used.
 WORKDAY_GAP_SEC = 1.5
-WORKDAY_429_WAITS = (12, 30)        # seconds to back off on the 1st and 2nd 429, then give up
+WORKDAY_429_WAIT_SEC = 8
+WORKDAY_BUDGET_SEC = 240
 _WD_LOCK = threading.Lock()
-_wd_last = [0.0]
+_wd_state = {"last": 0.0, "start": None, "blocked": set()}
+
+
+class WorkdayBlocked(Exception):
+    pass
 
 
 def _workday_post(api, body):
-    for attempt in range(len(WORKDAY_429_WAITS) + 1):
-        with _WD_LOCK:
-            wait = _wd_last[0] + WORKDAY_GAP_SEC - time.time()
+    tenant = api.split("/wday/cxs/")[0]
+    with _WD_LOCK:
+        st = _wd_state
+        if st["start"] is None:
+            st["start"] = time.time()
+        if tenant in st["blocked"]:
+            raise WorkdayBlocked(f"{tenant} answered 429 earlier this run; skipped")
+        if time.time() - st["start"] > WORKDAY_BUDGET_SEC:
+            raise WorkdayBlocked(f"Workday time budget ({WORKDAY_BUDGET_SEC}s) used up this run")
+        for attempt in range(2):
+            wait = st["last"] + WORKDAY_GAP_SEC - time.time()
             if wait > 0:
                 time.sleep(wait)
             try:
                 r = HTTP.post(api, json=body, timeout=TIMEOUT,
                               headers={"Accept": "application/json", "Content-Type": "application/json"})
             finally:
-                _wd_last[0] = time.time()
-            if r.status_code == 429 and attempt < len(WORKDAY_429_WAITS):
-                ra = r.headers.get("Retry-After", "")
-                time.sleep(min(60, int(ra)) if ra.isdigit() else WORKDAY_429_WAITS[attempt])
-                continue
-        r.raise_for_status()
-        return r
+                st["last"] = time.time()
+            if r.status_code != 429:
+                break
+            if attempt == 0:
+                time.sleep(WORKDAY_429_WAIT_SEC)
+        if r.status_code == 429:
+            st["blocked"].add(tenant)
+            raise WorkdayBlocked(f"HTTP 429 from {tenant} (rate-limited this runner); skipped this run")
+    r.raise_for_status()
+    return r
 
 
 def f_workday(host, tenant, site):

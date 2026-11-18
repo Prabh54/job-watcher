@@ -842,6 +842,8 @@ def from_targets(health):
         for attempt in range(2):
             try:
                 return t, T.fetch_target(t), None
+            except T.WorkdayBlocked as e:
+                return t, [], f"{e.__class__.__name__}: {str(e)[:200]}"   # retrying won't help this run
             except Exception as e:
                 err = f"{e.__class__.__name__}: {str(e)[:200]}"
                 if attempt == 0:
