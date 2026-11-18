@@ -1,0 +1,32 @@
+[
+ {
+  "company": "Guardian Capital Group",
+  "role": "Data Science Intern (Summer 2027)",
+  "location": "Toronto, Ontario, Canada",
+  "link": "https://www.linkedin.com/jobs/view/4491337324/",
+  "source": "LinkedIn",
+  "jd": "\nJOB STATEMENT:\nGuardian Capital Group Limited (“GCG”) is a diversified financial services company that serves the needs of clients ranging from private clients to institutions.\n\n\nThe primary responsibility of the Data Science Intern is to leverage knowledge in data, automation and AI tools to assist in the development of the company's proprietary R&amp;D infrastructure and risk analytics for fixed income investment.\n\n\nWorking closely with the Fixed Income Team in an exciting live market environment, the candidate will work alongside our Senior Analysts and Portfolio Managers to develop models and tools to augment existing investment risk analytics and improve the systematic processes for fixed income asset allocation and security selection.\n\n\nESSENTIAL FUNCTIONS:\n\n- Working on projects that enhance the automation of investment management processes and optimization of portfolio construction and security selection\n- Participating in quantitative research assignments including collecting, cleaning and transforming data, building and testing quantitative models, etc.\n- Assist in improving the systematic research, analytics and portfolio management workflow by automating the existing data flows, model updates and reporting dashboards.\n\n\nQUALIFICATIONS:\n\n- Currently enrolled in math, statistics, data science, engineering, or quantitative finance program with a strong understanding of software development and data engineering\n- Strong knowledge and experience in Python, SQL and relevant AI tools\n- Project experience in advanced analytics, machine learning and data infrastructure buildout preferred\n- Excellent written and verbal communication skills with ability to explain complex issues\n- Professional work ethic, ability to manage tasks and maintain confidentiality\n- Ability to work independently as well as within a team environment\n\n\nCOMPENSATION:\n\n- Hourly rate of $25-$35/hour, based on experience\n\n",
+  "posted": "2026-11-18",
+  "target": false,
+  "id": "2d404998f1",
+  "found_at": "2026-11-18T15:05-07:00",
+  "visa": "",
+  "fit": 6,
+  "fit_why": "Data science role leans quant/fixed-income; strong Python, SQL, data pipelines"
+ },
+ {
+  "company": "Intel",
+  "role": "Signal integrity AI enabling intern",
+  "location": "US, Arizona, Phoenix",
+  "link": "https://zapply.jobs/l/d/workday-intel-external-JR0289302",
+  "source": "Zapply 2027",
+  "jd": "",
+  "posted": "",
+  "visa": "sponsors ✅",
+  "target": false,
+  "id": "8b3530160a",
+  "found_at": "2026-11-18T15:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ }
+]
