@@ -1,0 +1,281 @@
+{
+ "started": "2026-11-18T22:23:03Z",
+ "targets": {
+  "ok": 33,
+  "polled": 42,
+  "failed": {},
+  "workday_blocked": "Workday answered HTTP 429 (https://motorolasolutions.wd5.myworkdayjobs.com)",
+  "health": {
+   "target_fail_streak": {
+    "Amazon": 0,
+    "Databricks": 0,
+    "Atlassian": 0,
+    "Microsoft": 0,
+    "TELUS": 0,
+    "Google": 0,
+    "Electronic Arts": 0,
+    "DoorDash": 0,
+    "Intuit": 0,
+    "NetApp": 0,
+    "Scotiabank": 0,
+    "Global Relay": 0,
+    "Dialpad": 0,
+    "Cohere": 0,
+    "1Password": 0,
+    "Visier": 0,
+    "GeoComply": 0,
+    "Hootsuite": 0,
+    "Kinaxis": 0,
+    "Harvey": 0,
+    "Lyft": 0,
+    "Wealthsimple": 0,
+    "Snowflake": 0,
+    "Stripe": 0,
+    "MongoDB": 0,
+    "Sentry": 0,
+    "Nutanix": 0,
+    "Waabi": 0,
+    "FluidAI Medical": 0,
+    "Tenstorrent": 0,
+    "Equitable Bank": 0,
+    "Magnet Forensics": 0,
+    "Kepler Communications": 0
+   },
+   "workday_blocked_at": "2026-11-18T22:23:03.813890+00:00",
+   "alerts": {
+    "workday_blocked": "2026-11-18T22:23:03.813890+00:00"
+   },
+   "today": {
+    "problems": [
+     "ℹ️ Workday careers pages paused"
+    ]
+   }
+  },
+  "by_company": {
+   "Amazon": {
+    "postings": 106,
+    "canada": 9,
+    "canada_relevant": [
+     "Software Development Engineer Intern - Summer 2027 (CAN) | Vancouver, British Columbia, CAN",
+     "ML Systems Software Development Engineer Intern, Annapurna Labs - 2027 | Toronto, Ontario, CAN",
+     "Software Development Engineer Intern, ROBOTICS - 2027 | Toronto, Ontario, CAN",
+     "Robotics - Software Development Engineer Intern - 2026 - Toronto | Toronto, Ontario, CAN"
+    ]
+   },
+   "Databricks": {
+    "postings": 499,
+    "canada": 27,
+    "canada_relevant": [
+     "Software Engineering Intern (2027) | Bellevue, Washington; Mountain View, California; San Francisco, California; Vancouver, Canada"
+    ]
+   },
+   "Atlassian": {
+    "postings": 142,
+    "canada": 10,
+    "canada_relevant": [
+     "Software Engineer Intern, 2027 Canada | Canada -     Canada"
+    ]
+   },
+   "Microsoft": {
+    "postings": 26,
+    "canada": 3,
+    "canada_relevant": []
+   },
+   "TELUS": {
+    "postings": 21,
+    "canada": 20,
+    "canada_relevant": []
+   },
+   "Google": {
+    "postings": 23,
+    "canada": 9,
+    "canada_relevant": []
+   },
+   "Electronic Arts": {
+    "postings": 23,
+    "canada": 12,
+    "canada_relevant": [
+     "C++ Software Engineer Intern (UFC - Vancouver - Summer 2027 - 8-months) | Vancouver, Canada",
+     "C++ Gameplay Software Engineer Co-op (FC - Vancouver - Summer 2027 - 8-months - Undergrad) | Vancouver, Canada",
+     "C++ Generalist Software Engineer Co-op (FC - Vancouver - Summer 2027 - 8-Months - Undergrad) | Vancouver, Canada"
+    ]
+   },
+   "DoorDash": {
+    "postings": 458,
+    "canada": 42,
+    "canada_relevant": [
+     "Software Engineer, Intern (Summer 2027) - TOR | Toronto, ON"
+    ]
+   },
+   "Intuit": {
+    "postings": 45,
+    "canada": 2,
+    "canada_relevant": []
+   },
+   "NetApp": {
+    "postings": 13,
+    "canada": 0,
+    "canada_relevant": []
+   },
+   "Scotiabank": {
+    "postings": 30,
+    "canada": 27,
+    "canada_relevant": []
+   },
+   "Global Relay": {
+    "postings": 34,
+    "canada": 20,
+    "canada_relevant": [
+     "Co-op DevOps - Winter 2027 | Halifax, Nova Scotia, Canada",
+     "Co-op Java Developer - Winter 2027 | Halifax, Nova Scotia, Canada"
+    ]
+   },
+   "Dialpad": {
+    "postings": 11,
+    "canada": 0,
+    "canada_relevant": []
+   },
+   "Cohere": {
+    "postings": 92,
+    "canada": 80,
+    "canada_relevant": [
+     "Machine Learning Intern/Co-op  (Winter 2027) | Canada; Europe; United States; United Kingdom; Remote"
+    ]
+   },
+   "1Password": {
+    "postings": 63,
+    "canada": 52,
+    "canada_relevant": []
+   },
+   "Visier": {
+    "postings": 1,
+    "canada": 1,
+    "canada_relevant": []
+   },
+   "GeoComply": {
+    "postings": 3,
+    "canada": 3,
+    "canada_relevant": []
+   },
+   "Hootsuite": {
+    "postings": 5,
+    "canada": 5,
+    "canada_relevant": []
+   },
+   "Kinaxis": {
+    "postings": 1,
+    "canada": 1,
+    "canada_relevant": [
+     "Intern Developer, AI Solutions | CA-ON-Ottawa"
+    ]
+   },
+   "Harvey": {
+    "postings": 276,
+    "canada": 11,
+    "canada_relevant": []
+   },
+   "Lyft": {
+    "postings": 143,
+    "canada": 70,
+    "canada_relevant": [
+     "Data Engineer Intern (Summer 2027) | Toronto, Canada",
+     "Data Science Intern, Algorithms (Summer 2027 - Toronto) | Toronto, Canada",
+     "Développeur Logiciels (Stagiaire), Automatisation des tests (l'été 2027) | Montreal, Canada",
+     "Développeur Logiciels (Stagiaire), Backend (l'été 2027 - Montreal) | Montreal, Canada",
+     "Software Engineer Intern, Backend (Summer 2027 - Montreal) | Montreal, Canada",
+     "Software Engineer Intern, Backend (Summer 2027 - Toronto) | Toronto, Canada",
+     "Software Engineer Intern, Fullstack (Summer 2027 - Toronto) | Toronto, Canada",
+     "Software Engineer Intern, Machine Learning (Summer 2027 - Toronto) | Toronto, Canada"
+    ]
+   },
+   "Wealthsimple": {
+    "postings": 40,
+    "canada": 39,
+    "canada_relevant": []
+   },
+   "Snowflake": {
+    "postings": 230,
+    "canada": 8,
+    "canada_relevant": []
+   },
+   "Stripe": {
+    "postings": 406,
+    "canada": 65,
+    "canada_relevant": [
+     "Software Engineer, Intern (Summer) | Toronto"
+    ]
+   },
+   "MongoDB": {
+    "postings": 154,
+    "canada": 24,
+    "canada_relevant": []
+   },
+   "Sentry": {
+    "postings": 37,
+    "canada": 9,
+    "canada_relevant": []
+   },
+   "Nutanix": {
+    "postings": 7,
+    "canada": 2,
+    "canada_relevant": []
+   },
+   "Waabi": {
+    "postings": 86,
+    "canada": 54,
+    "canada_relevant": []
+   },
+   "FluidAI Medical": {
+    "postings": 10,
+    "canada": 10,
+    "canada_relevant": []
+   },
+   "Tenstorrent": {
+    "postings": 6,
+    "canada": 6,
+    "canada_relevant": [
+     "AI Software Intern (Canada) | Toronto, Ontario, Canada",
+     "AI Software Intern - Cloud, Infrastructure & Data Centre Deployment (Canada) | Toronto, Ontario, Canada",
+     "Systems Intern - Validation, Software, Design, Architecture & Packaging (Canada) | Toronto, Ontario, Canada; Toronto, Ontario, Canada; Vancouver, British Columbia, Canada"
+    ]
+   },
+   "Equitable Bank": {
+    "postings": 80,
+    "canada": 80,
+    "canada_relevant": [
+     "Intern - Software Engineer, Winter 2027 | Toronto"
+    ]
+   },
+   "Magnet Forensics": {
+    "postings": 15,
+    "canada": 15,
+    "canada_relevant": [
+     "Software Developer Co-op (Winter 2027) | Waterloo / Ottawa / Ontario"
+    ]
+   },
+   "Kepler Communications": {
+    "postings": 16,
+    "canada": 16,
+    "canada_relevant": [
+     "Software Engineering Intern (January 2027) | Toronto, Ontario"
+    ]
+   }
+  }
+ },
+ "targets_sec": 4,
+ "cooldown": {
+  "ok": 33,
+  "sec": 7,
+  "blocked": "Workday cool-down (refused us at 2026-11-18T22:23Z)"
+ },
+ "cooldown_sec": 7,
+ "indeed": {
+  "count": 17,
+  "relevant": [
+   "Mira AI | AI Engineer Intern (Voice Agent) | Montréal, QC, Canada | https://ca.indeed.com/viewjob?jk=9a28dfed9d81d792",
+   "Mira AI | AI Engineer Intern (Conversational AI) | Montréal, QC, Canada | https://ca.indeed.com/viewjob?jk=8550e95d7c7de949",
+   "Qualcomm | FY27 Intern - GPU Compiler Development Internship - Canada (4 months) | Markham, ON, Canada | https://app.eightfold.ai/careers/job/446722198182?domain=qualcomm.com"
+  ]
+ },
+ "indeed_sec": 20
+}
