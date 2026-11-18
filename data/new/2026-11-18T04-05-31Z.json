@@ -1,0 +1,62 @@
+[
+ {
+  "company": "Oakridge",
+  "role": "Software Engineering Intern for OAKRIDGE HOLDINGS the parent company of danieldeboulay.com & phonesheet.org",
+  "location": "Austin, Texas Metropolitan Area",
+  "link": "https://www.linkedin.com/jobs/view/4491492144/",
+  "source": "LinkedIn",
+  "jd": "\nCompany Description \n\n\nOakridge Holdings is the parent company of danieldeboulay.com and phonesheet.org, providing innovative digital products and services. \n\n\nFounded by a Sony Pictures alumnus, the organization blends storytelling, technology, and product design to create engaging user experiences. Interns gain exposure to real-world software projects and a creative, entrepreneurial environment. \n\n\nPotential applicants are encouraged to connect with current or former Oakridge interns to learn more about the culture and opportunities at this story-driven company.\n\n\n\n\nRole Description \n\n\nAs a Software Engineering Intern at Oakridge Holdings, you will contribute to the development and maintenance of web-based applications for brands such as danieldeboulay.com and phonesheet.org. On a day-to-day basis, you will assist with implementing back-end features, writing and testing code, debugging issues, and collaborating with senior engineers on technical design. You may help integrate APIs, optimize application performance, and contribute to documentation and code reviews. This is an internship role and is fully remote, offering flexibility and the opportunity to work with distributed team members. You will be expected to manage your time effectively, communicate progress clearly, and be open to learning new tools, frameworks, and best practices.\n\n\n\n\nQualifications\n\n- Foundational knowledge in Computer Science, including data structures, algorithms, and software engineering principles.\n- Skills in Programming and Object-Oriented Programming (OOP), with experience in at least one modern language (e.g., Python, JavaScript, Java, C#, or similar).\n- Interest or experience in Software Development and Back-End Web Development, such as building APIs, working with databases, or server-side frameworks.\n- Ability to learn new technologies quickly, follow coding standards, and write clean, maintainable code.\n- Strong problem-solving skills, attention to detail, and the ability to work independently in a remote environment.\n- Clear written and verbal communication skills, with a collaborative mindset and openness to feedback.\n- Currently pursuing or recently completed a degree or coursework in Computer Science, Software Engineering, or a related field (or equivalent practical experience).\n- Familiarity with version control (e.g., Git) and basic web technologies (HTTP, REST, JSON) is a plus.\n- this is an unpaid programme designed for college students eligible to earn university credit",
+  "posted": "2026-11-18",
+  "target": false,
+  "id": "e7cb86943a",
+  "found_at": "2026-11-17T21:05-07:00",
+  "visa": "no restriction found",
+  "fit": 8,
+  "fit_why": "Backend/web intern role matching his Python/TS API and SQL stack"
+ },
+ {
+  "company": "State Street",
+  "role": "State Street Investment Management - Data Scientist - Summer Internship 2027",
+  "location": "Boston, Massachusetts",
+  "link": "https://zapply.jobs/l/d/workday-statestreet-global-R-801213",
+  "source": "Zapply 2027",
+  "jd": "",
+  "posted": "",
+  "visa": "sponsors ✅",
+  "target": false,
+  "id": "a2b4386a77",
+  "found_at": "2026-11-17T21:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ },
+ {
+  "company": "Birdseye Security Solutions",
+  "role": "Software Developer Intern",
+  "location": "Mississauga, ON",
+  "link": "https://birdseyeaccount.bamboohr.com/careers/286/",
+  "source": "negarprh Canada",
+  "jd": "",
+  "posted": "",
+  "visa": "",
+  "target": false,
+  "id": "569aa0f86e",
+  "found_at": "2026-11-17T21:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ },
+ {
+  "company": "Birdseye Security Solutions",
+  "role": "AI Systems Intern",
+  "location": "Mississauga, ON",
+  "link": "https://birdseyeaccount.bamboohr.com/careers/287/",
+  "source": "negarprh Canada",
+  "jd": "",
+  "posted": "",
+  "visa": "",
+  "target": false,
+  "id": "61769162c0",
+  "found_at": "2026-11-17T21:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ }
+]
