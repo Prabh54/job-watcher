@@ -37,7 +37,10 @@ def targets():
             if w.is_relevant(j["role"], j["location"]):
                 b["canada_relevant"].append(f"{j['role']} | {j['location']}")
     failed = {k: v for k, v in health.get("target_fail_streak", {}).items() if v}
-    return {"ok": len(ok), "polled": len(w.T.polled()), "failed": failed, "by_company": by}
+    wd = w.T._wd_state
+    return {"ok": len(ok), "polled": len(w.T.polled()), "failed": failed,
+            "workday_blocked": sorted(wd["blocked"]),
+            "workday_sec": round(time.time() - wd["start"]) if wd["start"] else None, "by_company": by}
 
 
 def indeed():
