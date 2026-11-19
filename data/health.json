@@ -15,12 +15,12 @@
   "target_TD Bank": "2026-11-18T20:05:34.867200+00:00",
   "workday_blocked": "2026-11-18T22:26:07.956649+00:00"
  },
- "heartbeat_sent": "2026-11-17",
+ "heartbeat_sent": "2026-11-18",
  "indeed_fail_streak": 0,
- "last_active_run": "2026-11-19T03:05:27.745772+00:00",
- "last_indeed_ok": "2026-11-19T03:05:27.745772+00:00",
- "last_linkedin_ok": "2026-11-19T03:05:27.745772+00:00",
- "last_run": "2026-11-19T03:05:27.745772+00:00",
+ "last_active_run": "2026-11-19T04:05:31.036887+00:00",
+ "last_indeed_ok": "2026-11-19T04:05:31.036887+00:00",
+ "last_linkedin_ok": "2026-11-19T04:05:31.036887+00:00",
+ "last_run": "2026-11-19T04:05:31.036887+00:00",
  "linkedin_zero_streak": 0,
  "missed_summary_reported": "2026-10-16",
  "repo_fail_streak": {
@@ -129,8 +129,8 @@
  ],
  "today": {
   "date": "2026-11-18",
-  "linkedin_results": 1103,
-  "linkedin_runs": 14,
+  "linkedin_results": 1113,
+  "linkedin_runs": 15,
   "new_canada": 19,
   "new_jobs": 80,
   "problems": [
@@ -143,7 +143,7 @@
    "⚠️ F5 careers feed failing",
    "ℹ️ Workday careers pages paused"
   ],
-  "runs": 16,
+  "runs": 17,
   "target_new": 7,
   "visa_dropped": 13
  },
