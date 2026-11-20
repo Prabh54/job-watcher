@@ -1,0 +1,17 @@
+[
+ {
+  "company": "Colorstech Solar",
+  "role": "Data Engineer Intern",
+  "location": "Canada",
+  "link": "https://www.linkedin.com/jobs/view/4492701386/",
+  "source": "LinkedIn",
+  "jd": "Company Description\n \nColorstech Enterprises specializes in Electrical Energy/Power solutions, offering Complete Solar Power Systems and Electronics Devices for residential and commercial use. With expertise in Solar Panels, Inverters, Pumps, Batteries, and more, we provide consultation and a wide range of products for various energy needs. In addition to Solar Power Systems, we also offer a variety of Electrical Supply Driven Inverters and appliances for household and industrial purposes.\n Role Description\n \nThis is a remote internship opportunity for a Data Engineer Intern at Colorstech Enterprises. The intern will be responsible for tasks related to Data Engineering, Data Modeling, ETL processes, Data Warehousing, and Data Analytics on a day-to-day basis.\n Qualifications\n \n\n- Data Engineering and Data Modeling skills\n- Experience in Extract Transform Load (ETL) processes\n- Knowledge of Data Warehousing and Data Analytics\n- Strong analytical and problem-solving skills\n- Proficiency in programming languages like Python, SQL, or R\n- Understanding of database systems and data management principles\n- Pursuing or completed a degree in Computer Science, Data Science, or related field",
+  "posted": "2026-11-20",
+  "target": false,
+  "id": "d563e2bb31",
+  "found_at": "2026-11-19T18:05-07:00",
+  "visa": "",
+  "fit": 7,
+  "fit_why": "ETL, Python, SQL, data modeling match his pipeline work"
+ }
+]
