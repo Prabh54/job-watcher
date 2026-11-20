@@ -128,6 +128,16 @@
   "Wealthsimple"
  ],
  "today": {
+  "date": "2026-11-20",
+  "linkedin_results": 0,
+  "linkedin_runs": 0,
+  "new_jobs": 0,
+  "problems": [],
+  "runs": 0,
+  "visa_dropped": 0
+ },
+ "workday_blocked_at": "2026-11-20T03:05:31.865897+00:00",
+ "yesterday": {
   "date": "2026-11-19",
   "linkedin_results": 1055,
   "linkedin_runs": 16,
@@ -137,26 +147,5 @@
   "runs": 17,
   "target_new": 5,
   "visa_dropped": 5
- },
- "workday_blocked_at": "2026-11-20T03:05:31.865897+00:00",
- "yesterday": {
-  "date": "2026-11-18",
-  "linkedin_results": 1137,
-  "linkedin_runs": 16,
-  "new_canada": 20,
-  "new_jobs": 81,
-  "problems": [
-   "⚠️ Motorola Solutions careers feed failing",
-   "⚠️ Manulife careers feed failing",
-   "⚠️ Autodesk careers feed failing",
-   "⚠️ TD Bank careers feed failing",
-   "⚠️ BMO careers feed failing",
-   "⚠️ RBC careers feed failing",
-   "⚠️ F5 careers feed failing",
-   "ℹ️ Workday careers pages paused"
-  ],
-  "runs": 18,
-  "target_new": 7,
-  "visa_dropped": 13
  }
 }
