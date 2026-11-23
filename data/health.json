@@ -13,23 +13,23 @@
   "target_Motorola Solutions": "2026-11-18T20:05:34.867200+00:00",
   "target_RBC": "2026-11-18T21:05:31.956653+00:00",
   "target_TD Bank": "2026-11-18T20:05:34.867200+00:00",
-  "workday_blocked": "2026-11-21T03:05:29.204108+00:00"
+  "workday_blocked": "2026-11-23T14:05:28.690009+00:00"
  },
  "heartbeat_sent": "2026-11-22",
  "indeed_fail_streak": 0,
- "last_active_run": "2026-11-23T05:05:40.761585+00:00",
- "last_indeed_ok": "2026-11-23T05:05:40.761585+00:00",
- "last_linkedin_ok": "2026-11-23T05:05:40.761585+00:00",
- "last_run": "2026-11-23T05:05:40.761585+00:00",
+ "last_active_run": "2026-11-23T14:05:28.690009+00:00",
+ "last_indeed_ok": "2026-11-23T14:05:28.690009+00:00",
+ "last_linkedin_ok": "2026-11-23T14:05:28.690009+00:00",
+ "last_run": "2026-11-23T14:05:28.690009+00:00",
  "linkedin_zero_streak": 0,
  "missed_summary_reported": "2026-10-16",
  "repo_fail_streak": {
   "Simplify Summer 2027": 0,
-  "Simplify off-season": 0,
+  "Simplify off-season": 1,
   "Zapply 2027": 0,
   "Zapply Canada": 0,
-  "negarprh Canada": 0,
-  "speedyapply USA": 0
+  "negarprh Canada": 1,
+  "speedyapply USA": 1
  },
  "repos_baselined": [
   "Simplify Summer 2027",
@@ -129,14 +129,18 @@
  ],
  "today": {
   "date": "2026-11-23",
-  "linkedin_results": 0,
-  "linkedin_runs": 0,
-  "new_jobs": 0,
-  "problems": [],
-  "runs": 0,
-  "visa_dropped": 0
+  "linkedin_results": 129,
+  "linkedin_runs": 1,
+  "new_canada": 0,
+  "new_jobs": 4,
+  "problems": [
+   "ℹ️ Workday careers pages paused"
+  ],
+  "runs": 1,
+  "target_new": 0,
+  "visa_dropped": 4
  },
- "workday_blocked_at": "2026-11-23T02:05:31.965969+00:00",
+ "workday_blocked_at": "2026-11-23T14:05:28.690009+00:00",
  "yesterday": {
   "date": "2026-11-22",
   "linkedin_results": 371,
