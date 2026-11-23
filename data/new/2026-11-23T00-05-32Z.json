@@ -1,0 +1,32 @@
+[
+ {
+  "company": "Bejite",
+  "role": "Backend Development Intern",
+  "location": "Greater Toronto Area, Canada",
+  "link": "https://www.linkedin.com/jobs/view/4493551536/",
+  "source": "LinkedIn",
+  "jd": "Company Description Bejite is a talent and career platform designed to connect employers and recruiters with relevant candidates while helping job seekers find roles that match their skills and goals. The platform streamlines candidate discovery and screening, allowing hiring teams to focus on engaging the most suitable talent. Job seekers can build professional profiles, showcase their skills and experience, and increase their visibility to potential employers. Beyond a traditional job board, Bejite aims to create an ecosystem where talent can grow, employers can discover skilled professionals, and meaningful career opportunities can emerge. Whether organizations are hiring or individuals are exploring their next step, Bejite is built to move users from searching to connecting.\nRole Description The Backend Development Intern role is a remote internship focused on supporting the development and improvement of Bejite’s backend systems and services. Day-to-day tasks include assisting in the design, implementation, and testing of APIs; working with databases to store, retrieve, and manage application data; and contributing to performance optimization and debugging efforts. The intern will collaborate with other developers to integrate backend services with frontend applications and third-party tools, while following best practices for code quality, security, and documentation. This role also involves participating in code reviews, learning from peer feedback, and supporting the team in delivering reliable features that enhance the platform experience for employers and job seekers.\nQualifications\n \n\n- Foundational skills in at least one backend programming language (e.g., Python, Java, Node.js, or similar) and familiarity with RESTful APIs or microservices.\n- Basic understanding of relational or NoSQL databases (e.g., MySQL, PostgreSQL, MongoDB) and experience writing simple queries or data models.\n- Knowledge of version control tools (e.g., Git) and comfort working in collaborative development environments.\n- Awareness of web application fundamentals, including security, performance, and scalability concepts.\n- Strong problem-solving abilities, attention to detail, and willingness to learn new technologies and frameworks.\n- Effective communication skills and ability to work independently in a remote, distributed team.\n- Current enrollment in, or recent completion of, a program in Computer Science, Software Engineering, or a related field (or equivalent practical experience).\n- Experience with cloud platforms (e.g., AWS, Azure, GCP) or containerization tools (e.g., Docker) is a plus but not required.",
+  "posted": "2026-11-22",
+  "target": false,
+  "id": "2f4d0c96c8",
+  "found_at": "2026-11-22T17:05-07:00",
+  "visa": "",
+  "fit": 9,
+  "fit_why": "Backend/API and PostgreSQL work matches his core stack exactly"
+ },
+ {
+  "company": "QSL",
+  "role": "Software Development and Artificial Intelligence Intern",
+  "location": "Québec City, QC, Canada",
+  "link": "https://jobs.smartrecruiters.com/QSL/744000162086264",
+  "source": "Simplify off-season",
+  "jd": "Depuis plus de 45 ans, QSL évolue au cœur des opérations portuaires et de la logistique en Amérique du Nord. Avec un siège social à Québec et des activités à travers le continent, notre environnement offre l’occasion de travailler sur des projets concrets qui soutiennent directement nos opérations.\n\nTu aimes programmer, résoudre des problèmes et explorer les nouvelles possibilités offertes par l'intelligence artificielle? Nous recherchons une personne curieuse, débrouillarde et autonome pour développer des applications concrètes, automatiser des processus et contribuer à la modernisation de nos outils de gestion.\n Les défis à relever : \n \n• Développer des applications pour automatiser la collecte, le traitement et la transformation de données; \n• Concevoir des solutions permettant d'intégrer et de faire communiquer différents systèmes; \n• Exploiter les outils modernes de développement assisté par intelligence artificielle, notamment Claude Code; \n• Expérimenter l'utilisation d'agents d'intelligence artificielle dans le développement et l'automatisation de processus; \n• Développer des solutions utilisant des API REST, des bases de données et Microsoft Power Platform; \n• Participer à toutes les étapes du développement, de la conception jusqu'aux tests et à la mise en service. Environnement technologique : \n \n• Visual Studio / Visual Studio Code; \n• Microsoft Power Platform / Power Automate; \n• API REST et intégration de systèmes; \n• Bases de données et SQL; \n• Claude Code et outils de développement assisté par intelligence artificielle; \n• Agents d'intelligence artificielle. Profil : \n \n• Étudier ou avoir récemment terminé un programme universitaire en informatique, en génie logiciel ou dans un domaine connexe; \n• Intérêt marqué pour la programmation et le développement d'applications; \n• Bonne capacité d'analyse et de résolution de problèmes; \n• Intérêt pour les nouvelles approches de développement utilisant l'intelligence artificielle; Conditions : \n \n• Temps plein à l’hiver 2027. Nous pouvons nous adapter à votre horaire de cours; \n• Salaire de 24 à 27$ de l’heure; \n• Boni de fin de stage de 750$. Nous sommes fiers d'être un employeur respectueux de l'équité en matière d'emploi, nous nous engageons à favoriser un environnement de travail inclusif et accessible qui reflète la diversité de nos communautés. Nous accueillons et encourageons les candidatures de personnes de tous les groupes, y compris les peuples autochtones, les femmes, les minorités visibles et les personnes handicapées.\n\n\n\n",
+  "posted": "",
+  "visa": "",
+  "target": false,
+  "id": "3c05045bfa",
+  "found_at": "2026-11-22T17:05-07:00",
+  "fit": 5,
+  "fit_why": "Power Platform/low-code focus; little coding; French description"
+ }
+]
