@@ -1,0 +1,32 @@
+[
+ {
+  "company": "Tencent",
+  "role": "Site Reliability Engineer (SRE) Intern — AI Infrastructure",
+  "location": "Palo Alto, CA",
+  "link": "https://www.linkedin.com/jobs/view/4470619472/",
+  "source": "LinkedIn",
+  "jd": "About The Hiring Team\n\nWhat the Role Entails\n\nRole Summary\n\nWe are seeking a motivated Site Reliability Engineer (SRE) Intern to join our AI Compute team, supporting the daily operations of AI infrastructure. In this role, you will work closely with internal business teams and external engineering partners to build and operate AI infrastructure. This is a hands-on opportunity to gain knowledge and experience in cutting-edge AI infrastructure.\n\nKey Responsibilities\n\n\n\n- Support the deployment, configuration, and maintenance of high-performance AI infrastructure servers, storage servers, networking equipment, and software components in secure environments. \n- Assist with hardware diagnostics, system functionality checks, and firmware updates as required. \n- Collaborate with engineering teams to help deliver tailored customer environments (e.g., bare-metal systems, Kubernetes, Slurm, etc.). \n- Provide first-line engineering support for onsite operational issues, including troubleshooting hardware, network, and software problems, and firmware compliance. \n- Document incident details, resolutions, and lessons learned to improve future problem-solving. \n- Maintain clear, accurate, and up-to-date documentation to support knowledge sharing across the team. \n- Participate in team meetings and knowledge-sharing sessions to foster collaboration and continuous learning. \n\nWho We Look For\n\nQualifications &amp; Requirements\n\n\n\n- Currently pursuing or recently completed a Bachelor's or Master's degree in computer engineering, computer science, or a related technical field. \n- Basic understanding of server hardware, firmware lifecycle, and Linux environments, with an awareness of physical and system-level security standards. \n- Exposure to scripting languages such as Bash or Python. \n- Familiarity with — or strong interest in — configuration management, CI/CD tools, workload managers, and cluster software (e.g., Slurm, Kubernetes), and observability tools (e.g., Prometheus, Grafana, ELK). \n- Strong problem-solving and analytical skills. \n- Ability to work both independently and as part of a team. \n- Professional fluency in English and Mandarin is highly preferred\n\nPreferred Qualifications\n\n\n\n- Coursework, projects, or hands-on experience related to AI Infrastructure, distributed systems, or cloud infrastructure. \n- Familiarity with networking fundamentals and Linux system administration. \n- Genuine interest in AI/ML infrastructure. \n\nLocation State(s)\n\nUS-California-Palo Alto\n\nThe expected base pay range for this position in the location(s) listed above is $27.12 to $51.93 per hour. Actual pay may vary depending on job-related knowledge, skills, and experience. This position will be eligible for 1 hour of paid sick leave for every 30 hours worked and up to 13 paid holidays throughout the calendar year. Subject to the terms and conditions of the applicable plans then in effect, full-time interns are also eligible to enroll in the Company-sponsored medical plan.\n\nEqual Employment Opportunity at Tencent\n\nAs an equal opportunity employer, we firmly believe that diverse voices fuel our innovation and allow us to better serve our users and the community. We foster an environment where every employee of Tencent feels supported and inspired to achieve individual and common goals.",
+  "posted": "2026-11-25",
+  "target": false,
+  "id": "2d708f307c",
+  "found_at": "2026-11-25T13:05-07:00",
+  "visa": "no restriction found",
+  "fit": 2,
+  "fit_why": "Hardware/server ops and Mandarin fluency; not software engineering"
+ },
+ {
+  "company": "Revvity",
+  "role": "Software Engineering Intern, In Vivo Imaging",
+  "location": "Morrisville",
+  "link": "https://zapply.jobs/l/d/workday-revvity-external-JR-046080",
+  "source": "Zapply 2027",
+  "jd": "",
+  "posted": "",
+  "visa": "check sponsorship",
+  "target": false,
+  "id": "3fe35e71db",
+  "found_at": "2026-11-25T13:05-07:00",
+  "fit": "",
+  "fit_why": ""
+ }
+]
