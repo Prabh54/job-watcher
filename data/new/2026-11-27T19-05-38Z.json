@@ -1,0 +1,47 @@
+[
+ {
+  "company": "Future Electronics",
+  "role": "Intern Application Developer",
+  "location": "Canada",
+  "link": "https://www.linkedin.com/jobs/view/4495857308/",
+  "source": "LinkedIn",
+  "jd": "",
+  "posted": "2026-11-27",
+  "target": false,
+  "id": "fea0fc053d",
+  "found_at": "2026-11-27T12:05-07:00",
+  "visa": "",
+  "fit": "",
+  "fit_why": ""
+ },
+ {
+  "company": "Teyon.ai",
+  "role": "Developer Relations & Technical GTM Intern (Potential Full-Time) — AI Infrastructure",
+  "location": "San Francisco Bay Area",
+  "link": "https://www.linkedin.com/jobs/view/4495324792/",
+  "source": "LinkedIn",
+  "jd": "\nTeyon | Remote | 10–20 hours/week ($26 per hour)&nbsp; | Paid, part-time\nTeyon builds MemSage, a tool that helps AI teams investigate GPU memory inefficiencies, training and configuration issues, and performance bottlenecks. MemSage observes training and inference workloads without requiring changes to application code or training configurations.\nWe’re looking for a technically curious intern who enjoys explaining engineering problems, using AI agents, and connecting with developer communities. You’ll work directly with the founder to turn real MemSage findings into useful material and help teams evaluate the product. Strong performance and mutual fit could lead to a full-time role on Teyon’s founding team.\nWhat you’ll do\n\n- Turn verified findings—such as delayed frees, unnecessary copies, and memory leaks—into reproducible GitHub examples, technical articles, and short demos.\n- Engage constructively with open-source and AI engineering communities.\n- Find teams facing relevant training or inference problems, help coordinate small pilots, and bring their feedback back to the product team.\n- Improve documentation and examples so engineers can get started quickly.\nWhat we’re looking for\n\n- Hands-on Python and PyTorch experience; comfortable running workloads, reading logs or traces, and using GitHub.\n- Clear English technical writing and the ability to distinguish a verified finding from a hypothesis.\n- Experience using AI agents to complete real work. You should be able to describe at least one successful example: what you accomplished, what you did yourself, and how you checked the result.\n- Interest in speaking with engineers, learning from users, and following through independently in a remote role.\n- A CS, CE, EECS, business, or related background—or equivalent hands-on projects.\nExperience with CUDA, GPU profiling, distributed training, vLLM, developer relations, or technical community work is helpful but not required.\nCompensation: Paid hourly; rate negotiable based on experience.\nTo apply: Email contact@teyon.ai with your résumé or LinkedIn profile, a link to code or technical writing (a class project is welcome), and a short description of one successful AI-agent project. Use the subject line “MemSage Intern — Your Name.”\n\n\n- \n",
+  "posted": "2026-11-27",
+  "target": false,
+  "id": "a5d165dac1",
+  "found_at": "2026-11-27T12:05-07:00",
+  "visa": "no restriction found",
+  "fit": 2,
+  "fit_why": "Requires hands-on PyTorch, GPU profiling and ML training workload work, a gap"
+ },
+ {
+  "company": "Chatham Financial",
+  "role": "2027 Software Engineering Intern",
+  "location": "Denver, CO",
+  "link": "https://chathamfinancial.wd501.myworkdayjobs.com/chathamfinancial/job/Denver/XMLNAME-2027-Software-Engineering-Intern_R-100349",
+  "source": "speedyapply USA",
+  "jd": "Job Description: \n\n Overview: \n We don’t simply hire employees. We invest in them. When you work at Chatham, we empower you — offering professional development opportunities to help you grow in your career, no matter if you've been here for five months or 15 years. Chatham has worked hard to create a distinct work environment that values people, teamwork, integrity, and client service. You will have immediate opportunities to partner with talented subject matter experts, work on complex projects, and contribute to the value Chatham delivers every day. \n \n Chatham Financials' Summer Internship Program offers a dynamic and immersive experience for aspiring technology professionals. This is your opportunity to gain hands-on software engineering experience in a leading finance and technology firm while contributing to projects that drive our business forward. \n\n As a Software Engineering Intern at Chatham, you will be immersed in a collaborative team environment where you'll work alongside experienced engineers on cutting-edge products. Whether you're developing new features, optimizing systems, or solving complex problems, you'll play a key role in shaping the future of finance through technology. \n\n Our technology team is made up of a team of Software Engineers, Testers, DevOps Engineers, Security Engineers, UX Designers, Quantitative Analysts and Data Base Analysts. We build software for our clients that range across multiple sectors and industries as well as tools for our internal users to help them better serve our clients. Our team is a global team located in four different countries and multiple time zones. We interact daily with each other as well as our key business stakeholders to ensure quality and speedy delivery of our product offerings.   \n\n What You’ll do: \n \n• \"Use AI workflows and AI coding assistants as peers and collaborators to help you deliver the best technology solutions for Chatham\" \n• Assist with developing cutting-edge financial   applications; develop innovative, high-quality, and robust web applications and micro services as part of our growing application development team.  \n• Be a member of an agile scrum team that owns development of a specific product or platform.  \n• Collaborate with other software engineering teams, design team, quant team, product owners and managers, and business stakeholders, while working on intern project.  \n• Develop software in our technology stack which is constantly evolving but currently includes .NET,  ASP.NET, React, Angular, TypeScript, SQL Server, RabbitMQ and Redis.  \n• Build automated unit, integration and front-end tests using xUnit, Moq, NSubstitute and Cypress among other technologies.  \n• Implement the build, test, deploy development cycle in CI/CD pipelines using Docker, YAML, Gitlab CI, and Hashicorp Nomad \n• Use AI workflows and AI coding assistants as peers and collaborators to help you deliver the best technology solutions for Chatham \n What You’ll Need:    \n \n• Working towards Bachelor’s Degree in Computer Science, Mathematics, Physics, Engineering, or equivalent practical experience.  \n• 2 years of experience preferred  \n• Experience with object-oriented languages such as C#, C++ or Java  \n• Experience with JavaScript and JavaScript frameworks (e.g. React)  \n• Experience with relational databases such as Microsoft SQL Server, Oracle or MySQL  \n• Understanding of Unit testing, Test-Driven Development and mocking frameworks  \n• Understanding of continuous delivery principles and processes  \n• Understanding of REST principles, Service-oriented architecture, and API development  \n• Understanding of continuous delivery principles and processes  \n• Proclivity towards refactoring and continuously improving OO code through agile development methods.  \n• Open-source development projects.  \n• Contributions to the local developer community.  \n• Quantitative and modeling skills with an ability to learn techniques in numerical optimization, data mining, simulation, or model calibration.  \n This role offers flexibility and is eligible for a hybrid work arrangement. \n\n Chatham Financial offers an entrepreneurial culture that rewards teamwork and innovation. We seek individuals who are natural leaders, quick learners, and fit our collaborative culture. Join us to develop your fullest potential, impact our clients and community, and kickstart your career in finance.  \n\n Apply now and become a part of Chatham Financial's legacy of excellence and innovation!  \n\n Applicants must be enrolled in an undergraduate or graduate academic program at the junior or senior level.  \n   \n The internship program will begin on June 1, 2027, and runs through August 6, 2027. Applicants must be available for the duration of the program, Monday – Friday from 8:30am-5:30pm, onsite in your designated office.     \n\n For Denver based candidates, the compensation range for the position is expected to be between $20 & $30 hourly. \n\n About Chatham Financial: \n Chatham Financial is the leading independent capital markets advisor, delivering an integrated blend of expert advice and powerful technology to help you reduce risk and seize opportunity. With decades of capital markets strategy, execution, monitoring, and performance expertise, we serve as an unwavering advocate for your best interests and your innovation partner. Our technology platform unifies data across assets, debt, and derivatives, giving you unmatched agility, transparency, and insight. \n It’s clear ahead. \n \n Our commitment is to carry that light forward in every partnership, every solution, and every market we serve. \n \n We help guide the way—giving clients the insight and momentum to move forward with confidence, no matter what lies ahead.",
+  "posted": "",
+  "visa": "no restriction found",
+  "target": false,
+  "id": "2a058263e6",
+  "found_at": "2026-11-27T12:05-07:00",
+  "fit": 7,
+  "fit_why": "Core stack is .NET/C#, Angular, SQL Server; React and TypeScript overlap"
+ }
+]
