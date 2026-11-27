@@ -956,6 +956,7 @@
   "icf international|software engineer intern|us": "2026-10-28T17:05:30.326816+00:00",
   "icf|2027 summer intern ai engineer|us": "2026-11-16T19:58:26.160234+00:00",
   "icf|2027 summer intern cloud engineer aws azure reston va|us": "2026-11-15T14:05:30.466984+00:00",
+  "iconiq capital|data science intern science|other": "2026-11-27T03:05:30.804610+00:00",
   "id me|software development engineer intern|us": "2026-10-28T17:05:30.326816+00:00",
   "idemia|full stack software engineering internship|us": "2026-11-18T20:51:35.296677+00:00",
   "idemia|software engineer internship summer 2027|us": "2026-11-18T20:51:35.296677+00:00",
@@ -1833,7 +1834,7 @@
   "simbe robotics|robot software engineer intern|us": "2026-10-28T17:05:30.326816+00:00",
   "simventions|software development intern|us": "2026-10-28T17:05:30.326816+00:00",
   "sk hynix|software engineer intern|us": "2026-11-05T03:05:34.214206+00:00",
-  "skyband systems|software engineer intern|us": "2026-10-28T02:05:36.849284+00:00",
+  "skyband systems|software engineer intern|us": "2026-11-27T03:05:30.804610+00:00",
   "skydio|frontend software engineer intern|us": "2026-11-13T14:05:38.012771+00:00",
   "skydio|middleware software engineer intern summer 2027|us": "2026-11-10T23:05:29.096699+00:00",
   "skydio|mobile software engineer intern|us": "2026-10-28T17:05:30.326816+00:00",
@@ -2371,9 +2372,7 @@
   "zotec partners|software engineer intern rci|us": "2026-11-13T19:59:24.211667+00:00",
   "zotec partners|software engineer intern|us": "2026-11-13T19:59:24.211667+00:00",
   "zurich canada|data analytics ai intern|ca-on": "2026-11-16T23:05:28.057112+00:00",
-  "zurich insurance|data analytics ai intern|ca-on": "2026-11-18T02:05:36.519613+00:00",
-  "zus health|data acquisition software engineer co op|us": "2026-10-28T02:05:36.849284+00:00",
-  "zus health|platform software engineering co op|us": "2026-10-28T02:05:36.849284+00:00"
+  "zurich insurance|data analytics ai intern|ca-on": "2026-11-18T02:05:36.519613+00:00"
  },
  "links": {
   "http://getfiber.ai/careers?gh_jid=5225258007": "2026-10-07",
@@ -3845,6 +3844,7 @@
   "https://job-boards.greenhouse.io/hpiq/jobs/6116398004": "2026-10-07",
   "https://job-boards.greenhouse.io/hpiq/jobs/6176783004": "2026-10-07",
   "https://job-boards.greenhouse.io/hyannisportresearch/jobs/7822989003": "2026-10-07",
+  "https://job-boards.greenhouse.io/iconiqhandshake/jobs/8391972": "2026-11-27",
   "https://job-boards.greenhouse.io/idmeuniversityrecruiting/jobs/7980429003": "2026-10-28",
   "https://job-boards.greenhouse.io/imc/jobs/4962456101": "2026-10-08",
   "https://job-boards.greenhouse.io/integra/jobs/5406100008": "2026-10-07",
@@ -4232,6 +4232,7 @@
   "https://jobs.ashbyhq.com/serval/d7fb089c-db8a-4877-a5f3-73a09e67f54b": "2026-10-07",
   "https://jobs.ashbyhq.com/shield/f96617c2-a120-4b3b-844d-790fcda42503": "2026-11-23",
   "https://jobs.ashbyhq.com/sierra/34b31b67-268c-4270-b48f-72e59064c96e": "2026-10-07",
+  "https://jobs.ashbyhq.com/skyband%20systems/1e68c6d9-c810-418d-9171-f2a23f013d06": "2026-11-27",
   "https://jobs.ashbyhq.com/skyband%20systems/84c94947-8a35-46a7-86b2-1867b31c92e9": "2026-10-28",
   "https://jobs.ashbyhq.com/skydio/79fdda46-4ff5-42c7-b208-55f2084cdb8c": "2026-10-14",
   "https://jobs.ashbyhq.com/skydio/89bb6fee-3cd2-4e0b-a1c2-c73de8c1f9bd": "2026-10-22",
