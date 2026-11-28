@@ -17,10 +17,10 @@
  },
  "heartbeat_sent": "2026-11-26",
  "indeed_fail_streak": 0,
- "last_active_run": "2026-11-27T23:05:28.868877+00:00",
- "last_indeed_ok": "2026-11-27T23:05:28.868877+00:00",
- "last_linkedin_ok": "2026-11-27T23:05:28.868877+00:00",
- "last_run": "2026-11-27T23:05:28.868877+00:00",
+ "last_active_run": "2026-11-28T00:05:30.277638+00:00",
+ "last_indeed_ok": "2026-11-28T00:05:30.277638+00:00",
+ "last_linkedin_ok": "2026-11-28T00:05:30.277638+00:00",
+ "last_run": "2026-11-28T00:05:30.277638+00:00",
  "linkedin_zero_streak": 0,
  "missed_summary_reported": "2026-10-16",
  "repo_fail_streak": {
@@ -129,15 +129,15 @@
  ],
  "today": {
   "date": "2026-11-27",
-  "linkedin_results": 585,
-  "linkedin_runs": 10,
-  "new_canada": 5,
-  "new_jobs": 24,
+  "linkedin_results": 650,
+  "linkedin_runs": 11,
+  "new_canada": 7,
+  "new_jobs": 26,
   "problems": [
    "ℹ️ Workday careers pages paused"
   ],
-  "runs": 11,
-  "target_new": 0,
+  "runs": 12,
+  "target_new": 1,
   "visa_dropped": 4
  },
  "workday_blocked_at": "2026-11-27T20:05:35.548324+00:00",
